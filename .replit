@@ -4,7 +4,7 @@ modules = ["python-3.11"]
 channel = "stable-25_05"
 
 [workflows]
-runButton = "Main SEO Optimizer"
+runButton = "Dashboard Server"
 
 [[workflows.workflow]]
 name = "Project"
