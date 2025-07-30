@@ -146,7 +146,7 @@ class SEOOptimizer:
             return False
     
     def run_optimization_cycle(self):
-        """Run a single optimization cycle."""
+        """Run a single optimization cycle with quota management."""
         logger.info("Starting optimization cycle")
         
         try:
@@ -156,14 +156,33 @@ class SEOOptimizer:
                 logger.info("No new posts to optimize")
                 return
             
+            # Limit posts processed per cycle to manage quota
+            max_posts_per_cycle = 5
+            posts_to_process = new_posts[:max_posts_per_cycle]
+            
+            if len(new_posts) > max_posts_per_cycle:
+                logger.info(f"Limiting to {max_posts_per_cycle} posts per cycle to manage API quota")
+            
             success_count = 0
-            for post in new_posts:
+            quota_exceeded = False
+            
+            for i, post in enumerate(posts_to_process):
+                logger.info(f"Processing post {i+1}/{len(posts_to_process)}")
+                
                 if self.optimize_post(post):
                     success_count += 1
                     # Add delay between posts to respect API rate limits
-                    time.sleep(2)
+                    time.sleep(5)  # Increased delay
+                else:
+                    # Check if it's a quota error
+                    logger.warning("Post optimization failed, checking for quota issues")
+                    quota_exceeded = True
+                    break
             
-            logger.info(f"Optimization cycle completed. {success_count}/{len(new_posts)} posts optimized successfully")
+            if quota_exceeded:
+                logger.warning("Quota exceeded, stopping optimization cycle early")
+            
+            logger.info(f"Optimization cycle completed. {success_count}/{len(posts_to_process)} posts optimized successfully")
             
         except Exception as e:
             logger.error(f"Error during optimization cycle: {e}")

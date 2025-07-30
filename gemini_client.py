@@ -150,38 +150,65 @@ Importante:
         Returns:
             Dictionary with optimized title, excerpt, and content, or None if failed
         """
+        import time
+        
         try:
             # Create the prompt with media data
             prompt = self._create_seo_prompt(title, excerpt, content, tags, domain, media_data)
             
-            # Make request to Gemini
+            # Make request to Gemini with retry logic
             model = genai.GenerativeModel(self.model)
-            response = model.generate_content(
-                prompt,
-                generation_config={
-                    'temperature': 0.3,
-                    'max_output_tokens': 4000,
-                }
-            )
             
-            if not response.text:
-                logger.error("Empty response from Gemini")
-                return None
-            
-            logger.info("Received response from Gemini")
-            
-            # Parse the response
-            parsed_result = self._parse_response(response.text)
-            
-            if parsed_result:
-                logger.info("Successfully parsed Gemini response")
-                return parsed_result
-            else:
-                logger.error("Failed to parse Gemini response")
-                # Log the raw response for debugging
-                logger.debug(f"Raw Gemini response: {response.text}")
-                return None
-                
+            max_retries = 3
+            for attempt in range(max_retries):
+                try:
+                    response = model.generate_content(
+                        prompt,
+                        generation_config={
+                            'temperature': 0.3,
+                            'max_output_tokens': 4000,
+                        }
+                    )
+                    
+                    if not response.text:
+                        logger.error("Empty response from Gemini")
+                        return None
+                    
+                    logger.info("Received response from Gemini")
+                    
+                    # Parse the response
+                    parsed_result = self._parse_response(response.text)
+                    
+                    if parsed_result:
+                        logger.info("Successfully parsed Gemini response")
+                        return parsed_result
+                    else:
+                        logger.error("Failed to parse Gemini response")
+                        return None
+                        
+                except Exception as e:
+                    error_str = str(e)
+                    if "429" in error_str and "quota" in error_str.lower():
+                        # Extract retry delay if available
+                        import re
+                        retry_match = re.search(r'retry_delay.*?seconds:\s*(\d+)', error_str)
+                        wait_time = int(retry_match.group(1)) if retry_match else 60
+                        
+                        logger.warning(f"Quota exceeded. Waiting {wait_time} seconds before retry {attempt + 1}/{max_retries}")
+                        if attempt < max_retries - 1:
+                            time.sleep(wait_time)
+                            continue
+                        else:
+                            logger.error("Max retries reached for quota exceeded error")
+                            return None
+                    else:
+                        logger.error(f"Failed to optimize content with Gemini (attempt {attempt + 1}): {e}")
+                        if attempt < max_retries - 1:
+                            time.sleep(2)  # Short delay for other errors
+                            continue
+                        else:
+                            return None
+                            
         except Exception as e:
             logger.error(f"Failed to optimize content with Gemini: {e}")
             return None
