@@ -1514,3 +1514,95 @@ com/embed/VIDEO_ID_DO_ANUNCIO
 2025-07-30 13:41:06,016 - ERROR - Failed to connect to Gemini API
 2025-07-30 13:41:06,017 - ERROR - Failed to initialize optimizer
 2025-07-30 13:41:06,019 - INFO - Process lock released
+2025-07-30 14:22:32,052 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 14:22:32,053 - INFO - Process lock acquired
+2025-07-30 14:22:32,054 - INFO - All required configuration validated
+2025-07-30 14:22:32,054 - INFO - Configuration loaded successfully
+2025-07-30 14:22:32,055 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 14:22:32,055 - INFO - Initializing Gemini client with 3 API keys
+2025-07-30 14:22:32,055 - INFO - Gemini client initialized with 3 API key(s): ['AIzaSyD7...', 'AIzaSyDD...', 'AIzaSyDI...']
+2025-07-30 14:22:32,055 - INFO - TMDB client initialized
+2025-07-30 14:22:34,104 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 14:22:34,107 - INFO - Testing Gemini API connection...
+2025-07-30 14:22:35,155 - ERROR - Gemini API connection test failed: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 25
+}
+]
+2025-07-30 14:22:35,155 - ERROR - Failed to connect to Gemini API
+2025-07-30 14:22:35,156 - ERROR - Failed to initialize optimizer
+2025-07-30 14:22:35,157 - INFO - Process lock released
+2025-07-30 14:25:42,163 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 14:25:42,164 - INFO - Process lock acquired
+2025-07-30 14:25:42,165 - INFO - All required configuration validated
+2025-07-30 14:25:42,165 - INFO - Configuration loaded successfully
+2025-07-30 14:25:42,166 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 14:25:42,166 - INFO - Initializing Gemini client with 3 API keys
+2025-07-30 14:25:42,166 - INFO - Gemini client initialized with 3 API key(s): ['AIzaSyD7...', 'AIzaSyDD...', 'AIzaSyDI...']
+2025-07-30 14:25:42,166 - INFO - TMDB client initialized
+2025-07-30 14:25:44,171 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 14:25:44,173 - INFO - Testing Gemini API connection...
+2025-07-30 14:26:06,430 - INFO - Gemini API connection test successful with key #1 - AIzaSyD7...
+2025-07-30 14:26:07,037 - INFO - TMDB API connection test successful
+2025-07-30 14:26:07,038 - INFO - Using João's author ID: 6
+2025-07-30 14:26:07,038 - INFO - Starting SEO optimizer scheduler
+2025-07-30 14:26:07,039 - INFO - Starting optimization cycle
+2025-07-30 14:26:14,031 - INFO - Found 10 new posts by João
+2025-07-30 14:26:14,032 - INFO - Processing 2 posts (remaining quota: 45)
+2025-07-30 14:26:14,032 - INFO - Processing post 1/2
+2025-07-30 14:26:14,032 - INFO - Optimizing post ID: 10392 - 'Prepare-se: Ballerina 4K Blu-ray Chega com Edições Steelbook Exclusivas e Extras Imperdíveis!'
+2025-07-30 14:26:17,046 - INFO - Searching for media content for post: Prepare-se: Ballerina 4K Blu-ray Chega com Edições Steelbook Exclusivas e Extras Imperdíveis!
+2025-07-30 14:26:17,048 - INFO - Category analysis - Movies: True, TV: False
+2025-07-30 14:26:17,054 - INFO - Extracted title using pattern: 'Prepare-se'
+2025-07-30 14:26:17,057 - INFO - Extracted main title: Prepare-se
+2025-07-30 14:26:17,064 - INFO - Extracted potential titles from content: ['John Wick']
+2025-07-30 14:26:17,065 - INFO - Searching for titles: ['Prepare-se', 'John Wick']
+2025-07-30 14:26:17,252 - INFO - Found movie: Preparação e Pouso: Operação Presente Secreto (2010-12-07)
+2025-07-30 14:26:17,583 - INFO - Found movie: Bailarina - Do Universo de John Wick (2025-06-04)
+2025-07-30 14:26:17,749 - INFO - Found 4 images and 2 trailers for post
+2025-07-30 14:26:17,975 - WARNING - Quota exceeded on key #1 - AIzaSyD7...
+2025-07-30 14:26:17,976 - INFO - DEBUG: Current key index: 0, Total keys: 3
+2025-07-30 14:26:17,976 - INFO - Switched to backup API key #2 - AIzaSyDD...
+2025-07-30 14:26:17,976 - INFO - Retrying with backup API key
+2025-07-30 14:26:17,976 - INFO - Waiting 20 seconds before retry attempt 1
+2025-07-30 14:26:38,187 - WARNING - Quota exceeded on key #2 - AIzaSyDD...
+2025-07-30 14:26:38,187 - INFO - DEBUG: Current key index: 1, Total keys: 3
+2025-07-30 14:26:38,187 - INFO - Switched to backup API key #3 - AIzaSyDI...
+2025-07-30 14:26:38,188 - INFO - Retrying with backup API key
+2025-07-30 14:26:38,188 - INFO - Waiting 40 seconds before retry attempt 2
+2025-07-30 14:27:18,424 - WARNING - Quota exceeded on key #3 - AIzaSyDI...
+2025-07-30 14:27:18,424 - INFO - DEBUG: Current key index: 2, Total keys: 3
+2025-07-30 14:27:18,425 - WARNING - No backup key available. Keys: 3, Current index: 2
+2025-07-30 14:27:18,425 - WARNING - No backup key available. Waiting 60 seconds before retry 3/15
+2025-07-30 14:28:18,427 - INFO - Waiting 80 seconds before retry attempt 3
+2025-07-30 14:29:38,673 - WARNING - Quota exceeded on key #3 - AIzaSyDI...
+2025-07-30 14:29:38,673 - INFO - DEBUG: Current key index: 2, Total keys: 3
+2025-07-30 14:29:38,673 - WARNING - No backup key available. Keys: 3, Current index: 2
+2025-07-30 14:29:38,674 - WARNING - No backup key available. Waiting 60 seconds before retry 4/15
+2025-07-30 14:30:38,674 - INFO - Waiting 160 seconds before retry attempt 4
+2025-07-30 14:33:18,919 - WARNING - Quota exceeded on key #3 - AIzaSyDI...
+2025-07-30 14:33:18,919 - INFO - DEBUG: Current key index: 2, Total keys: 3
+2025-07-30 14:33:18,919 - WARNING - No backup key available. Keys: 3, Current index: 2
+2025-07-30 14:33:18,920 - WARNING - No backup key available. Waiting 60 seconds before retry 5/15
+2025-07-30 14:34:18,920 - INFO - Waiting 320 seconds before retry attempt 5
+2025-07-30 14:39:39,280 - WARNING - Quota exceeded on key #3 - AIzaSyDI...
+2025-07-30 14:39:39,281 - INFO - DEBUG: Current key index: 2, Total keys: 3
+2025-07-30 14:39:39,281 - WARNING - No backup key available. Keys: 3, Current index: 2
+2025-07-30 14:39:39,281 - WARNING - No backup key available. Waiting 60 seconds before retry 6/15
+2025-07-30 14:40:39,282 - INFO - Waiting 640 seconds before retry attempt 6
