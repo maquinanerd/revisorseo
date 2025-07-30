@@ -4,7 +4,7 @@ modules = ["python-3.11"]
 channel = "stable-25_05"
 
 [workflows]
-runButton = "Project"
+runButton = "Main SEO Optimizer"
 
 [[workflows.workflow]]
 name = "Project"
@@ -35,6 +35,24 @@ author = "agent"
 task = "shell.exec"
 args = "python dashboard.py"
 waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Main SEO Optimizer"
+author = 45748448
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python main.py --once"
+
+[[workflows.workflow]]
+name = "Dashboard Server"
+author = 45748448
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python dashboard.py"
 
 [[ports]]
 localPort = 5000

@@ -157,4 +157,3 @@ class WordPressClient:
         except Exception as e:
             logger.error(f"WordPress connection test failed: {e}")
             return False
-`
