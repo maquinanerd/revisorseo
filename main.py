@@ -17,6 +17,7 @@ from config import Config
 from wordpress_client import WordPressClient
 from gemini_client import GeminiClient
 from tmdb_client import TMDBClient
+from process_lock import ProcessLock
 
 # Configure logging
 logging.basicConfig(
@@ -150,6 +151,12 @@ class SEOOptimizer:
         logger.info("Starting optimization cycle")
         
         try:
+            # Check if quota is available before starting
+            if not self.gemini_client._can_make_request():
+                quota_data = self.gemini_client._load_quota_data()
+                logger.warning(f"Skipping cycle - daily quota exceeded: {quota_data['requests']}/{self.gemini_client.max_daily_requests}")
+                return
+            
             new_posts = self.get_new_posts()
             
             if not new_posts:
@@ -157,14 +164,13 @@ class SEOOptimizer:
                 return
             
             # Limit posts processed per cycle to manage quota
-            max_posts_per_cycle = 2  # Reduced from 5 to 2
+            remaining_quota = self.gemini_client.max_daily_requests - self.gemini_client._load_quota_data()['requests']
+            max_posts_per_cycle = min(2, remaining_quota)  # Don't exceed remaining quota
             posts_to_process = new_posts[:max_posts_per_cycle]
             
-            if len(new_posts) > max_posts_per_cycle:
-                logger.info(f"Limiting to {max_posts_per_cycle} posts per cycle to manage API quota")
+            logger.info(f"Processing {len(posts_to_process)} posts (remaining quota: {remaining_quota})")
             
             success_count = 0
-            quota_exceeded = False
             
             for i, post in enumerate(posts_to_process):
                 logger.info(f"Processing post {i+1}/{len(posts_to_process)}")
@@ -174,13 +180,8 @@ class SEOOptimizer:
                     # Add delay between posts to respect API rate limits
                     time.sleep(30)  # Increased delay to 30 seconds
                 else:
-                    # Check if it's a quota error
-                    logger.warning("Post optimization failed, checking for quota issues")
-                    quota_exceeded = True
+                    logger.warning("Post optimization failed, stopping cycle")
                     break
-            
-            if quota_exceeded:
-                logger.warning("Quota exceeded, stopping optimization cycle early")
             
             logger.info(f"Optimization cycle completed. {success_count}/{len(posts_to_process)} posts optimized successfully")
             
@@ -207,25 +208,31 @@ def main():
     """Main entry point."""
     logger.info("=== WordPress SEO Optimizer Started ===")
     
-    try:
-        optimizer = SEOOptimizer()
-        
-        if not optimizer.initialize():
-            logger.error("Failed to initialize optimizer")
+    # Use process lock to prevent multiple instances
+    with ProcessLock() as acquired:
+        if not acquired:
+            logger.error("Another instance is already running. Exiting.")
             return 1
         
-        if len(sys.argv) > 1 and sys.argv[1] == '--once':
-            # Run once for testing
-            optimizer.run_optimization_cycle()
-        else:
-            # Run continuously with scheduler
-            optimizer.start_scheduler()
+        try:
+            optimizer = SEOOptimizer()
             
-    except KeyboardInterrupt:
-        logger.info("SEO optimizer stopped by user")
-    except Exception as e:
-        logger.error(f"Fatal error: {e}")
-        return 1
+            if not optimizer.initialize():
+                logger.error("Failed to initialize optimizer")
+                return 1
+            
+            if len(sys.argv) > 1 and sys.argv[1] == '--once':
+                # Run once for testing
+                optimizer.run_optimization_cycle()
+            else:
+                # Run continuously with scheduler
+                optimizer.start_scheduler()
+                
+        except KeyboardInterrupt:
+            logger.info("SEO optimizer stopped by user")
+        except Exception as e:
+            logger.error(f"Fatal error: {e}")
+            return 1
     
     return 0
 

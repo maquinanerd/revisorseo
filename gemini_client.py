@@ -6,6 +6,8 @@ import json
 import logging
 import re
 from typing import Dict, List, Optional
+from datetime import datetime, date
+import os
 
 import google.generativeai as genai
 
@@ -24,7 +26,44 @@ class GeminiClient:
         """
         genai.configure(api_key=api_key)
         self.model = "gemini-1.5-flash"
+        self.quota_file = "gemini_quota.json"
+        self.max_daily_requests = 45  # Leave some buffer from 50 limit
         logger.info("Gemini client initialized")
+
+    def _load_quota_data(self) -> dict:
+        """Load quota usage data from file."""
+        try:
+            if os.path.exists(self.quota_file):
+                with open(self.quota_file, 'r') as f:
+                    data = json.load(f)
+                    # Reset if it's a new day
+                    if data.get('date') != str(date.today()):
+                        return {'date': str(date.today()), 'requests': 0}
+                    return data
+            else:
+                return {'date': str(date.today()), 'requests': 0}
+        except Exception as e:
+            logger.error(f"Error loading quota data: {e}")
+            return {'date': str(date.today()), 'requests': 0}
+
+    def _save_quota_data(self, data: dict):
+        """Save quota usage data to file."""
+        try:
+            with open(self.quota_file, 'w') as f:
+                json.dump(data, f)
+        except Exception as e:
+            logger.error(f"Error saving quota data: {e}")
+
+    def _can_make_request(self) -> bool:
+        """Check if we can make a request without exceeding quota."""
+        quota_data = self._load_quota_data()
+        return quota_data['requests'] < self.max_daily_requests
+
+    def _increment_quota_usage(self):
+        """Increment quota usage counter."""
+        quota_data = self._load_quota_data()
+        quota_data['requests'] += 1
+        self._save_quota_data(quota_data)
 
     def _create_seo_prompt(self, title: str, excerpt: str, content: str, tags: List[str], domain: str, 
                           media_data: Optional[Dict] = None) -> str:
@@ -153,6 +192,12 @@ Importante:
         import time
 
         try:
+            # Check quota before making request
+            if not self._can_make_request():
+                quota_data = self._load_quota_data()
+                logger.warning(f"Daily quota exceeded. Used {quota_data['requests']}/{self.max_daily_requests} requests today")
+                return None
+
             # Create the prompt with media data
             prompt = self._create_seo_prompt(title, excerpt, content, tags, domain, media_data)
 
@@ -189,6 +234,8 @@ Importante:
 
                     if parsed_result:
                         logger.info("Successfully parsed Gemini response")
+                        # Increment quota usage on successful request
+                        self._increment_quota_usage()
                         return parsed_result
                     else:
                         logger.error("Failed to parse Gemini response")
