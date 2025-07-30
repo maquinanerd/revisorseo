@@ -8,6 +8,15 @@ This is a Python-based automation system that monitors WordPress posts from a sp
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes (July 30, 2025)
+- Fixed WordPress connection issue in test_connection method
+- Implemented Visual SEO Recommendation Dashboard with Flask web interface
+- Updated Gemini prompt to use HTML formatting instead of markdown:
+  - Use <b>text</b> for bold instead of **text**
+  - Use <a href="url">text</a> for links instead of [text](url)
+- Changed from Gemini 1.5 Pro to 1.5 Flash to handle quota limits
+- Added SQLite database for tracking optimization history and metrics
+
 ## System Architecture
 
 The application follows a modular architecture with four main components:

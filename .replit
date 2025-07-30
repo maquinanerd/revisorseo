@@ -15,6 +15,10 @@ author = "agent"
 task = "workflow.run"
 args = "WordPress SEO Optimizer"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "SEO Dashboard"
+
 [[workflows.workflow]]
 name = "WordPress SEO Optimizer"
 author = "agent"
@@ -22,3 +26,16 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python main.py --once"
+
+[[workflows.workflow]]
+name = "SEO Dashboard"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python dashboard.py"
+waitForPort = 5000
+
+[[ports]]
+localPort = 5000
+externalPort = 80

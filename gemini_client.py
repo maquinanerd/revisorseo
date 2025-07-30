@@ -37,14 +37,17 @@ class GeminiClient:
 3. Reestruture o conteúdo completo sem mudar o sentido original:
    - Separe parágrafos muito grandes em blocos menores e mais escaneáveis.
    - Mantenha o tom jornalístico e informativo.
-4. Destaque com **negrito** os principais nomes, termos e expressões importantes (títulos de filmes, nomes de personagens, diretores, datas etc.).
-5. Insira **links internos** em termos relacionados a outras matérias, com base nas **tags** fornecidas. Use esta estrutura de link:
-   [Texto âncora](https://{domain}/tag/NOME-DA-TAG)
+4. Destaque com tags HTML <b>negrito</b> os principais nomes, termos e expressões importantes (títulos de filmes, nomes de personagens, diretores, datas etc.).
+5. Insira links internos em HTML em termos relacionados a outras matérias, com base nas tags fornecidas. Use esta estrutura de link:
+   <a href="https://{domain}/tag/NOME-DA-TAG">Texto âncora</a>
 
 Exemplo:
-**[Stranger Things](https://{domain}/tag/stranger-things)**
+<b><a href="https://{domain}/tag/stranger-things">Stranger Things</a></b>
 
-Importante: **não mude o conteúdo nem o sentido original**, apenas melhore a estrutura, o SEO e a escaneabilidade para o Google News.
+Importante: 
+- Use APENAS HTML: <b> para negrito e <a href=""> para links
+- NÃO use markdown (**texto** ou [texto](link))
+- Não mude o conteúdo nem o sentido original, apenas melhore a estrutura, o SEO e a escaneabilidade para o Google News.
 
 ## CONTEÚDO ORIGINAL:
 

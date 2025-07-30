@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard SEO - WordPress Optimizer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .card-stat {
+            border-left: 4px solid;
+        }
+        .card-stat.success { border-left-color: #28a745; }
+        .card-stat.warning { border-left-color: #ffc107; }
+        .card-stat.danger { border-left-color: #dc3545; }
+        .card-stat.info { border-left-color: #17a2b8; }
+        
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-success { background-color: #d4edda; color: #155724; }
+        .status-failed { background-color: #f8d7da; color: #721c24; }
+        .status-pending { background-color: #fff3cd; color: #856404; }
+        
+        .refresh-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">
+                <i class="fas fa-chart-line me-2"></i>
+                Dashboard SEO - WordPress Optimizer
+            </span>
+            <div class="d-flex">
+                <span class="navbar-text me-3" id="last-update">
+                    Última atualização: <span id="update-time">{{ dashboard_data.summary.total_posts }}</span>
+                </span>
+                <button class="btn btn-outline-light btn-sm" onclick="refreshData()">
+                    <i class="fas fa-sync-alt"></i> Atualizar
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- Status Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card card-stat success">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title text-muted">Posts Otimizados</h6>
+                                <h3 class="mb-0" id="optimized-count">{{ dashboard_data.summary.optimized_posts }}</h3>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-check-circle fa-2x text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stat info">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title text-muted">Total de Posts</h6>
+                                <h3 class="mb-0" id="total-count">{{ dashboard_data.summary.total_posts }}</h3>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-file-alt fa-2x text-info"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stat warning">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title text-muted">Posts Pendentes</h6>
+                                <h3 class="mb-0" id="pending-count">{{ pending_posts|length }}</h3>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-clock fa-2x text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stat success">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title text-muted">Taxa de Sucesso</h6>
+                                <h3 class="mb-0" id="success-rate">{{ "%.1f"|format(dashboard_data.summary.success_rate) }}%</h3>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-percentage fa-2x text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Status -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-server me-2"></i>
+                            Status do Sistema
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" id="system-status">
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    <span>Verificando status...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Otimizações nos Últimos 7 Dias
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="optimizationChart" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-pie me-2"></i>
+                            Distribuição de Status
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Optimizations and Pending Posts -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-history me-2"></i>
+                            Otimizações Recentes (24h)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Post</th>
+                                        <th>Status</th>
+                                        <th>Data</th>
+                                        <th>Score SEO</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-optimizations">
+                                    {% for opt in dashboard_data.recent_optimizations %}
+                                    <tr>
+                                        <td>
+                                            <small>{{ opt.title[:50] }}...</small>
+                                        </td>
+                                        <td>
+                                            <span class="status-badge status-{{ opt.status }}">
+                                                {{ 'Sucesso' if opt.status == 'success' else 'Falhou' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <small>{{ opt.date[:16] }}</small>
+                                        </td>
+                                        <td>
+                                            {% if opt.seo_score %}
+                                                <span class="badge bg-success">{{ opt.seo_score }}</span>
+                                            {% else %}
+                                                <span class="text-muted">-</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-list me-2"></i>
+                            Posts Pendentes
+                        </h5>
+                        <button class="btn btn-primary btn-sm" onclick="optimizeAllPending()">
+                            <i class="fas fa-magic me-1"></i>
+                            Otimizar Todos
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Post</th>
+                                        <th>Data</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pending-posts">
+                                    {% for post in pending_posts %}
+                                    <tr id="post-{{ post.id }}">
+                                        <td>
+                                            <small>{{ post.title[:40] }}...</small>
+                                        </td>
+                                        <td>
+                                            <small>{{ post.date[:10] }}</small>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary" 
+                                                    onclick="optimizePost({{ post.id }})">
+                                                <i class="fas fa-magic"></i>
+                                            </button>
+                                            <a href="{{ post.link }}" target="_blank" 
+                                               class="btn btn-sm btn-outline-secondary">
+                                                <i class="fas fa-external-link-alt"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Refresh Button -->
+    <button class="btn btn-primary refresh-btn" onclick="refreshData()" title="Atualizar dados">
+        <i class="fas fa-sync-alt"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let optimizationChart, statusChart;
+
+        // Initialize charts
+        function initCharts() {
+            // Line chart for optimizations over time
+            const ctx1 = document.getElementById('optimizationChart').getContext('2d');
+            optimizationChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: {{ dashboard_data.weekly_metrics | map(attribute='date') | list | tojson }},
+                    datasets: [{
+                        label: 'Posts Otimizados',
+                        data: {{ dashboard_data.weekly_metrics | map(attribute='optimized') | list | tojson }},
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.1
+                    }, {
+                        label: 'Posts com Falha',
+                        data: {{ dashboard_data.weekly_metrics | map(attribute='failed') | list | tojson }},
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Pie chart for status distribution
+            const ctx2 = document.getElementById('statusChart').getContext('2d');
+            statusChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Otimizados', 'Falharam', 'Pendentes'],
+                    datasets: [{
+                        data: [
+                            {{ dashboard_data.summary.optimized_posts }},
+                            {{ dashboard_data.summary.failed_posts }},
+                            {{ pending_posts|length }}
+                        ],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.8)',
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(255, 205, 86, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+            });
+        }
+
+        // Refresh dashboard data
+        async function refreshData() {
+            try {
+                const response = await fetch('/api/dashboard-data');
+                const data = await response.json();
+                
+                // Update stats
+                document.getElementById('optimized-count').textContent = data.summary.optimized_posts;
+                document.getElementById('total-count').textContent = data.summary.total_posts;
+                document.getElementById('success-rate').textContent = data.summary.success_rate.toFixed(1) + '%';
+                
+                // Update timestamp
+                document.getElementById('update-time').textContent = new Date().toLocaleTimeString();
+                
+                console.log('Dashboard data refreshed');
+            } catch (error) {
+                console.error('Failed to refresh data:', error);
+            }
+        }
+
+        // Check system status
+        async function checkSystemStatus() {
+            try {
+                const response = await fetch('/api/system-status');
+                const status = await response.json();
+                
+                const statusHtml = `
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-circle me-2 ${status.wordpress ? 'text-success' : 'text-danger'}"></i>
+                            <span>WordPress: ${status.wordpress ? 'Conectado' : 'Falha'}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-circle me-2 ${status.gemini ? 'text-success' : 'text-danger'}"></i>
+                            <span>Gemini AI: ${status.gemini ? 'Conectado' : 'Falha'}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-circle me-2 ${status.database ? 'text-success' : 'text-danger'}"></i>
+                            <span>Database: ${status.database ? 'OK' : 'Falha'}</span>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('system-status').innerHTML = statusHtml;
+            } catch (error) {
+                console.error('Failed to check system status:', error);
+            }
+        }
+
+        // Optimize a specific post
+        async function optimizePost(postId) {
+            try {
+                const button = event.target.closest('button');
+                const originalHtml = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                button.disabled = true;
+                
+                const response = await fetch(`/api/optimize-post/${postId}`, {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    // Remove from pending list
+                    document.getElementById(`post-${postId}`).remove();
+                    // Refresh data
+                    await refreshData();
+                    alert('Post otimizado com sucesso!');
+                } else {
+                    const error = await response.json();
+                    alert('Erro ao otimizar post: ' + error.error);
+                }
+                
+                button.innerHTML = originalHtml;
+                button.disabled = false;
+                
+            } catch (error) {
+                console.error('Failed to optimize post:', error);
+                alert('Erro ao otimizar post');
+            }
+        }
+
+        // Optimize all pending posts
+        async function optimizeAllPending() {
+            if (!confirm('Deseja otimizar todos os posts pendentes? Isso pode levar alguns minutos.')) {
+                return;
+            }
+            
+            const pendingRows = document.querySelectorAll('#pending-posts tr');
+            for (let row of pendingRows) {
+                const postId = row.id.replace('post-', '');
+                if (postId) {
+                    try {
+                        await optimizePost(parseInt(postId));
+                        // Wait a bit between requests to avoid rate limits
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                    } catch (error) {
+                        console.error(`Failed to optimize post ${postId}:`, error);
+                    }
+                }
+            }
+            
+            await refreshData();
+        }
+
+        // Initialize dashboard on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            checkSystemStatus();
+            
+            // Auto-refresh every 5 minutes
+            setInterval(refreshData, 5 * 60 * 1000);
+            setInterval(checkSystemStatus, 10 * 60 * 1000);
+        });
+    </script>
+</body>
+</html>
