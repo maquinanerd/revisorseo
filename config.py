@@ -18,60 +18,53 @@ class Config:
         # Load .env file if it exists
         load_dotenv()
         
-        # WordPress configuration - temporarily store as Optional[str]
-        _wordpress_url = os.getenv('WORDPRESS_URL')
-        _wordpress_username = os.getenv('WORDPRESS_USERNAME')
-        _wordpress_password = os.getenv('WORDPRESS_PASSWORD')
-        _wordpress_domain = os.getenv('WORDPRESS_DOMAIN')
+        # WordPress configuration
+        self.wordpress_url: Optional[str] = os.getenv('WORDPRESS_URL')
+        self.wordpress_username: Optional[str] = os.getenv('WORDPRESS_USERNAME')
+        self.wordpress_password: Optional[str] = os.getenv('WORDPRESS_PASSWORD')
+        self.wordpress_domain: Optional[str] = os.getenv('WORDPRESS_DOMAIN')
         
-        # Gemini configuration: suporta múltiplas chaves GEMINI_API_KEY, GEMINI_API_KEY_1, GEMINI_API_KEY_2...
-        _gemini_api_keys = []
-        for k, v in os.environ.items():
-            if k == 'GEMINI_API_KEY' or k.startswith('GEMINI_API_KEY_'):
-                if v and v not in _gemini_api_keys:
-                    _gemini_api_keys.append(v)
-        if not _gemini_api_keys:
-            # fallback para padrão antigo
-            _gemini_api_keys = [os.getenv('GEMINI_API_KEY', 'AIzaSyD7X2_8KPNZrnQnQ_643TjIJ2tpbkuRSms')]
+        # Gemini configuration: supports multiple keys GEMINI_API_KEY, GEMINI_API_KEY_1, etc.
+        self.gemini_keys = sorted([
+            v for k, v in os.environ.items() 
+            if k.startswith('GEMINI_API_KEY') and v
+        ])
         
         # TMDB configuration
-        _tmdb_api_key = os.getenv('TMDB_API_KEY', 'cb60717161e33e2972bd217aabaa27f4')
-        _tmdb_read_token = os.getenv('TMDB_READ_TOKEN', 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYjYwNzE3MTYxZTMzZTI5NzJiZDIxN2FhYmFhMjdmNCIsIm5iZiI6MTY4OTI2MjQ1NC4zODYsInN1YiI6IjY0YjAxOTc2NmEzNDQ4MDE0ZDM1NDYyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vw6ILzP4aEOLFL-MbIMiwPVvZGOmxMwRLtjo2TJLzns')
+        # Provide default fallback values for local development to prevent crashes.
+        # These will be used if the variables are not in the .env file.
+        self.tmdb_api_key: Optional[str] = os.getenv(
+            'TMDB_API_KEY', 'cb60717161e33e2972bd217aabaa27f4'
+        )
+        self.tmdb_read_token: Optional[str] = os.getenv(
+            'TMDB_READ_TOKEN', 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYjYwNzE3MTYxZTMzZTI5NzJiZDIxN2FhYmFhMjdmNCIsIm5iZiI6MTY4OTI2MjQ1NC4zODYsInN1YiI6IjY0YjAxOTc2NmEzNDQ4MDE0ZDM1NDYyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vw6ILzP4aEOLFL-MbIMiwPVvZGOmxMwRLtjo2TJLzns'
+        )
         
         # Validate required configuration
-        self._validate_config(_wordpress_url, _wordpress_username, _wordpress_password, _wordpress_domain, _gemini_api_keys[0], _tmdb_api_key, _tmdb_read_token)
-
-        # After validation, these properties are guaranteed to be non-None
-        self.wordpress_url: str = _wordpress_url  # type: ignore
-        self.wordpress_username: str = _wordpress_username  # type: ignore
-        self.wordpress_password: str = _wordpress_password  # type: ignore
-        self.wordpress_domain: str = _wordpress_domain  # type: ignore
-        self.gemini_keys = _gemini_api_keys
+        self._validate_config()
+        
+        # Set primary Gemini key after validation
         self.gemini_api_key: str = self.gemini_keys[0]
-        self.tmdb_api_key: str = _tmdb_api_key  # type: ignore
-        self.tmdb_read_token: str = _tmdb_read_token  # type: ignore
 
         logger.info("Configuration loaded successfully")
 
     def get_gemini_api_keys(self):
+        """Returns the list of all available Gemini API keys."""
         return self.gemini_keys
 
     def get_gemini_api_key(self):
+        """Returns the primary Gemini API key."""
         return self.gemini_api_key
     
-    def _validate_config(self, wordpress_url: Optional[str], wordpress_username: Optional[str], 
-                         wordpress_password: Optional[str], wordpress_domain: Optional[str], 
-                         gemini_api_key: Optional[str], tmdb_api_key: Optional[str], 
-                         tmdb_read_token: Optional[str]):
+    def _validate_config(self):
         """Validate that all required configuration is present."""
         required_vars = [
-            ('WORDPRESS_URL', wordpress_url),
-            ('WORDPRESS_USERNAME', wordpress_username),
-            ('WORDPRESS_PASSWORD', wordpress_password),
-            ('WORDPRESS_DOMAIN', wordpress_domain),
-            ('GEMINI_API_KEY', gemini_api_key),
-            ('TMDB_API_KEY', tmdb_api_key),
-            ('TMDB_READ_TOKEN', tmdb_read_token)
+            ('WORDPRESS_URL', self.wordpress_url),
+            ('WORDPRESS_USERNAME', self.wordpress_username),
+            ('WORDPRESS_PASSWORD', self.wordpress_password),
+            ('WORDPRESS_DOMAIN', self.wordpress_domain),
+            ('TMDB_API_KEY', self.tmdb_api_key),
+            ('TMDB_READ_TOKEN', self.tmdb_read_token)
         ]
         
         missing_vars = []
@@ -79,14 +72,18 @@ class Config:
             if not var_value:
                 missing_vars.append(var_name)
         
+        if not self.gemini_keys:
+            missing_vars.append('GEMINI_API_KEY (or GEMINI_API_KEY_n)')
+
         if missing_vars:
             raise ValueError(f"Missing required environment variables: {', '.join(missing_vars)}")
         
         # Validate URLs
-        if not wordpress_url or not wordpress_url.startswith(('http://', 'https://')):
+        # The 'type: ignore' is safe here because we've just validated they are not None
+        if not self.wordpress_url.startswith(('http://', 'https://')): # type: ignore
             raise ValueError("WORDPRESS_URL must start with http:// or https://")
         
-        if not wordpress_domain or not wordpress_domain.startswith(('http://', 'https://')):
+        if not self.wordpress_domain.startswith(('http://', 'https://')): # type: ignore
             raise ValueError("WORDPRESS_DOMAIN must start with http:// or https://")
         
         logger.info("All required configuration validated")

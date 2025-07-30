@@ -30,13 +30,17 @@ class SEODashboard:
             username=self.config.wordpress_username,
             password=self.config.wordpress_password
         )
-        self.gemini_client = GeminiClient(api_key=self.config.gemini_api_key)
+        self.gemini_client = GeminiClient(api_keys=self.config.get_gemini_api_keys())
         self.tmdb_client = TMDBClient(
             api_key=self.config.tmdb_api_key,
             read_token=self.config.tmdb_read_token
         )
         self.db_path = 'seo_dashboard.db'
         self.init_database()
+        
+        # Simple in-memory cache
+        self.cache: Dict[str, Any] = {}
+        self.cache_ttl = timedelta(seconds=60)  # Cache for 60 seconds
 
     def init_database(self):
         """Initialize SQLite database for tracking optimization history."""
@@ -67,6 +71,11 @@ class SEODashboard:
             ''')
             conn.commit()
 
+    def _invalidate_cache(self, key: str = 'dashboard_data'):
+        """Invalidate a specific key in the cache."""
+        if self.cache.pop(key, None):
+            logger.info(f"Cache for '{key}' invalidated.")
+
     def log_optimization(self, post_id: int, title: str, status: str,
                         error_message: Optional[str] = None, seo_score: Optional[int] = None,
                         recommendations: Optional[str] = None):
@@ -79,6 +88,7 @@ class SEODashboard:
                 VALUES (?, ?, ?, ?, ?, ?)
             ''', (post_id, title, status, error_message, seo_score, recommendations))
             conn.commit()
+            self._invalidate_cache()  # Invalidate cache on data change
 
     def update_daily_metrics(self):
         """Update daily SEO metrics."""
@@ -107,11 +117,21 @@ class SEODashboard:
                 (date, total_posts, optimized_posts, failed_posts, avg_seo_score)
                 VALUES (?, ?, ?, ?, ?)
             ''', (today, total or 0, optimized or 0, failed or 0, avg_score or 0))
-
             conn.commit()
+            self._invalidate_cache()  # Invalidate cache on data change
 
     def get_dashboard_data(self) -> Dict[str, Any]:
-        """Get comprehensive dashboard data."""
+        """Get comprehensive dashboard data with caching."""
+        # Check cache first
+        now = datetime.now()
+        cached_item = self.cache.get('dashboard_data')
+        if cached_item and (now - cached_item['timestamp'] < self.cache_ttl):
+            logger.info("Returning dashboard data from cache.")
+            return cached_item['data']
+
+        logger.info("Fetching fresh dashboard data from database.")
+
+
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
 
@@ -163,7 +183,7 @@ class SEODashboard:
             ''')
             summary = cursor.fetchone()
 
-            return {
+            data = {
                 'recent_optimizations': recent_optimizations,
                 'weekly_metrics': weekly_metrics,
                 'summary': {
@@ -173,6 +193,14 @@ class SEODashboard:
                     'success_rate': (summary[1] / summary[0] * 100) if summary[0] > 0 else 0
                 }
             }
+
+            # Store in cache
+            self.cache['dashboard_data'] = {
+                'timestamp': now,
+                'data': data
+            }
+
+            return data
 
     def get_pending_posts(self) -> List[Dict[str, Any]]:
         """Get posts that need optimization - limited to 5 posts in batches."""
@@ -222,19 +250,6 @@ class SEODashboard:
             logger.error(f"Failed to get pending posts: {e}")
             return []
 
-    def log_optimization(self, post_id: int, title: str, status: str,
-                        error_message: Optional[str] = None, seo_score: Optional[int] = None,
-                        recommendations: Optional[str] = None):
-        """Log optimization attempt to database."""
-        with sqlite3.connect(self.db_path) as conn:
-            cursor = conn.cursor()
-            cursor.execute('''
-                INSERT INTO optimization_history
-                (post_id, title, status, error_message, seo_score, recommendations)
-                VALUES (?, ?, ?, ?, ?, ?)
-            ''', (post_id, title, status, error_message, seo_score, recommendations))
-            conn.commit()
-
     def mark_post_processing(self, post_id: int, title: str):
         """Mark a post as currently being processed."""
         self.log_optimization(post_id, title, 'processing')
@@ -249,7 +264,11 @@ class SEODashboard:
                     WHERE status = 'processing' AND 
                     optimization_date < datetime('now', '-1 hour')
                 ''')
+                deleted_rows = cursor.rowcount
                 conn.commit()
+                if deleted_rows > 0:
+                    logger.info(f"Cleared {deleted_rows} old 'processing' statuses.")
+                    self._invalidate_cache()  # Invalidate cache if data changed
         except Exception as e:
             logger.error(f"Failed to clear old processing status: {e}")
 

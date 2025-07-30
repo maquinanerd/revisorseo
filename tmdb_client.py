@@ -5,6 +5,8 @@ TMDB (The Movie Database) API client for fetching movie/TV show images and trail
 import requests
 import logging
 import re
+import json
+from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any
 from urllib.parse import quote
 
@@ -26,6 +28,10 @@ class TMDBClient:
         self.base_url = "https://api.themoviedb.org/3"
         self.image_base_url = "https://image.tmdb.org/t/p"
 
+        # In-memory cache with a Time-To-Live (TTL)
+        self.cache: Dict[str, Any] = {}
+        self.cache_ttl = timedelta(hours=24)  # Cache results for 24 hours
+
         self.session = requests.Session()
         self.session.headers.update({
             'Authorization': f'Bearer {read_token}',
@@ -35,14 +41,31 @@ class TMDBClient:
 
         logger.info("TMDB client initialized")
 
-    def _make_request(self, endpoint: str, params: Dict = None) -> Optional[Dict]:
-        """Make a request to TMDB API."""
+    def _make_request(self, endpoint: str, params: Optional[Dict] = None) -> Optional[Dict]:
+        """Make a request to the TMDB API with caching."""
+        # Generate a stable cache key from the endpoint and parameters
+        param_string = json.dumps(params, sort_keys=True) if params else ""
+        cache_key = f"{endpoint}:{param_string}"
+        now = datetime.now()
+
+        # 1. Check cache first
+        cached_item = self.cache.get(cache_key)
+        if cached_item and (now - cached_item['timestamp'] < self.cache_ttl):
+            logger.debug(f"TMDB cache hit for key: {cache_key}")
+            return cached_item['data']
+
+        # 2. If not in cache or expired, make the API request
+        logger.debug(f"TMDB cache miss for key: {cache_key}. Making new request.")
         url = f"{self.base_url}/{endpoint}"
 
         try:
             response = self.session.get(url, params=params, timeout=10)
             response.raise_for_status()
-            return response.json()
+            data = response.json()
+
+            # 3. Store the successful response in the cache
+            self.cache[cache_key] = {'timestamp': now, 'data': data}
+            return data
 
         except requests.exceptions.RequestException as e:
             logger.error(f"TMDB API request failed: {url} - {e}")
@@ -266,48 +289,60 @@ class TMDBClient:
         return ""
 
     def _is_valid_title(self, title: str) -> bool:
-        """Check if a title is valid for TMDB search with enhanced filtering."""
+        """Check if a title is valid for TMDB search with enhanced filtering to avoid news headlines."""
         if not title or len(title) < 3 or len(title) > 50:
             return False
         
-        # Enhanced skip phrases - more comprehensive filtering
+        title_lower = title.lower().strip()
+
+        # 1. Check for obvious news patterns (questions, lists, verbs, etc.) using regex
+        news_patterns = [
+            r'^\d+\s+\w+',  # Starts with a number (e.g., "5 motivos...")
+            r'\?$',  # Ends with a question mark
+            r'(crítica|análise|review|opinião|resumo|teoria)\b', # Contains review-type words
+            r'\b(revela|confirma|anuncia|explica|divulga|será que|pode ser)\b', # Contains news verbs
+        ]
+        for pattern in news_patterns:
+            if re.search(pattern, title_lower):
+                logger.debug(f"Skipping title '{title}' - matches news pattern: '{pattern}'")
+                return False
+
+        # 2. Expanded list of skip phrases for more comprehensive filtering
         skip_phrases = [
             'nova temporada', 'surpreende', 'rotten tomatoes', 'temporada de',
             'filme de', 'série de', 'nova série', 'novo filme', 'trailer',
             'primeira temporada', 'segunda temporada', 'terceira temporada',
             'maiores reviravoltas', 'da amc', 'de grandes', 'grandes vilões',
             'vilões implacáveis', 'implacáveis', 'reviravoltas', 'maiores',
-            'nova fase', 'novo episódio', 'episódio de', 'temporada final',
-            'final de', 'estreia de', 'lançamento de', 'crítica de',
-            'análise de', 'review de', 'comentário sobre', 'opinião sobre',
-            'sobre a', 'sobre o', 'em alta', 'em cartaz', 'nos cinemas',
-            'na netflix', 'na amazon', 'na hbo', 'no disney', 'streaming',
-            'plataforma de', 'disponível em', 'assistir em', 'onde assistir'
+            'nova fase', 'novo episódio', 'episódio de', 'temporada final', 'final de',
+            'estreia de', 'lançamento de', 'comentário sobre', 'opinião sobre',
+            'sobre a', 'sobre o', 'em alta', 'em cartaz', 'nos cinemas', 'na netflix',
+            'na amazon', 'na hbo', 'no disney', 'streaming', 'plataforma de',
+            'disponível em', 'assistir em', 'onde assistir', 'elenco de',
+            'data de lançamento', 'o que esperar', 'tudo sobre', 'saiba mais',
+            'entenda o final', 'final explicado'
         ]
-        
-        title_lower = title.lower().strip()
-        
-        # Check for skip phrases
         for phrase in skip_phrases:
             if phrase in title_lower:
                 logger.debug(f"Skipping title '{title}' - contains skip phrase: '{phrase}'")
                 return False
         
-        # Must contain at least one letter
-        if not re.search(r'[A-Za-z]', title):
+        # 3. Must contain at least one letter
+        if not re.search(r'[a-z]', title_lower):
             return False
             
-        # Skip if mostly numbers or symbols
-        alpha_chars = len(re.findall(r'[A-Za-z]', title))
-        if alpha_chars < len(title) * 0.5:  # At least 50% letters
+        # 4. Skip if not enough alphabetic characters (stricter check)
+        alpha_chars = len(re.findall(r'[a-z]', title_lower))
+        if alpha_chars < len(title_lower) * 0.6:  # At least 60% letters
+            logger.debug(f"Skipping title '{title}' - not enough alphabetic characters.")
             return False
         
-        # Skip generic words
+        # 5. Skip if it's just a few generic words
         generic_words = {'the', 'a', 'an', 'and', 'or', 'but', 'of', 'in', 'on', 'at', 'to', 'for', 'with', 'by'}
         words = title_lower.split()
         meaningful_words = [w for w in words if w not in generic_words and len(w) > 2]
-        
-        if len(meaningful_words) < 1:
+        if not meaningful_words:
+            logger.debug(f"Skipping title '{title}' - no meaningful words found.")
             return False
             
         logger.debug(f"Title '{title}' passed validation")

@@ -1611,3 +1611,42 @@ com/embed/VIDEO_ID_DO_ANUNCIO
 2025-07-30 14:51:19,629 - WARNING - No backup key available. Keys: 3, Current index: 2
 2025-07-30 14:51:19,629 - WARNING - No backup key available. Waiting 60 seconds before retry 7/15
 2025-07-30 14:52:19,630 - INFO - Waiting 1280 seconds before retry attempt 7
+2025-07-30 15:13:40,008 - WARNING - Quota exceeded on key #3 - AIzaSyDI...
+2025-07-30 15:13:40,008 - INFO - DEBUG: Current key index: 2, Total keys: 3
+2025-07-30 15:13:40,008 - WARNING - No backup key available. Keys: 3, Current index: 2
+2025-07-30 15:13:40,009 - WARNING - No backup key available. Waiting 60 seconds before retry 8/15
+2025-07-30 15:14:40,009 - INFO - Waiting 2560 seconds before retry attempt 8
+2025-07-30 15:57:29,579 - INFO - Received response from Gemini
+2025-07-30 15:57:29,581 - INFO - Successfully parsed Gemini response
+2025-07-30 15:57:31,074 - ERROR - WordPress API request failed: POST https://www.maquinanerd.com.br/wp-json/wp/v2/posts/10392 - 401 Client Error: Unauthorized for url: https://www.maquinanerd.com.br/wp-json/wp/v2/posts/10392
+2025-07-30 15:57:31,075 - ERROR - Response status: 401
+2025-07-30 15:57:31,075 - ERROR - Response body: {"code":"rest_cannot_edit","message":"Sem permiss\u00e3o para editar este post.","data":{"status":401}}
+2025-07-30 15:57:31,075 - ERROR - Failed to update post 10392
+2025-07-30 15:57:31,075 - ERROR - Failed to update post 10392 in WordPress
+2025-07-30 15:57:31,076 - WARNING - Post optimization failed, stopping cycle
+2025-07-30 15:57:31,076 - INFO - Optimization cycle completed. 0/2 posts optimized successfully
+2025-07-30 15:57:31,076 - INFO - Starting optimization cycle
+2025-07-30 15:57:37,168 - INFO - Found 10 new posts by João
+2025-07-30 15:57:37,170 - INFO - Processing 2 posts (remaining quota: 44)
+2025-07-30 15:57:37,171 - INFO - Processing post 1/2
+2025-07-30 15:57:37,171 - INFO - Optimizing post ID: 10407 - 'Stowaway: O Aclamado Curta de Terror de Mike Flanagan em V/H/S/Beyond Conquista o Shudder'
+2025-07-30 15:57:39,426 - INFO - Searching for media content for post: Stowaway: O Aclamado Curta de Terror de Mike Flanagan em V/H/S/Beyond Conquista o Shudder
+2025-07-30 15:57:39,427 - INFO - Category analysis - Movies: True, TV: False
+2025-07-30 15:57:39,428 - INFO - Extracted title using pattern: 'Stowaway'
+2025-07-30 15:57:39,428 - INFO - Extracted main title: Stowaway
+2025-07-30 15:57:39,447 - INFO - Extracted potential titles from content: ['de Halloween', 'ter entrado em hiberna', 'trazendo a bordo aclamados diretores', 'parece prov']
+2025-07-30 15:57:39,447 - INFO - Searching for titles: ['Stowaway', 'de Halloween', 'ter entrado em hiberna']
+2025-07-30 15:57:40,039 - INFO - Found movie: Passageiro Acidental (2021-06-24)
+2025-07-30 15:57:40,375 - INFO - Found movie: The Paloni Show! Especial de Halloween (2022-10-17)
+2025-07-30 15:57:40,701 - WARNING - No movie found for title: ter entrado em hiberna
+2025-07-30 15:57:40,868 - WARNING - No TV show found for title: ter entrado em hiberna
+2025-07-30 15:57:40,869 - INFO - Found 4 images and 1 trailers for post
+2025-07-30 15:57:52,946 - INFO - Received response from Gemini
+2025-07-30 15:57:52,947 - INFO - Successfully parsed Gemini response
+2025-07-30 15:57:54,074 - ERROR - WordPress API request failed: POST https://www.maquinanerd.com.br/wp-json/wp/v2/posts/10407 - 401 Client Error: Unauthorized for url: https://www.maquinanerd.com.br/wp-json/wp/v2/posts/10407
+2025-07-30 15:57:54,074 - ERROR - Response status: 401
+2025-07-30 15:57:54,074 - ERROR - Response body: {"code":"rest_cannot_edit","message":"Sem permiss\u00e3o para editar este post.","data":{"status":401}}
+2025-07-30 15:57:54,074 - ERROR - Failed to update post 10407
+2025-07-30 15:57:54,074 - ERROR - Failed to update post 10407 in WordPress
+2025-07-30 15:57:54,074 - WARNING - Post optimization failed, stopping cycle
+2025-07-30 15:57:54,075 - INFO - Optimization cycle completed. 0/2 posts optimized successfully

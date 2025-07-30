@@ -9,7 +9,7 @@ import time
 import schedule
 import sys
 from datetime import datetime, timedelta
-from typing import Set, Dict, Any
+from typing import Set, Dict, Any, List, Optional
 import json
 import os
 
@@ -17,7 +17,9 @@ from config import Config
 from wordpress_client import WordPressClient
 from gemini_client import GeminiClient
 from tmdb_client import TMDBClient
+from dashboard import SEODashboard # Import the dashboard class
 from process_lock import ProcessLock
+import sqlite3
 
 # Configure logging
 logging.basicConfig(
@@ -35,8 +37,9 @@ logger = logging.getLogger(__name__)
 class SEOOptimizer:
     """Main class that orchestrates the SEO optimization process."""
 
-    def __init__(self):
+    def __init__(self, dry_run: bool = False):
         """Initialize the SEO optimizer with clients and configuration."""
+        self.dry_run = dry_run
         self.config = Config()
         self.wp_client = WordPressClient(
             site_url=self.config.wordpress_url,
@@ -47,16 +50,15 @@ class SEOOptimizer:
         # Initialize Gemini client with backup support
         gemini_api_keys = self.config.get_gemini_api_keys()
         logger.info(f"Initializing Gemini client with {len(gemini_api_keys)} API keys")
-        self.gemini_client = GeminiClient(
-            api_key=gemini_api_keys[0],
-            backup_keys=gemini_api_keys
-        )
+        self.gemini_client = GeminiClient(api_keys=gemini_api_keys)
         self.tmdb_client = TMDBClient(
             api_key=self.config.tmdb_api_key,
             read_token=self.config.tmdb_read_token
         )
+        self.dashboard = SEODashboard() # Initialize dashboard for logging
         self.processed_posts: Set[int] = set()
         self.joao_author_id: int = 6  # João's known author ID
+        self.db_path = 'seo_dashboard.db'
 
     def initialize(self) -> bool:
         """Initialize the optimizer by verifying connections."""
@@ -83,58 +85,111 @@ class SEOOptimizer:
             logger.error(f"Failed to initialize: {e}")
             return False
 
-    def get_new_posts(self) -> list:
+    def _get_successfully_optimized_post_ids(self) -> Set[int]:
+        """Get a set of post IDs that have already been successfully optimized from the database."""
+        if not os.path.exists(self.db_path):
+            logger.warning(f"Dashboard database '{self.db_path}' not found. Cannot check for previously optimized posts.")
+            return set()
+
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT DISTINCT post_id FROM optimization_history WHERE status = 'success'")
+                optimized_ids = {row[0] for row in cursor.fetchall()}
+                logger.info(f"Found {len(optimized_ids)} successfully optimized posts in the database.")
+                return optimized_ids
+        except Exception as e:
+            logger.error(f"Failed to query successfully optimized posts from database: {e}")
+            return set()
+
+    def get_new_posts(self) -> List[Dict[str, Any]]:
         """Get new posts by João that haven't been processed yet."""
         try:
             # Get posts from the last 24 hours by João
             since_date = (datetime.now() - timedelta(days=1)).isoformat()
             posts = self.wp_client.get_posts_by_author(
                 author_id=self.joao_author_id,
-                since=since_date
+                since=since_date,
+                per_page=20 # Fetch more to ensure we find some new ones
             )
 
-            # Filter out already processed posts
-            new_posts = [post for post in posts if post['id'] not in self.processed_posts]
+            # Get IDs of posts already optimized successfully from the database
+            successfully_optimized_ids = self._get_successfully_optimized_post_ids()
 
-            logger.info(f"Found {len(new_posts)} new posts by João")
+            # Filter out already processed posts (in this session or from DB)
+            new_posts = [
+                post for post in posts
+                if post['id'] not in self.processed_posts and post['id'] not in successfully_optimized_ids
+            ]
+
+            logger.info(f"Found {len(posts)} recent posts, {len(new_posts)} are new and need optimization.")
             return new_posts
 
         except Exception as e:
             logger.error(f"Failed to get new posts: {e}")
             return []
 
+    def _perform_optimization_steps(self, post: Dict[str, Any]) -> Optional[Dict[str, str]]:
+        """
+        Performs the actual steps of fetching data and calling APIs for optimization.
+        Returns the optimized content dictionary or None on failure.
+        """
+        post_id = post['id']
+        title = post['title']['rendered']
+        excerpt = post['excerpt']['rendered']
+        content = post['content']['rendered']
+
+        # 1. Fetch WordPress metadata
+        tags = self.wp_client.get_post_tags(post_id)
+        categories = self.wp_client.get_post_categories(post_id)
+
+        # 2. Fetch media data from TMDB
+        logger.info(f"Searching for media content for post: {title}")
+        media_data = self.tmdb_client.find_media_for_post(title, content, categories)
+
+        # 3. Get optimized content from Gemini
+        optimized_content = self.gemini_client.optimize_content(
+            title=title,
+            excerpt=excerpt,
+            content=content,
+            tags=tags,
+            domain=self.config.wordpress_domain,
+            media_data=media_data
+        )
+        return optimized_content
+
     def optimize_post(self, post: Dict[str, Any]) -> bool:
-        """Optimize a single post using Gemini AI."""
+        """
+        Orchestrates the optimization of a single post, handling logging,
+        state, and updates.
+        """
+        post_id = post['id']
+        title = post['title']['rendered']
+        logger.info(f"Optimizing post ID: {post_id} - '{title}'")
+
+        # Mark post as 'processing' in the dashboard database
+        self.dashboard.mark_post_processing(post_id, title)
+
         try:
-            post_id = post['id']
-            logger.info(f"Optimizing post ID: {post_id} - '{post['title']['rendered']}'")
-
-            # Prepare content for Gemini
-            title = post['title']['rendered']
-            excerpt = post['excerpt']['rendered']
-            content = post['content']['rendered']
-            tags = self.wp_client.get_post_tags(post_id)
-
-            # Get post categories to determine content type
-            categories = self.wp_client.get_post_categories(post_id)
-
-            # Get media data from TMDB with category context
-            logger.info(f"Searching for media content for post: {title}")
-            media_data = self.tmdb_client.find_media_for_post(title, content, categories)
-
-            # Get optimized content from Gemini with media
-            optimized_content = self.gemini_client.optimize_content(
-                title=title,
-                excerpt=excerpt,
-                content=content,
-                tags=tags,
-                domain=self.config.wordpress_domain,
-                media_data=media_data
-            )
+            optimized_content = self._perform_optimization_steps(post)
 
             if not optimized_content:
-                logger.error(f"Failed to get optimized content for post {post_id}")
+                error_msg = f"Failed to get optimized content from Gemini for post {post_id}"
+                logger.error(error_msg)
+                self.dashboard.log_optimization(post_id, title, 'failed', error_message=error_msg)
                 return False
+
+            if self.dry_run:
+                logger.info(f"--- [DRY RUN] Post {post_id} ---")
+                logger.info(f"Original Title: {title}")
+                logger.info(f"Optimized Title: {optimized_content['title']}")
+                logger.info(f"Optimized Excerpt: {optimized_content['excerpt']}")
+                logger.info(f"Content length: {len(optimized_content['content'])} chars")
+                logger.info("Post would be updated, but DRY RUN is active.")
+                self.dashboard.log_optimization(post_id, title, 'success', recommendations="Dry run, no changes applied.")
+                self.processed_posts.add(post_id)
+                # Return true to allow the cycle to continue processing other posts in dry run mode
+                return True
 
             # Update the WordPress post
             success = self.wp_client.update_post(
@@ -146,14 +201,20 @@ class SEOOptimizer:
 
             if success:
                 logger.info(f"Successfully optimized post {post_id}")
+                # Log success to dashboard DB, using a default score like the dashboard does
+                self.dashboard.log_optimization(post_id, title, 'success', seo_score=85)
                 self.processed_posts.add(post_id)
                 return True
             else:
-                logger.error(f"Failed to update post {post_id} in WordPress")
+                error_msg = f"Failed to update post {post_id} in WordPress"
+                logger.error(error_msg)
+                self.dashboard.log_optimization(post_id, title, 'failed', error_message=error_msg)
                 return False
 
         except Exception as e:
-            logger.error(f"Failed to optimize post {post.get('id', 'unknown')}: {e}")
+            error_msg = f"Failed to optimize post {post_id}: {e}"
+            logger.error(error_msg)
+            self.dashboard.log_optimization(post_id, title, 'failed', error_message=str(e))
             return False
 
     def run_optimization_cycle(self):
@@ -161,24 +222,16 @@ class SEOOptimizer:
         logger.info("Starting optimization cycle")
 
         try:
-            # Check if quota is available before starting
-            if not self.gemini_client._can_make_request():
-                quota_data = self.gemini_client._load_quota_data()
-                logger.warning(f"Skipping cycle - daily quota exceeded: {quota_data['requests']}/{self.gemini_client.max_daily_requests}")
-                return
-
             new_posts = self.get_new_posts()
 
             if not new_posts:
                 logger.info("No new posts to optimize")
                 return
 
-            # Limit posts processed per cycle to manage quota
-            remaining_quota = self.gemini_client.max_daily_requests - self.gemini_client._load_quota_data()['requests']
-            max_posts_per_cycle = min(2, remaining_quota)  # Don't exceed remaining quota
-            posts_to_process = new_posts[:max_posts_per_cycle]
+            # Limit to 2 posts per cycle to manage API usage and avoid long runs
+            posts_to_process = new_posts[:2]
 
-            logger.info(f"Processing {len(posts_to_process)} posts (remaining quota: {remaining_quota})")
+            logger.info(f"Processing up to {len(posts_to_process)} posts in this cycle.")
 
             success_count = 0
 
@@ -187,12 +240,12 @@ class SEOOptimizer:
 
                 if self.optimize_post(post):
                     success_count += 1
-                    # Add delay between posts to respect API rate limits
-                    time.sleep(30)  # Increased delay to 30 seconds
                 else:
-                    logger.warning("Post optimization failed, stopping cycle")
-                    break
+                    logger.warning(f"Optimization failed for post ID {post.get('id', 'unknown')}. Continuing to the next post.")
 
+                # Add a delay between processing posts to respect API rate limits, regardless of the outcome.
+                if i < len(posts_to_process) - 1:
+                    time.sleep(30)
             logger.info(f"Optimization cycle completed. {success_count}/{len(posts_to_process)} posts optimized successfully")
 
         except Exception as e:
@@ -225,14 +278,18 @@ def main():
             return 1
 
         try:
-            optimizer = SEOOptimizer()
+            is_dry_run = '--dry-run' in sys.argv
+            optimizer = SEOOptimizer(dry_run=is_dry_run)
+
+            if is_dry_run:
+                logger.info("🚀 Running in DRY-RUN mode. No posts will be updated on WordPress. 🚀")
 
             if not optimizer.initialize():
-                logger.error("Failed to initialize optimizer")
+                logger.error("Failed to initialize optimizer. Exiting.")
                 return 1
 
-            if len(sys.argv) > 1 and sys.argv[1] == '--once':
-                # Run once for testing
+            if '--once' in sys.argv:
+                # Run once for testing or dry-run
                 optimizer.run_optimization_cycle()
             else:
                 # Run continuously with scheduler
