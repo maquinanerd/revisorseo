@@ -295,15 +295,19 @@ Importante:
 
     def test_connection(self) -> bool:
         """Test the Gemini API connection."""
+        logger.info("Testing Gemini API connection...")
         try:
-            # Skip actual test to avoid quota issues, just validate API key format
-            if hasattr(genai, 'configure'):
-                logger.info("Gemini API client configured successfully")
+            # A lightweight call to test authentication and connectivity.
+            model = genai.GenerativeModel(self.model)
+            response = model.generate_content(
+                "Olá",
+                generation_config={'max_output_tokens': 5}
+            )
+            if response.text:
+                logger.info("✅ Gemini API connection test successful.")
                 return True
-            else:
-                logger.error("Gemini API not properly configured")
-                return False
-
+            logger.error("Gemini API connection test failed: received empty response.")
+            return False
         except Exception as e:
-            logger.error(f"Gemini API connection test failed: {e}")
+            logger.error(f"❌ Gemini API connection test failed: {e}")
             return False

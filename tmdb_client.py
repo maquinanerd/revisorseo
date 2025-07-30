@@ -33,6 +33,27 @@ class TMDBClient:
             'User-Agent': 'WordPress-SEO-Optimizer/1.0'
         })
 
+        # Consolidated list of known franchises to avoid repetition (DRY)
+        self.FRANCHISE_PATTERNS = [
+            r'\b(The Walking Dead|Walking Dead)\b',
+            r'\b(Stranger Things)\b',
+            r'\b(Game of Thrones)\b',
+            r'\b(House of the Dragon)\b',
+            r'\b(The Last of Us)\b',
+            r'\b(Marvel|MCU)\b',
+            r'\b(DC Comics|DC Universe)\b',
+            r'\b(Star Wars)\b',
+            r'\b(Harry Potter)\b',
+            r'\b(Breaking Bad|Better Call Saul)\b',
+            r'\b(The Boys)\b',
+            r'\b(Wednesday|Wandinha)\b',
+            r'\b(Euphoria)\b',
+            r'\b(Avatar)\b',
+            r'\b(John Wick)\b',
+            r'\b(Fast (?:and|&) Furious|Velozes e Furiosos)\b',
+            r'\b(Mission Impossible|Missão Impossível)\b'
+        ]
+
         logger.info("TMDB client initialized")
 
     def _make_request(self, endpoint: str, params: Dict = None) -> Optional[Dict]:
@@ -183,29 +204,8 @@ class TMDBClient:
         import html
         clean_title = html.unescape(post_title)
         
-        # Known franchise patterns (highest priority)
-        franchise_patterns = [
-            r'\b(The Walking Dead|Walking Dead)\b',
-            r'\b(Stranger Things)\b',
-            r'\b(Game of Thrones)\b',
-            r'\b(House of the Dragon)\b',
-            r'\b(The Last of Us)\b',
-            r'\b(Marvel|MCU)\b',
-            r'\b(DC Comics|DC Universe)\b',
-            r'\b(Star Wars)\b',
-            r'\b(Harry Potter)\b',
-            r'\b(Breaking Bad|Better Call Saul)\b',
-            r'\b(The Boys)\b',
-            r'\b(Wednesday|Wandinha)\b',
-            r'\b(Euphoria)\b',
-            r'\b(Avatar)\b',
-            r'\b(John Wick)\b',
-            r'\b(Fast (?:and|&) Furious|Velozes e Furiosos)\b',
-            r'\b(Mission Impossible|Missão Impossível)\b'
-        ]
-        
         # Check for known franchises first
-        for pattern in franchise_patterns:
+        for pattern in self.FRANCHISE_PATTERNS:
             match = re.search(pattern, clean_title, re.IGNORECASE)
             if match:
                 title = match.group(1)
@@ -326,27 +326,11 @@ class TMDBClient:
     def _extract_potential_titles(self, content: str) -> List[str]:
         """Extract potential movie/TV show titles from content with improved accuracy."""
         
-        # First, look for known franchises and exact matches
-        franchise_patterns = [
-            r'\b(The Walking Dead|Walking Dead)\b',
-            r'\b(Stranger Things)\b',
-            r'\b(Game of Thrones)\b',
-            r'\b(House of the Dragon)\b',
-            r'\b(The Last of Us)\b',
-            r'\b(Breaking Bad|Better Call Saul)\b',
-            r'\b(The Boys)\b',
-            r'\b(Wednesday|Wandinha)\b',
-            r'\b(Euphoria)\b',
-            r'\b(Avatar)\b',
-            r'\b(John Wick)\b',
-            r'\b(Fast (?:and|&) Furious|Velozes e Furiosos)\b',
-            r'\b(Mission Impossible|Missão Impossível)\b'
-        ]
-        
         titles = []
         
         # Priority 1: Known franchises
-        for pattern in franchise_patterns:
+        # Use the consolidated list of franchise patterns
+        for pattern in self.FRANCHISE_PATTERNS:
             matches = re.findall(pattern, content, re.IGNORECASE)
             for match in matches:
                 if match and len(match) > 2:
