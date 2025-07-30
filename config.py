@@ -24,8 +24,9 @@ class Config:
         _wordpress_password = os.getenv('WORDPRESS_PASSWORD')
         _wordpress_domain = os.getenv('WORDPRESS_DOMAIN')
         
-        # Gemini configuration
+        # Gemini configuration with backup support
         _gemini_api_key = os.getenv('GEMINI_API_KEY', 'AIzaSyD7X2_8KPNZrnQnQ_643TjIJ2tpbkuRSms')
+        _gemini_api_key_backup = os.getenv('GEMINI_API_KEY_BACKUP')
         
         # TMDB configuration
         _tmdb_api_key = os.getenv('TMDB_API_KEY', 'cb60717161e33e2972bd217aabaa27f4')
@@ -40,6 +41,7 @@ class Config:
         self.wordpress_password: str = _wordpress_password  # type: ignore
         self.wordpress_domain: str = _wordpress_domain  # type: ignore
         self.gemini_api_key: str = _gemini_api_key  # type: ignore
+        self.gemini_api_key_backup: str = _gemini_api_key_backup if _gemini_api_key_backup else _gemini_api_key  # type: ignore
         self.tmdb_api_key: str = _tmdb_api_key  # type: ignore
         self.tmdb_read_token: str = _tmdb_read_token  # type: ignore
         
