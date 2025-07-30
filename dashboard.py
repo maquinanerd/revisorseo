@@ -15,6 +15,7 @@ import os
 from config import Config
 from wordpress_client import WordPressClient
 from gemini_client import GeminiClient
+from tmdb_client import TMDBClient
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,10 @@ class SEODashboard:
             password=self.config.wordpress_password
         )
         self.gemini_client = GeminiClient(api_key=self.config.gemini_api_key)
+        self.tmdb_client = TMDBClient(
+            api_key=self.config.tmdb_api_key,
+            read_token=self.config.tmdb_read_token
+        )
         self.db_path = 'seo_dashboard.db'
         self.init_database()
         
@@ -246,13 +251,17 @@ def api_optimize_post(post_id):
         content = post['content']['rendered']
         tags = dashboard.wp_client.get_post_tags(post_id)
         
-        # Optimize content with Gemini
+        # Get media data from TMDB
+        media_data = dashboard.tmdb_client.find_media_for_post(title, content)
+        
+        # Optimize content with Gemini including media
         optimized_content = dashboard.gemini_client.optimize_content(
             title=title,
             excerpt=excerpt,
             content=content,
             tags=tags,
-            domain=dashboard.config.wordpress_domain
+            domain=dashboard.config.wordpress_domain,
+            media_data=media_data
         )
         
         if optimized_content:
@@ -285,10 +294,12 @@ def api_system_status():
     try:
         wp_status = dashboard.wp_client.test_connection()
         gemini_status = dashboard.gemini_client.test_connection()
+        tmdb_status = dashboard.tmdb_client.test_connection()
         
         return jsonify({
             'wordpress': wp_status,
             'gemini': gemini_status,
+            'tmdb': tmdb_status,
             'database': os.path.exists(dashboard.db_path),
             'timestamp': datetime.now().isoformat()
         })

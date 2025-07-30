@@ -26,7 +26,8 @@ class GeminiClient:
         self.model = "gemini-1.5-flash"
         logger.info("Gemini client initialized")
     
-    def _create_seo_prompt(self, title: str, excerpt: str, content: str, tags: List[str], domain: str) -> str:
+    def _create_seo_prompt(self, title: str, excerpt: str, content: str, tags: List[str], domain: str, 
+                          media_data: Optional[Dict] = None) -> str:
         """Create the SEO optimization prompt for Gemini."""
         tags_text = ", ".join(tags) if tags else ""
         
@@ -47,7 +48,13 @@ Exemplo:
 Importante: 
 - Use APENAS HTML: <b> para negrito e <a href=""> para links
 - NÃO use markdown (**texto** ou [texto](link))
+- Inclua imagens e trailers quando disponíveis (dados fornecidos abaixo)
+- Para imagens: use <img src="URL" alt="DESCRIÇÃO" style="width:100%;max-width:500px;height:auto;margin:10px 0;">
+- Para trailers: use <iframe width="560" height="315" src="https://www.youtube.com/embed/ID_DO_VIDEO" frameborder="0" allowfullscreen style="margin:10px 0;"></iframe>
 - Não mude o conteúdo nem o sentido original, apenas melhore a estrutura, o SEO e a escaneabilidade para o Google News.
+
+## MÍDIA DISPONÍVEL:
+{self._format_media_data(media_data) if media_data else "Nenhuma mídia encontrada"}
 
 ## CONTEÚDO ORIGINAL:
 
@@ -72,6 +79,27 @@ Importante:
 (conteúdo revisado com parágrafos curtos, negrito e links internos)"""
 
         return prompt
+    
+    def _format_media_data(self, media_data: Dict) -> str:
+        """Format media data for inclusion in the prompt."""
+        if not media_data:
+            return "Nenhuma mídia disponível"
+        
+        formatted = []
+        
+        # Add images
+        if media_data.get('images'):
+            formatted.append("### IMAGENS DISPONÍVEIS:")
+            for img in media_data['images']:
+                formatted.append(f"- {img['title']} ({img['type']}): {img['url']} - Alt: {img['alt']}")
+        
+        # Add trailers
+        if media_data.get('trailers'):
+            formatted.append("\n### TRAILERS DISPONÍVEIS:")
+            for trailer in media_data['trailers']:
+                formatted.append(f"- {trailer['title']}: YouTube ID = {trailer['youtube_key']}")
+        
+        return "\n".join(formatted) if formatted else "Nenhuma mídia disponível"
     
     def _parse_response(self, response_text: str) -> Optional[Dict[str, str]]:
         """Parse the Gemini response to extract title, excerpt, and content."""
@@ -107,7 +135,8 @@ Importante:
             logger.error(f"Failed to parse Gemini response: {e}")
             return None
     
-    def optimize_content(self, title: str, excerpt: str, content: str, tags: List[str], domain: str) -> Optional[Dict[str, str]]:
+    def optimize_content(self, title: str, excerpt: str, content: str, tags: List[str], domain: str, 
+                        media_data: Optional[Dict] = None) -> Optional[Dict[str, str]]:
         """
         Optimize content using Gemini 1.5 Pro.
         
@@ -122,8 +151,8 @@ Importante:
             Dictionary with optimized title, excerpt, and content, or None if failed
         """
         try:
-            # Create the prompt
-            prompt = self._create_seo_prompt(title, excerpt, content, tags, domain)
+            # Create the prompt with media data
+            prompt = self._create_seo_prompt(title, excerpt, content, tags, domain, media_data)
             
             # Make request to Gemini
             model = genai.GenerativeModel(self.model)

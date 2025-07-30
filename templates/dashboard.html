@@ -368,19 +368,25 @@
                 const status = await response.json();
                 
                 const statusHtml = `
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="d-flex align-items-center">
                             <i class="fas fa-circle me-2 ${status.wordpress ? 'text-success' : 'text-danger'}"></i>
                             <span>WordPress: ${status.wordpress ? 'Conectado' : 'Falha'}</span>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="d-flex align-items-center">
                             <i class="fas fa-circle me-2 ${status.gemini ? 'text-success' : 'text-danger'}"></i>
                             <span>Gemini AI: ${status.gemini ? 'Conectado' : 'Falha'}</span>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-circle me-2 ${status.tmdb ? 'text-success' : 'text-danger'}"></i>
+                            <span>TMDB: ${status.tmdb ? 'Conectado' : 'Falha'}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
                         <div class="d-flex align-items-center">
                             <i class="fas fa-circle me-2 ${status.database ? 'text-success' : 'text-danger'}"></i>
                             <span>Database: ${status.database ? 'OK' : 'Falha'}</span>

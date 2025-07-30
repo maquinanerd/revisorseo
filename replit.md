@@ -16,6 +16,11 @@ Preferred communication style: Simple, everyday language.
   - Use <a href="url">text</a> for links instead of [text](url)
 - Changed from Gemini 1.5 Pro to 1.5 Flash to handle quota limits
 - Added SQLite database for tracking optimization history and metrics
+- **NEW: TMDB Integration for Images and Trailers**
+  - Added TMDBClient for fetching movie/TV show data
+  - Automatic extraction of titles from post content
+  - Integration of movie posters, backdrops, and YouTube trailers
+  - Enhanced Gemini prompts to include media content in optimized posts
 
 ## System Architecture
 

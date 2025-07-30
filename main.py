@@ -16,6 +16,7 @@ import os
 from config import Config
 from wordpress_client import WordPressClient
 from gemini_client import GeminiClient
+from tmdb_client import TMDBClient
 
 # Configure logging
 logging.basicConfig(
@@ -42,6 +43,10 @@ class SEOOptimizer:
             password=self.config.wordpress_password
         )
         self.gemini_client = GeminiClient(api_key=self.config.gemini_api_key)
+        self.tmdb_client = TMDBClient(
+            api_key=self.config.tmdb_api_key,
+            read_token=self.config.tmdb_read_token
+        )
         self.processed_posts: Set[int] = set()
         self.joao_author_id: int = 6  # João's known author ID
         
@@ -56,6 +61,11 @@ class SEOOptimizer:
             # Test Gemini connection
             if not self.gemini_client.test_connection():
                 logger.error("Failed to connect to Gemini API")
+                return False
+            
+            # Test TMDB connection
+            if not self.tmdb_client.test_connection():
+                logger.error("Failed to connect to TMDB API")
                 return False
                 
             logger.info(f"Using João's author ID: {self.joao_author_id}")
@@ -97,13 +107,18 @@ class SEOOptimizer:
             content = post['content']['rendered']
             tags = self.wp_client.get_post_tags(post_id)
             
-            # Get optimized content from Gemini
+            # Get media data from TMDB
+            logger.info(f"Searching for media content for post: {title}")
+            media_data = self.tmdb_client.find_media_for_post(title, content)
+            
+            # Get optimized content from Gemini with media
             optimized_content = self.gemini_client.optimize_content(
                 title=title,
                 excerpt=excerpt,
                 content=content,
                 tags=tags,
-                domain=self.config.wordpress_domain
+                domain=self.config.wordpress_domain,
+                media_data=media_data
             )
             
             if not optimized_content:
