@@ -1,0 +1,1469 @@
+2025-07-30 13:25:43,736 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 13:25:43,736 - ERROR - Fatal error: Missing required environment variables: WORDPRESS_URL, WORDPRESS_USERNAME, WORDPRESS_PASSWORD, WORDPRESS_DOMAIN
+2025-07-30 13:38:01,812 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 13:38:01,813 - ERROR - Fatal error: Missing required environment variables: WORDPRESS_URL, WORDPRESS_USERNAME, WORDPRESS_PASSWORD, WORDPRESS_DOMAIN
+2025-07-30 13:43:11,806 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 13:43:11,806 - INFO - All required configuration validated
+2025-07-30 13:43:11,807 - INFO - Configuration loaded successfully
+2025-07-30 13:43:11,807 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 13:43:11,994 - INFO - Gemini client initialized
+2025-07-30 13:43:14,063 - INFO - Found João's author ID: 6
+2025-07-30 13:43:14,063 - INFO - Starting optimization cycle
+2025-07-30 13:43:21,075 - INFO - Found 10 new posts by João
+2025-07-30 13:43:21,076 - INFO - Optimizing post ID: 10335 - 'O Fenômeno Inesperado: Como &#8216;Happy Gilmore 2 Netflix&#8217; Está Quebrando Recordes e Dominando as Paradas'
+2025-07-30 13:43:22,485 - INFO - AFC is enabled with max remote calls: 10.
+2025-07-30 13:44:02,462 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent "HTTP/1.1 200 OK"
+2025-07-30 13:44:02,463 - INFO - AFC remote call 1 is done.
+2025-07-30 13:44:02,464 - INFO - Received response from Gemini
+2025-07-30 13:44:02,464 - INFO - Successfully parsed Gemini response
+2025-07-30 13:44:06,476 - INFO - Successfully updated post 10335
+2025-07-30 13:44:06,477 - INFO - Successfully optimized post 10335
+2025-07-30 13:44:08,477 - INFO - Optimizing post ID: 10333 - '7 Reviravoltas Sem Sentido em Filmes de Ficção Científica que Ainda Confundem Fãs'
+2025-07-30 13:44:10,034 - INFO - AFC is enabled with max remote calls: 10.
+2025-07-30 13:44:25,894 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 13:44:25,894 - INFO - All required configuration validated
+2025-07-30 13:44:25,894 - INFO - Configuration loaded successfully
+2025-07-30 13:44:25,895 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 13:44:25,947 - INFO - Gemini client initialized
+2025-07-30 13:44:27,672 - ERROR - Failed to connect to WordPress API
+2025-07-30 13:44:27,674 - ERROR - Failed to connect to WordPress
+2025-07-30 13:44:27,674 - ERROR - Failed to initialize optimizer
+2025-07-30 13:45:56,992 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 13:45:56,993 - INFO - All required configuration validated
+2025-07-30 13:45:56,993 - INFO - Configuration loaded successfully
+2025-07-30 13:45:56,993 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 13:45:57,029 - INFO - Gemini client initialized
+2025-07-30 13:45:59,070 - ERROR - Failed to connect to WordPress API
+2025-07-30 13:45:59,080 - ERROR - Failed to connect to WordPress
+2025-07-30 13:45:59,080 - ERROR - Failed to initialize optimizer
+2025-07-30 13:47:57,817 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 13:47:57,819 - INFO - All required configuration validated
+2025-07-30 13:47:57,819 - INFO - Configuration loaded successfully
+2025-07-30 13:47:57,821 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 13:47:57,915 - INFO - Gemini client initialized
+2025-07-30 13:47:59,046 - ERROR - Failed to connect to WordPress API
+2025-07-30 13:47:59,048 - ERROR - Failed to connect to WordPress
+2025-07-30 13:47:59,049 - ERROR - Failed to initialize optimizer
+2025-07-30 13:48:16,023 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 13:48:16,024 - INFO - All required configuration validated
+2025-07-30 13:48:16,024 - INFO - Configuration loaded successfully
+2025-07-30 13:48:16,024 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 13:48:16,060 - INFO - Gemini client initialized
+2025-07-30 13:48:17,903 - ERROR - Failed to connect to WordPress API
+2025-07-30 13:48:17,904 - ERROR - Failed to connect to WordPress
+2025-07-30 13:48:17,904 - ERROR - Failed to initialize optimizer
+2025-07-30 13:49:11,859 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 13:49:11,864 - INFO - All required configuration validated
+2025-07-30 13:49:11,864 - INFO - Configuration loaded successfully
+2025-07-30 13:49:11,865 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 13:49:11,865 - INFO - Gemini client initialized
+2025-07-30 13:49:13,054 - ERROR - Failed to connect to WordPress API
+2025-07-30 13:49:13,056 - ERROR - Failed to connect to WordPress
+2025-07-30 13:49:13,056 - ERROR - Failed to initialize optimizer
+2025-07-30 13:49:14,423 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 13:49:14,425 - INFO - All required configuration validated
+2025-07-30 13:49:14,425 - INFO - Configuration loaded successfully
+2025-07-30 13:49:14,428 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 13:49:14,431 - INFO - Gemini client initialized
+2025-07-30 13:49:15,535 - ERROR - Failed to connect to WordPress API
+2025-07-30 13:49:15,536 - ERROR - Failed to connect to WordPress
+2025-07-30 13:49:15,536 - ERROR - Failed to initialize optimizer
+2025-07-30 13:49:45,955 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 13:49:45,959 - INFO - All required configuration validated
+2025-07-30 13:49:45,960 - INFO - Configuration loaded successfully
+2025-07-30 13:49:45,960 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 13:49:45,961 - INFO - Gemini client initialized
+2025-07-30 13:49:47,589 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 13:49:47,878 - ERROR - Gemini API connection test failed: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count"
+  quota_id: "GenerateContentInputTokensPerModelPerMinute-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-pro"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+}
+violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-pro"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+}
+violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-pro"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 12
+}
+]
+2025-07-30 13:49:47,878 - ERROR - Failed to connect to Gemini API
+2025-07-30 13:49:47,878 - ERROR - Failed to initialize optimizer
+2025-07-30 13:50:00,996 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 13:50:00,996 - INFO - All required configuration validated
+2025-07-30 13:50:00,996 - INFO - Configuration loaded successfully
+2025-07-30 13:50:00,996 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 13:50:00,997 - INFO - Gemini client initialized
+2025-07-30 13:50:04,489 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 13:50:04,806 - ERROR - Gemini API connection test failed: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-pro"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+}
+violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-pro"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+}
+violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count"
+  quota_id: "GenerateContentInputTokensPerModelPerMinute-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-pro"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 55
+}
+]
+2025-07-30 13:50:04,808 - ERROR - Failed to connect to Gemini API
+2025-07-30 13:50:04,809 - ERROR - Failed to initialize optimizer
+2025-07-30 13:51:26,423 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 13:51:26,424 - INFO - All required configuration validated
+2025-07-30 13:51:26,425 - INFO - Configuration loaded successfully
+2025-07-30 13:51:26,425 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 13:51:26,426 - INFO - Gemini client initialized
+2025-07-30 13:51:28,297 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 13:51:28,298 - INFO - Gemini API client configured successfully
+2025-07-30 13:51:28,299 - INFO - Using João's author ID: 6
+2025-07-30 13:51:28,299 - INFO - Starting optimization cycle
+2025-07-30 13:51:34,644 - INFO - Found 10 new posts by João
+2025-07-30 13:51:34,645 - INFO - Optimizing post ID: 10335 - 'Happy Gilmore 2: Sequência com Adam Sandler é sucesso na Netflix e quebra recordes'
+2025-07-30 13:53:11,083 - INFO - Received response from Gemini
+2025-07-30 13:53:11,084 - INFO - Successfully parsed Gemini response
+2025-07-30 13:53:14,466 - INFO - Successfully updated post 10335
+2025-07-30 13:53:14,466 - INFO - Successfully optimized post 10335
+2025-07-30 13:53:16,467 - INFO - Optimizing post ID: 10333 - '7 Reviravoltas Sem Sentido em Filmes de Ficção Científica que Ainda Confundem Fãs'
+2025-07-30 13:54:21,607 - INFO - Received response from Gemini
+2025-07-30 13:54:21,609 - INFO - Successfully parsed Gemini response
+2025-07-30 13:54:24,615 - INFO - Successfully updated post 10333
+2025-07-30 13:54:24,615 - INFO - Successfully optimized post 10333
+2025-07-30 13:54:26,616 - INFO - Optimizing post ID: 10331 - 'Marvel e DC em 2025: Os Lançamentos de Filmes e Séries de Super-Heróis Que Chegam Este Ano!'
+2025-07-30 13:55:03,162 - INFO - Received response from Gemini
+2025-07-30 13:55:03,163 - INFO - Successfully parsed Gemini response
+2025-07-30 13:55:09,954 - INFO - Successfully updated post 10331
+2025-07-30 13:55:09,955 - INFO - Successfully optimized post 10331
+2025-07-30 13:55:11,957 - INFO - Optimizing post ID: 10329 - 'Jensen Ackles Como Batman: A Profecia de Supernatural de 18 Anos no Novo DCU'
+2025-07-30 13:56:37,087 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 13:56:37,088 - INFO - All required configuration validated
+2025-07-30 13:56:37,088 - INFO - Configuration loaded successfully
+2025-07-30 13:56:37,088 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 13:56:37,088 - INFO - Gemini client initialized
+2025-07-30 13:56:38,802 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 13:56:38,803 - INFO - Gemini API client configured successfully
+2025-07-30 13:56:38,803 - INFO - Using João's author ID: 6
+2025-07-30 13:56:38,803 - INFO - Starting optimization cycle
+2025-07-30 13:56:45,474 - INFO - Found 10 new posts by João
+2025-07-30 13:56:45,475 - INFO - Optimizing post ID: 10335 - 'Happy Gilmore 2: Adam Sandler quebra recordes na Netflix com continuação inesperada'
+2025-07-30 13:56:53,424 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 6
+}
+]
+2025-07-30 13:56:53,425 - ERROR - Failed to get optimized content for post 10335
+2025-07-30 13:56:53,425 - INFO - Optimizing post ID: 10333 - '7 Reviravoltas Sem Sentido em Filmes de Ficção Científica que Deixaram os Fãs Confusos &#8211; Análise de Filmes'
+2025-07-30 13:56:55,531 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 4
+}
+]
+2025-07-30 13:56:55,531 - ERROR - Failed to get optimized content for post 10333
+2025-07-30 13:56:55,531 - INFO - Optimizing post ID: 10331 - 'Lançamentos Marvel e DC em 2025: Filmes e Séries de Super-Heróis que Chegam em Agosto e Outubro'
+2025-07-30 13:56:57,238 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 2
+}
+]
+2025-07-30 13:56:57,239 - ERROR - Failed to get optimized content for post 10331
+2025-07-30 13:56:57,239 - INFO - Optimizing post ID: 10329 - 'Jensen Ackles Como Batman: A Profecia de Supernatural de 18 Anos no Novo DCU'
+2025-07-30 13:56:59,669 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+}
+]
+2025-07-30 13:56:59,670 - ERROR - Failed to get optimized content for post 10329
+2025-07-30 13:56:59,670 - INFO - Optimizing post ID: 10327 - 'Revelada a Nova Katniss: Mia Carragher Acende a Chama em &#8216;Jogos Vorazes: No Palco&#8217; em Londres'
+2025-07-30 13:57:01,329 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 58
+}
+]
+2025-07-30 13:57:01,329 - ERROR - Failed to get optimized content for post 10327
+2025-07-30 13:57:01,329 - INFO - Optimizing post ID: 10325 - 'Memoir of a Snail Chega ao Hulu: O Filme de Stop-Motion Aclamado com 95% no Rotten Tomatoes'
+2025-07-30 13:57:02,806 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 57
+}
+]
+2025-07-30 13:57:02,807 - ERROR - Failed to get optimized content for post 10325
+2025-07-30 13:57:02,807 - INFO - Optimizing post ID: 10323 - '“The Amateur”: Thriller de Ação Com Rami Malek Domina o Hulu Após Decepcionar Nos Cinemas'
+2025-07-30 13:57:05,471 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 54
+}
+]
+2025-07-30 13:57:05,472 - ERROR - Failed to get optimized content for post 10323
+2025-07-30 13:57:05,472 - INFO - Optimizing post ID: 10321 - 'O Retorno Triunfal de <b>Peacemaker</b> à HBO Max: O Que Esperar da <b>Temporada 2</b> no Novo DCU'
+2025-07-30 13:57:07,000 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 53
+}
+]
+2025-07-30 13:57:07,001 - ERROR - Failed to get optimized content for post 10321
+2025-07-30 13:57:07,001 - INFO - Optimizing post ID: 10319 - 'WWE NXT (29 de Julho): Análise Detalhada dos Acertos e Erros da Última Noite de Lutas'
+2025-07-30 13:57:08,439 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 51
+}
+]
+2025-07-30 13:57:08,439 - ERROR - Failed to get optimized content for post 10319
+2025-07-30 13:57:08,439 - INFO - Optimizing post ID: 10315 - 'Nia Jax Invade o NXT: A Ascensão Imparável de Lash Legend ao Elenco Principal da WWE'
+2025-07-30 13:57:10,727 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 49
+}
+]
+2025-07-30 13:57:10,727 - ERROR - Failed to get optimized content for post 10315
+2025-07-30 13:57:10,727 - INFO - Optimization cycle completed. 0/10 posts optimized successfully
+2025-07-30 14:12:47,709 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 14:12:47,710 - INFO - All required configuration validated
+2025-07-30 14:12:47,710 - INFO - Configuration loaded successfully
+2025-07-30 14:12:47,710 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 14:12:47,710 - INFO - Gemini client initialized
+2025-07-30 14:12:48,874 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 14:12:48,875 - INFO - Gemini API client configured successfully
+2025-07-30 14:12:48,875 - INFO - Using João's author ID: 6
+2025-07-30 14:12:48,875 - INFO - Starting optimization cycle
+2025-07-30 14:12:54,526 - INFO - Found 10 new posts by João
+2025-07-30 14:12:54,526 - INFO - Optimizing post ID: 10335 - 'Happy Gilmore 2: Adam Sandler quebra recordes na Netflix com continuação inesperada'
+2025-07-30 14:12:56,450 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 3
+}
+]
+2025-07-30 14:12:56,450 - ERROR - Failed to get optimized content for post 10335
+2025-07-30 14:12:56,450 - INFO - Optimizing post ID: 10333 - '7 Reviravoltas Sem Sentido em Filmes de Ficção Científica que Deixaram os Fãs Confusos &#8211; Análise de Filmes'
+2025-07-30 14:12:58,427 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 1
+}
+]
+2025-07-30 14:12:58,428 - ERROR - Failed to get optimized content for post 10333
+2025-07-30 14:12:58,428 - INFO - Optimizing post ID: 10331 - 'Lançamentos Marvel e DC em 2025: Filmes e Séries de Super-Heróis que Chegam em Agosto e Outubro'
+2025-07-30 14:13:00,148 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 59
+}
+]
+2025-07-30 14:13:00,149 - ERROR - Failed to get optimized content for post 10331
+2025-07-30 14:13:00,149 - INFO - Optimizing post ID: 10329 - 'Jensen Ackles Como Batman: A Profecia de Supernatural de 18 Anos no Novo DCU'
+2025-07-30 14:13:02,298 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 57
+}
+]
+2025-07-30 14:13:02,299 - ERROR - Failed to get optimized content for post 10329
+2025-07-30 14:13:02,299 - INFO - Optimizing post ID: 10327 - 'Revelada a Nova Katniss: Mia Carragher Acende a Chama em &#8216;Jogos Vorazes: No Palco&#8217; em Londres'
+2025-07-30 14:13:04,279 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 55
+}
+]
+2025-07-30 14:13:04,279 - ERROR - Failed to get optimized content for post 10327
+2025-07-30 14:13:04,279 - INFO - Optimizing post ID: 10325 - 'Memoir of a Snail Chega ao Hulu: O Filme de Stop-Motion Aclamado com 95% no Rotten Tomatoes'
+2025-07-30 14:13:05,794 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 54
+}
+]
+2025-07-30 14:13:05,794 - ERROR - Failed to get optimized content for post 10325
+2025-07-30 14:13:05,794 - INFO - Optimizing post ID: 10323 - '“The Amateur”: Thriller de Ação Com Rami Malek Domina o Hulu Após Decepcionar Nos Cinemas'
+2025-07-30 14:13:07,060 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 52
+}
+]
+2025-07-30 14:13:07,060 - ERROR - Failed to get optimized content for post 10323
+2025-07-30 14:13:07,061 - INFO - Optimizing post ID: 10321 - 'O Retorno Triunfal de <b>Peacemaker</b> à HBO Max: O Que Esperar da <b>Temporada 2</b> no Novo DCU'
+2025-07-30 14:13:12,124 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 47
+}
+]
+2025-07-30 14:13:12,124 - ERROR - Failed to get optimized content for post 10321
+2025-07-30 14:13:12,124 - INFO - Optimizing post ID: 10319 - 'WWE NXT (29 de Julho): Análise Detalhada dos Acertos e Erros da Última Noite de Lutas'
+2025-07-30 14:13:13,319 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 46
+}
+]
+2025-07-30 14:13:13,319 - ERROR - Failed to get optimized content for post 10319
+2025-07-30 14:13:13,320 - INFO - Optimizing post ID: 10315 - 'Nia Jax Invade o NXT: A Ascensão Imparável de Lash Legend ao Elenco Principal da WWE'
+2025-07-30 14:13:14,813 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 45
+}
+]
+2025-07-30 14:13:14,813 - ERROR - Failed to get optimized content for post 10315
+2025-07-30 14:13:14,813 - INFO - Optimization cycle completed. 0/10 posts optimized successfully
+2025-07-30 14:16:25,291 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 14:16:25,294 - INFO - All required configuration validated
+2025-07-30 14:16:25,294 - INFO - Configuration loaded successfully
+2025-07-30 14:16:25,294 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 14:16:25,295 - INFO - Gemini client initialized
+2025-07-30 14:16:26,660 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 14:16:26,661 - INFO - Gemini API client configured successfully
+2025-07-30 14:16:26,661 - INFO - Using João's author ID: 6
+2025-07-30 14:16:26,661 - INFO - Starting optimization cycle
+2025-07-30 14:16:34,894 - INFO - Found 10 new posts by João
+2025-07-30 14:16:34,895 - INFO - Optimizing post ID: 10335 - 'Happy Gilmore 2: Adam Sandler quebra recordes na Netflix com continuação inesperada'
+2025-07-30 14:16:36,938 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 23
+}
+]
+2025-07-30 14:16:36,938 - ERROR - Failed to get optimized content for post 10335
+2025-07-30 14:16:36,938 - INFO - Optimizing post ID: 10333 - '7 Reviravoltas Sem Sentido em Filmes de Ficção Científica que Deixaram os Fãs Confusos &#8211; Análise de Filmes'
+2025-07-30 14:16:38,531 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 21
+}
+]
+2025-07-30 14:16:38,531 - ERROR - Failed to get optimized content for post 10333
+2025-07-30 14:16:38,531 - INFO - Optimizing post ID: 10331 - 'Lançamentos Marvel e DC em 2025: Filmes e Séries de Super-Heróis que Chegam em Agosto e Outubro'
+2025-07-30 14:16:40,979 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 19
+}
+]
+2025-07-30 14:16:40,979 - ERROR - Failed to get optimized content for post 10331
+2025-07-30 14:16:40,979 - INFO - Optimizing post ID: 10329 - 'Jensen Ackles Como Batman: A Profecia de Supernatural de 18 Anos no Novo DCU'
+2025-07-30 14:16:42,061 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 17
+}
+]
+2025-07-30 14:16:42,062 - ERROR - Failed to get optimized content for post 10329
+2025-07-30 14:16:42,062 - INFO - Optimizing post ID: 10327 - 'Revelada a Nova Katniss: Mia Carragher Acende a Chama em &#8216;Jogos Vorazes: No Palco&#8217; em Londres'
+2025-07-30 14:16:43,723 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 16
+}
+]
+2025-07-30 14:16:43,723 - ERROR - Failed to get optimized content for post 10327
+2025-07-30 14:16:43,723 - INFO - Optimizing post ID: 10325 - 'Memoir of a Snail Chega ao Hulu: O Filme de Stop-Motion Aclamado com 95% no Rotten Tomatoes'
+2025-07-30 14:16:45,549 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 14
+}
+]
+2025-07-30 14:16:45,549 - ERROR - Failed to get optimized content for post 10325
+2025-07-30 14:16:45,549 - INFO - Optimizing post ID: 10323 - '“The Amateur”: Thriller de Ação Com Rami Malek Domina o Hulu Após Decepcionar Nos Cinemas'
+2025-07-30 14:16:46,686 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 13
+}
+]
+2025-07-30 14:16:46,686 - ERROR - Failed to get optimized content for post 10323
+2025-07-30 14:16:46,686 - INFO - Optimizing post ID: 10321 - 'O Retorno Triunfal de <b>Peacemaker</b> à HBO Max: O Que Esperar da <b>Temporada 2</b> no Novo DCU'
+2025-07-30 14:16:47,869 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 12
+}
+]
+2025-07-30 14:16:47,869 - ERROR - Failed to get optimized content for post 10321
+2025-07-30 14:16:47,869 - INFO - Optimizing post ID: 10319 - 'WWE NXT (29 de Julho): Análise Detalhada dos Acertos e Erros da Última Noite de Lutas'
+2025-07-30 14:16:49,082 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 10
+}
+]
+2025-07-30 14:16:49,082 - ERROR - Failed to get optimized content for post 10319
+2025-07-30 14:16:49,082 - INFO - Optimizing post ID: 10315 - 'Nia Jax Invade o NXT: A Ascensão Imparável de Lash Legend ao Elenco Principal da WWE'
+2025-07-30 14:16:50,386 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 9
+}
+]
+2025-07-30 14:16:50,387 - ERROR - Failed to get optimized content for post 10315
+2025-07-30 14:16:50,387 - INFO - Optimization cycle completed. 0/10 posts optimized successfully
+2025-07-30 14:21:38,590 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 14:21:38,594 - INFO - All required configuration validated
+2025-07-30 14:21:38,594 - INFO - Configuration loaded successfully
+2025-07-30 14:21:38,594 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 14:21:38,594 - INFO - Gemini client initialized
+2025-07-30 14:21:38,594 - INFO - TMDB client initialized
+2025-07-30 14:21:40,198 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 14:21:40,199 - INFO - Gemini API client configured successfully
+2025-07-30 14:21:40,238 - INFO - TMDB API connection test successful
+2025-07-30 14:21:40,239 - INFO - Using João's author ID: 6
+2025-07-30 14:21:40,239 - INFO - Starting optimization cycle
+2025-07-30 14:21:47,452 - INFO - Found 10 new posts by João
+2025-07-30 14:21:47,453 - INFO - Optimizing post ID: 10347 - 'Os 10 Momentos Mais Épicos e Inesquecíveis de Arrow: Da Escuridão à Lenda de Star City'
+2025-07-30 14:21:49,201 - INFO - Searching for media content for post: Os 10 Momentos Mais Épicos e Inesquecíveis de Arrow: Da Escuridão à Lenda de Star City
+2025-07-30 14:21:49,285 - WARNING - No movie found for title: que consistentemente entrega as cenas mais intensas e impactantes é
+2025-07-30 14:21:49,330 - WARNING - No TV show found for title: que consistentemente entrega as cenas mais intensas e impactantes é
+2025-07-30 14:21:49,377 - INFO - Found movie: 13 Minutos de Tormenta (2021-10-29)
+2025-07-30 14:21:49,496 - INFO - Found movie: Um Momento de Romance (1990-06-14)
+2025-07-30 14:21:49,578 - INFO - Found movie: A Seta de Ouro (1962-09-07)
+2025-07-30 14:21:49,710 - WARNING - No movie found for title: Lenda de Star City
+2025-07-30 14:21:49,770 - WARNING - No TV show found for title: Lenda de Star City
+2025-07-30 14:21:49,771 - INFO - Found 6 images and 1 trailers for post
+2025-07-30 14:21:50,050 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 9
+}
+]
+2025-07-30 14:21:50,050 - ERROR - Failed to get optimized content for post 10347
+2025-07-30 14:21:50,050 - INFO - Optimizing post ID: 10346 - 'Taron Egerton Recusa Ser o Próximo James Bond: Entenda os Motivos e Novidades sobre 007'
+2025-07-30 14:21:51,621 - INFO - Searching for media content for post: Taron Egerton Recusa Ser o Próximo James Bond: Entenda os Motivos e Novidades sobre 007
+2025-07-30 14:21:51,687 - INFO - Found movie: Rock Dog: No Faro do Sucesso (2016-07-08)
+2025-07-30 14:21:51,774 - WARNING - No movie found for title: Taron Egerton Recusa Ser o
+2025-07-30 14:21:51,821 - WARNING - No TV show found for title: Taron Egerton Recusa Ser o
+2025-07-30 14:21:51,870 - INFO - Found movie: Ser James Bond (2021-08-29)
+2025-07-30 14:21:51,952 - WARNING - No movie found for title: Entenda os Motivos e Novidades sobre
+2025-07-30 14:21:51,996 - WARNING - No TV show found for title: Entenda os Motivos e Novidades sobre
+2025-07-30 14:21:52,068 - INFO - Found movie: Em Busca de uma Nova Vida (2010-11-03)
+2025-07-30 14:21:52,138 - INFO - Found 6 images and 1 trailers for post
+2025-07-30 14:21:52,224 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 7
+}
+]
+2025-07-30 14:21:52,224 - ERROR - Failed to get optimized content for post 10346
+2025-07-30 14:21:52,224 - INFO - Optimizing post ID: 10343 - 'Taron Egerton Recusa Ser o Próximo James Bond: Entenda os Motivos e Novidades sobre 007'
+2025-07-30 14:21:53,555 - INFO - Searching for media content for post: Taron Egerton Recusa Ser o Próximo James Bond: Entenda os Motivos e Novidades sobre 007
+2025-07-30 14:21:53,588 - INFO - Found movie: Rock Dog: No Faro do Sucesso (2016-07-08)
+2025-07-30 14:21:53,679 - WARNING - No movie found for title: Taron Egerton Recusa Ser o
+2025-07-30 14:21:53,710 - WARNING - No TV show found for title: Taron Egerton Recusa Ser o
+2025-07-30 14:21:53,743 - INFO - Found movie: Ser James Bond (2021-08-29)
+2025-07-30 14:21:53,807 - WARNING - No movie found for title: Entenda os Motivos e Novidades sobre
+2025-07-30 14:21:53,837 - WARNING - No TV show found for title: Entenda os Motivos e Novidades sobre
+2025-07-30 14:21:53,868 - INFO - Found movie: Em Busca de uma Nova Vida (2010-11-03)
+2025-07-30 14:21:53,898 - INFO - Found 6 images and 1 trailers for post
+2025-07-30 14:21:53,977 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 6
+}
+]
+2025-07-30 14:21:53,977 - ERROR - Failed to get optimized content for post 10343
+2025-07-30 14:21:53,977 - INFO - Optimizing post ID: 10342 - 'Arrow: Os 10 Momentos Mais Épicos e Marcantes da Série do Arqueiro Verde'
+2025-07-30 14:21:55,484 - INFO - Searching for media content for post: Arrow: Os 10 Momentos Mais Épicos e Marcantes da Série do Arqueiro Verde
+2025-07-30 14:21:55,534 - WARNING - No movie found for title: do Arqueiro Verde <p>O Arrowverse
+2025-07-30 14:21:55,586 - WARNING - No TV show found for title: do Arqueiro Verde <p>O Arrowverse
+2025-07-30 14:21:55,635 - INFO - Found movie: Princess Principal Crown Handler: Chapter 1 (2021-02-11)
+2025-07-30 14:21:55,758 - WARNING - No movie found for title: também nos surpreendeu com atos inesperados de heroísmo e momentos de pura emoção
+2025-07-30 14:21:55,827 - WARNING - No TV show found for title: também nos surpreendeu com atos inesperados de heroísmo e momentos de pura emoção
+2025-07-30 14:21:55,878 - WARNING - No movie found for title: ser tão querida
+2025-07-30 14:21:55,924 - WARNING - No TV show found for title: ser tão querida
+2025-07-30 14:21:55,960 - INFO - Found movie: Arrow (2012-01-01)
+2025-07-30 14:21:56,045 - INFO - Found 3 images and 0 trailers for post
+2025-07-30 14:21:56,103 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 3
+}
+]
+2025-07-30 14:21:56,103 - ERROR - Failed to get optimized content for post 10342
+2025-07-30 14:21:56,103 - INFO - Optimizing post ID: 10335 - 'Happy Gilmore 2: Adam Sandler quebra recordes na Netflix com continuação inesperada'
+2025-07-30 14:21:57,145 - INFO - Searching for media content for post: Happy Gilmore 2: Adam Sandler quebra recordes na Netflix com continuação inesperada
+2025-07-30 14:21:57,190 - WARNING - No movie found for title: se junta a outros sucessos de **[comédia](https://https://www
+2025-07-30 14:21:57,237 - WARNING - No TV show found for title: se junta a outros sucessos de **[comédia](https://https://www
+2025-07-30 14:21:57,267 - INFO - Found movie: Um Maluco no Golfe (1996-02-16)
+2025-07-30 14:21:57,343 - WARNING - No movie found for title: Adam Sandler quebra recordes na Netflix com
+2025-07-30 14:21:57,388 - WARNING - No TV show found for title: Adam Sandler quebra recordes na Netflix com
+2025-07-30 14:21:57,447 - INFO - Found movie: O Hobbit: Uma Jornada Inesperada (2012-12-12)
+2025-07-30 14:21:57,597 - WARNING - No movie found for title: Hollywood adora produzir
+2025-07-30 14:21:57,646 - WARNING - No TV show found for title: Hollywood adora produzir
+2025-07-30 14:21:57,646 - INFO - Found 4 images and 2 trailers for post
+2025-07-30 14:21:57,710 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 2
+}
+]
+2025-07-30 14:21:57,711 - ERROR - Failed to get optimized content for post 10335
+2025-07-30 14:21:57,711 - INFO - Optimizing post ID: 10333 - '7 Reviravoltas Sem Sentido em Filmes de Ficção Científica que Deixaram os Fãs Confusos &#8211; Análise de Filmes'
+2025-07-30 14:21:59,752 - INFO - Searching for media content for post: 7 Reviravoltas Sem Sentido em Filmes de Ficção Científica que Deixaram os Fãs Confusos &#8211; Análise de Filmes
+2025-07-30 14:21:59,803 - WARNING - No movie found for title: consegue sustentar
+2025-07-30 14:21:59,850 - WARNING - No TV show found for title: consegue sustentar
+2025-07-30 14:21:59,901 - WARNING - No movie found for title: decide que a maior fraqueza dos invasores é a água
+2025-07-30 14:21:59,946 - WARNING - No TV show found for title: decide que a maior fraqueza dos invasores é a água
+2025-07-30 14:22:00,044 - WARNING - No movie found for title: tenta conectar essa reviravolta à fé e ao destino
+2025-07-30 14:22:00,122 - WARNING - No TV show found for title: tenta conectar essa reviravolta à fé e ao destino
+2025-07-30 14:22:00,167 - WARNING - No movie found for title: tenta nos chocar
+2025-07-30 14:22:00,257 - WARNING - No TV show found for title: tenta nos chocar
+2025-07-30 14:22:00,331 - WARNING - No movie found for title: tenta se vincular à franquia **Cloverfield** revelando que o monstro gigante surgiu devido a experimentos interdimensionais
+2025-07-30 14:22:00,390 - WARNING - No TV show found for title: tenta se vincular à franquia **Cloverfield** revelando que o monstro gigante surgiu devido a experimentos interdimensionais
+2025-07-30 14:22:00,390 - INFO - Found 0 images and 0 trailers for post
+2025-07-30 14:22:00,448 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 59
+}
+]
+2025-07-30 14:22:00,449 - ERROR - Failed to get optimized content for post 10333
+2025-07-30 14:22:00,449 - INFO - Optimizing post ID: 10331 - 'Lançamentos Marvel e DC em 2025: Filmes e Séries de Super-Heróis que Chegam em Agosto e Outubro'
+2025-07-30 14:22:03,104 - INFO - Searching for media content for post: Lançamentos Marvel e DC em 2025: Filmes e Séries de Super-Heróis que Chegam em Agosto e Outubro
+2025-07-30 14:22:03,154 - WARNING - No movie found for title: demonstra a amplitude do universo dos quadrinhos
+2025-07-30 14:22:03,203 - WARNING - No TV show found for title: demonstra a amplitude do universo dos quadrinhos
+2025-07-30 14:22:03,264 - WARNING - No movie found for title: animado apresenta **Horacio García Rojas** como **Yohualli Coatl**
+2025-07-30 14:22:03,311 - WARNING - No TV show found for title: animado apresenta **Horacio García Rojas** como **Yohualli Coatl**
+2025-07-30 14:22:03,364 - WARNING - No movie found for title: reimaginará personagens icônicos como **Coringa** e **Duas-Caras** em um cenário culturalmente rico
+2025-07-30 14:22:03,411 - WARNING - No TV show found for title: reimaginará personagens icônicos como **Coringa** e **Duas-Caras** em um cenário culturalmente rico
+2025-07-30 14:22:03,467 - WARNING - No movie found for title: de projetos imperdíveis da **Marvel e DC em 2025**
+2025-07-30 14:22:03,512 - WARNING - No TV show found for title: de projetos imperdíveis da **Marvel e DC em 2025**
+2025-07-30 14:22:03,585 - WARNING - No movie found for title: animada **Olhos de Wakanda**
+2025-07-30 14:22:03,657 - WARNING - No TV show found for title: animada **Olhos de Wakanda**
+2025-07-30 14:22:03,658 - INFO - Found 0 images and 0 trailers for post
+2025-07-30 14:22:03,719 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 56
+}
+]
+2025-07-30 14:22:03,719 - ERROR - Failed to get optimized content for post 10331
+2025-07-30 14:22:03,719 - INFO - Optimizing post ID: 10329 - 'Jensen Ackles Como Batman: A Profecia de Supernatural de 18 Anos no Novo DCU'
+2025-07-30 14:22:05,827 - INFO - Searching for media content for post: Jensen Ackles Como Batman: A Profecia de Supernatural de 18 Anos no Novo DCU
+2025-07-30 14:22:05,875 - WARNING - No movie found for title: da The CW que o manteve em destaque de 2005 a 2020 (e também no spin-off The Winchesters)
+2025-07-30 14:22:05,922 - WARNING - No TV show found for title: da The CW que o manteve em destaque de 2005 a 2020 (e também no spin-off The Winchesters)
+2025-07-30 14:22:06,009 - WARNING - No movie found for title: The Boys e em Gen V
+2025-07-30 14:22:06,061 - WARNING - No TV show found for title: The Boys e em Gen V
+2025-07-30 14:22:06,112 - WARNING - No movie found for title: Jensen Ackles Como Batman
+2025-07-30 14:22:06,155 - WARNING - No TV show found for title: Jensen Ackles Como Batman
+2025-07-30 14:22:06,229 - WARNING - No movie found for title: Profecia de Supernatural de
+2025-07-30 14:22:06,299 - WARNING - No TV show found for title: Profecia de Supernatural de
+2025-07-30 14:22:06,346 - WARNING - No movie found for title: Anos no Novo DCU
+2025-07-30 14:22:06,416 - WARNING - No TV show found for title: Anos no Novo DCU
+2025-07-30 14:22:06,417 - INFO - Found 0 images and 0 trailers for post
+2025-07-30 14:22:06,477 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 53
+}
+]
+2025-07-30 14:22:06,477 - ERROR - Failed to get optimized content for post 10329
+2025-07-30 14:22:06,477 - INFO - Optimizing post ID: 10327 - 'Revelada a Nova Katniss: Mia Carragher Acende a Chama em &#8216;Jogos Vorazes: No Palco&#8217; em Londres'
+2025-07-30 14:22:08,624 - INFO - Searching for media content for post: Revelada a Nova Katniss: Mia Carragher Acende a Chama em &#8216;Jogos Vorazes: No Palco&#8217; em Londres
+2025-07-30 14:22:08,711 - WARNING - No movie found for title: https://www. youtube.
+
+com/embed/VIDEO_ID_DO_ANUNCIO
+2025-07-30 14:22:08,758 - WARNING - No TV show found for title: https://www. youtube.
+
+com/embed/VIDEO_ID_DO_ANUNCIO
+2025-07-30 14:22:08,808 - WARNING - No movie found for title: accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture
+2025-07-30 14:22:08,852 - WARNING - No TV show found for title: accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture
+2025-07-30 14:22:08,923 - WARNING - No movie found for title: Revelada a Nova Katniss
+2025-07-30 14:22:08,968 - WARNING - No TV show found for title: Revelada a Nova Katniss
+2025-07-30 14:22:09,037 - WARNING - No movie found for title: Mia Carragher Acende a Chama em
+2025-07-30 14:22:09,109 - WARNING - No TV show found for title: Mia Carragher Acende a Chama em
+2025-07-30 14:22:09,145 - INFO - Found movie: Jogos Vorazes: Em Chamas (2013-11-15)
+2025-07-30 14:22:09,182 - INFO - Found 2 images and 2 trailers for post
+2025-07-30 14:22:09,237 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 50
+}
+]
+2025-07-30 14:22:09,237 - ERROR - Failed to get optimized content for post 10327
+2025-07-30 14:22:09,237 - INFO - Optimizing post ID: 10325 - 'Memoir of a Snail Chega ao Hulu: O Filme de Stop-Motion Aclamado com 95% no Rotten Tomatoes'
+2025-07-30 14:22:10,532 - INFO - Searching for media content for post: Memoir of a Snail Chega ao Hulu: O Filme de Stop-Motion Aclamado com 95% no Rotten Tomatoes
+2025-07-30 14:22:10,587 - WARNING - No movie found for title: de Stop-Motion Aclamado com 95% no Rotten Tomatoes <p>Amantes da animação e de histórias profundas
+2025-07-30 14:22:10,651 - WARNING - No TV show found for title: de Stop-Motion Aclamado com 95% no Rotten Tomatoes <p>Amantes da animação e de histórias profundas
+2025-07-30 14:22:10,705 - WARNING - No movie found for title: conquistou corações internacionalmente
+2025-07-30 14:22:10,749 - WARNING - No TV show found for title: conquistou corações internacionalmente
+2025-07-30 14:22:10,796 - WARNING - No movie found for title: uma aprovação de 82% no medidor de pipoca do Rotten Tomatoes
+2025-07-30 14:22:10,846 - WARNING - No TV show found for title: uma aprovação de 82% no medidor de pipoca do Rotten Tomatoes
+2025-07-30 14:22:10,924 - WARNING - No movie found for title: para um público mais jovem
+2025-07-30 14:22:10,968 - WARNING - No TV show found for title: para um público mais jovem
+2025-07-30 14:22:11,016 - INFO - Found movie: O Que é Stop Motion? (2014-05-14)
+2025-07-30 14:22:11,060 - INFO - Found 2 images and 0 trailers for post
+2025-07-30 14:22:11,117 - ERROR - Failed to optimize content with Gemini: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-1.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 50
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 48
+}
+]
+2025-07-30 14:22:11,117 - ERROR - Failed to get optimized content for post 10325
+2025-07-30 14:22:11,117 - INFO - Optimization cycle completed. 0/10 posts optimized successfully
+2025-07-30 14:30:05,092 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 14:30:05,092 - INFO - All required configuration validated
+2025-07-30 14:30:05,092 - INFO - Configuration loaded successfully
+2025-07-30 14:30:05,093 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 14:30:05,093 - INFO - Gemini client initialized
+2025-07-30 14:30:05,093 - INFO - TMDB client initialized
+2025-07-30 14:30:07,205 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 14:30:07,205 - INFO - Gemini API client configured successfully
+2025-07-30 14:30:07,286 - INFO - TMDB API connection test successful
+2025-07-30 14:30:07,286 - INFO - Using João's author ID: 6
+2025-07-30 14:30:07,286 - INFO - Starting optimization cycle
+2025-07-30 14:30:13,113 - INFO - Found 10 new posts by João
+2025-07-30 14:30:13,113 - INFO - Limiting to 5 posts per cycle to manage API quota
+2025-07-30 14:30:13,113 - INFO - Processing post 1/5
+2025-07-30 14:30:13,113 - INFO - Optimizing post ID: 10347 - 'Os 10 Momentos Mais Épicos e Inesquecíveis de Arrow: Da Escuridão à Lenda de Star City'
+2025-07-30 14:30:15,815 - INFO - Searching for media content for post: Os 10 Momentos Mais Épicos e Inesquecíveis de Arrow: Da Escuridão à Lenda de Star City
+2025-07-30 14:30:15,836 - INFO - Found movie: 13 Minutos de Tormenta (2021-10-29)
+2025-07-30 14:30:15,896 - WARNING - No movie found for title: Flash Reverso da linha do tempo
+2025-07-30 14:30:15,964 - WARNING - No TV show found for title: Flash Reverso da linha do tempo
+2025-07-30 14:30:16,024 - WARNING - No movie found for title: Arrow de Prometheus
+2025-07-30 14:30:16,082 - WARNING - No TV show found for title: Arrow de Prometheus
+2025-07-30 14:30:16,082 - INFO - Found 2 images and 1 trailers for post
+2025-07-30 14:30:16,347 - WARNING - Quota exceeded. Waiting 60 seconds before retry 1/3
+2025-07-30 14:31:16,435 - WARNING - Quota exceeded. Waiting 60 seconds before retry 2/3
+2025-07-30 14:32:16,517 - WARNING - Quota exceeded. Waiting 60 seconds before retry 3/3
+2025-07-30 14:32:16,517 - ERROR - Max retries reached for quota exceeded error
+2025-07-30 14:32:16,517 - ERROR - Failed to get optimized content for post 10347
+2025-07-30 14:32:16,517 - WARNING - Post optimization failed, checking for quota issues
+2025-07-30 14:32:16,517 - WARNING - Quota exceeded, stopping optimization cycle early
+2025-07-30 14:32:16,518 - INFO - Optimization cycle completed. 0/5 posts optimized successfully
+2025-07-30 14:35:07,925 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 14:35:07,925 - INFO - All required configuration validated
+2025-07-30 14:35:07,925 - INFO - Configuration loaded successfully
+2025-07-30 14:35:07,925 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 14:35:07,926 - INFO - Gemini client initialized
+2025-07-30 14:35:07,926 - INFO - TMDB client initialized
+2025-07-30 14:35:09,036 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 14:35:09,037 - INFO - Gemini API client configured successfully
+2025-07-30 14:35:09,090 - INFO - TMDB API connection test successful
+2025-07-30 14:35:09,091 - INFO - Using João's author ID: 6
+2025-07-30 14:35:09,091 - INFO - Starting optimization cycle
+2025-07-30 14:35:15,961 - INFO - Found 10 new posts by João
+2025-07-30 14:35:15,961 - INFO - Limiting to 2 posts per cycle to manage API quota
+2025-07-30 14:35:15,961 - INFO - Processing post 1/2
+2025-07-30 14:35:15,961 - INFO - Optimizing post ID: 10352 - 'King of the Hill: A Nova Temporada de &#8216;O Rei do Pedaço&#8217; Surpreende com 100% no Rotten Tomatoes!'
+2025-07-30 14:35:17,535 - INFO - Searching for media content for post: King of the Hill: A Nova Temporada de &#8216;O Rei do Pedaço&#8217; Surpreende com 100% no Rotten Tomatoes!
+2025-07-30 14:35:17,598 - WARNING - No movie found for title: sua própria avaliação positiva
+2025-07-30 14:35:17,654 - WARNING - No TV show found for title: sua própria avaliação positiva
+2025-07-30 14:35:17,711 - INFO - Found movie: Acompanhante Perfeita (2025-01-22)
+2025-07-30 14:35:17,817 - WARNING - No movie found for title: prova que é possível evoluir sem perder a essência
+2025-07-30 14:35:17,866 - WARNING - No TV show found for title: prova que é possível evoluir sem perder a essência
+2025-07-30 14:35:17,866 - INFO - Found 2 images and 2 trailers for post
+2025-07-30 14:35:18,139 - WARNING - Quota exceeded. Waiting 60 seconds before retry 1/5
+2025-07-30 14:36:06,441 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 14:36:06,442 - INFO - All required configuration validated
+2025-07-30 14:36:06,442 - INFO - Configuration loaded successfully
+2025-07-30 14:36:06,442 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 14:36:06,443 - INFO - Gemini client initialized
+2025-07-30 14:36:06,443 - INFO - TMDB client initialized
+2025-07-30 14:36:07,782 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 14:36:07,783 - INFO - Gemini API client configured successfully
+2025-07-30 14:36:07,822 - INFO - TMDB API connection test successful
+2025-07-30 14:36:07,823 - INFO - Using João's author ID: 6
+2025-07-30 14:36:07,823 - INFO - Starting optimization cycle
+2025-07-30 14:36:14,383 - INFO - Found 10 new posts by João
+2025-07-30 14:36:14,383 - INFO - Limiting to 2 posts per cycle to manage API quota
+2025-07-30 14:36:14,384 - INFO - Processing post 1/2
+2025-07-30 14:36:14,384 - INFO - Optimizing post ID: 10352 - 'King of the Hill: A Nova Temporada de &#8216;O Rei do Pedaço&#8217; Surpreende com 100% no Rotten Tomatoes!'
+2025-07-30 14:36:15,432 - INFO - Searching for media content for post: King of the Hill: A Nova Temporada de &#8216;O Rei do Pedaço&#8217; Surpreende com 100% no Rotten Tomatoes!
+2025-07-30 14:36:15,470 - WARNING - No movie found for title: sua própria avaliação positiva
+2025-07-30 14:36:15,501 - WARNING - No TV show found for title: sua própria avaliação positiva
+2025-07-30 14:36:15,532 - INFO - Found movie: Acompanhante Perfeita (2025-01-22)
+2025-07-30 14:36:15,594 - WARNING - No movie found for title: prova que é possível evoluir sem perder a essência
+2025-07-30 14:36:15,625 - WARNING - No TV show found for title: prova que é possível evoluir sem perder a essência
+2025-07-30 14:36:15,625 - INFO - Found 2 images and 2 trailers for post
+2025-07-30 14:36:15,914 - WARNING - Quota exceeded. Waiting 60 seconds before retry 1/5
+2025-07-30 14:37:15,916 - INFO - Waiting 20 seconds before retry attempt 1
+2025-07-30 14:37:35,996 - WARNING - Quota exceeded. Waiting 60 seconds before retry 2/5
+2025-07-30 14:38:35,996 - INFO - Waiting 40 seconds before retry attempt 2
+2025-07-30 14:39:16,107 - WARNING - Quota exceeded. Waiting 60 seconds before retry 3/5
+2025-07-30 14:40:16,107 - INFO - Waiting 80 seconds before retry attempt 3
+2025-07-30 14:40:37,898 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 14:40:37,899 - INFO - All required configuration validated
+2025-07-30 14:40:37,899 - INFO - Configuration loaded successfully
+2025-07-30 14:40:37,900 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 14:40:37,900 - INFO - Gemini client initialized
+2025-07-30 14:40:37,900 - INFO - TMDB client initialized
+2025-07-30 14:40:39,459 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 14:40:39,460 - INFO - Gemini API client configured successfully
+2025-07-30 14:40:39,518 - INFO - TMDB API connection test successful
+2025-07-30 14:40:39,519 - INFO - Using João's author ID: 6
+2025-07-30 14:40:39,519 - INFO - Starting optimization cycle
+2025-07-30 14:40:46,120 - INFO - Found 10 new posts by João
+2025-07-30 14:40:46,120 - INFO - Limiting to 2 posts per cycle to manage API quota
+2025-07-30 14:40:46,120 - INFO - Processing post 1/2
+2025-07-30 14:40:46,120 - INFO - Optimizing post ID: 10352 - 'King of the Hill: A Nova Temporada de &#8216;O Rei do Pedaço&#8217; Surpreende com 100% no Rotten Tomatoes!'
+2025-07-30 14:40:47,175 - INFO - Searching for media content for post: King of the Hill: A Nova Temporada de &#8216;O Rei do Pedaço&#8217; Surpreende com 100% no Rotten Tomatoes!
+2025-07-30 14:40:47,195 - WARNING - No movie found for title: sua própria avaliação positiva
+2025-07-30 14:40:47,208 - WARNING - No TV show found for title: sua própria avaliação positiva
+2025-07-30 14:40:47,223 - INFO - Found movie: Acompanhante Perfeita (2025-01-22)
+2025-07-30 14:40:47,250 - WARNING - No movie found for title: prova que é possível evoluir sem perder a essência
+2025-07-30 14:40:47,264 - WARNING - No TV show found for title: prova que é possível evoluir sem perder a essência
+2025-07-30 14:40:47,265 - INFO - Found 2 images and 2 trailers for post
+2025-07-30 14:40:47,517 - WARNING - Quota exceeded. Waiting 60 seconds before retry 1/5
+2025-07-30 14:41:47,519 - INFO - Waiting 20 seconds before retry attempt 1
+2025-07-30 14:41:54,957 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 14:41:54,958 - INFO - All required configuration validated
+2025-07-30 14:41:54,958 - INFO - Configuration loaded successfully
+2025-07-30 14:41:54,959 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 14:41:54,959 - INFO - Gemini client initialized
+2025-07-30 14:41:54,960 - INFO - TMDB client initialized
+2025-07-30 14:41:55,965 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 14:41:55,972 - INFO - Gemini API client configured successfully
+2025-07-30 14:41:56,081 - INFO - TMDB API connection test successful
+2025-07-30 14:41:56,083 - INFO - Using João's author ID: 6
+2025-07-30 14:41:56,155 - INFO - Starting optimization cycle
+2025-07-30 14:41:57,095 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 14:41:57,095 - INFO - All required configuration validated
+2025-07-30 14:41:57,095 - INFO - Configuration loaded successfully
+2025-07-30 14:41:57,097 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 14:41:57,098 - INFO - Gemini client initialized
+2025-07-30 14:41:57,098 - INFO - TMDB client initialized
+2025-07-30 14:41:58,287 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 14:41:58,288 - INFO - Gemini API client configured successfully
+2025-07-30 14:41:58,331 - INFO - TMDB API connection test successful
+2025-07-30 14:41:58,331 - INFO - Using João's author ID: 6
+2025-07-30 14:41:58,331 - INFO - Starting optimization cycle
+2025-07-30 14:41:59,615 - INFO - === WordPress SEO Optimizer Started ===
+2025-07-30 14:41:59,616 - INFO - All required configuration validated
+2025-07-30 14:41:59,616 - INFO - Configuration loaded successfully
+2025-07-30 14:41:59,616 - INFO - WordPress client initialized for https://www.maquinanerd.com.br/
+2025-07-30 14:41:59,616 - INFO - Gemini client initialized
+2025-07-30 14:41:59,617 - INFO - TMDB client initialized
+2025-07-30 14:42:00,208 - INFO - Found 10 new posts by João
+2025-07-30 14:42:00,209 - INFO - Limiting to 2 posts per cycle to manage API quota
+2025-07-30 14:42:00,209 - INFO - Processing post 1/2
+2025-07-30 14:42:00,209 - INFO - Optimizing post ID: 10352 - 'King of the Hill: A Nova Temporada de &#8216;O Rei do Pedaço&#8217; Surpreende com 100% no Rotten Tomatoes!'
+2025-07-30 14:42:00,994 - INFO - Searching for media content for post: King of the Hill: A Nova Temporada de &#8216;O Rei do Pedaço&#8217; Surpreende com 100% no Rotten Tomatoes!
+2025-07-30 14:42:01,020 - WARNING - No movie found for title: sua própria avaliação positiva
+2025-07-30 14:42:01,034 - WARNING - No TV show found for title: sua própria avaliação positiva
+2025-07-30 14:42:01,051 - INFO - Found movie: Acompanhante Perfeita (2025-01-22)
+2025-07-30 14:42:01,086 - WARNING - No movie found for title: prova que é possível evoluir sem perder a essência
+2025-07-30 14:42:01,101 - WARNING - No TV show found for title: prova que é possível evoluir sem perder a essência
+2025-07-30 14:42:01,101 - INFO - Found 2 images and 2 trailers for post
+2025-07-30 14:42:01,117 - INFO - Successfully connected to WordPress API at https://www.maquinanerd.com.br
+2025-07-30 14:42:01,118 - INFO - Gemini API client configured successfully
+2025-07-30 14:42:01,176 - INFO - TMDB API connection test successful
+2025-07-30 14:42:01,177 - INFO - Using João's author ID: 6
+2025-07-30 14:42:01,177 - INFO - Starting SEO optimizer scheduler
+2025-07-30 14:42:01,178 - INFO - Starting optimization cycle
+2025-07-30 14:42:01,372 - WARNING - Quota exceeded. Waiting 60 seconds before retry 1/5
+2025-07-30 14:42:03,346 - INFO - Found 10 new posts by João
+2025-07-30 14:42:03,346 - INFO - Limiting to 2 posts per cycle to manage API quota
+2025-07-30 14:42:03,347 - INFO - Processing post 1/2
+2025-07-30 14:42:03,347 - INFO - Optimizing post ID: 10352 - 'King of the Hill: A Nova Temporada de &#8216;O Rei do Pedaço&#8217; Surpreende com 100% no Rotten Tomatoes!'
+2025-07-30 14:42:05,044 - INFO - Searching for media content for post: King of the Hill: A Nova Temporada de &#8216;O Rei do Pedaço&#8217; Surpreende com 100% no Rotten Tomatoes!
+2025-07-30 14:42:05,063 - WARNING - No movie found for title: sua própria avaliação positiva
+2025-07-30 14:42:05,076 - WARNING - No TV show found for title: sua própria avaliação positiva
+2025-07-30 14:42:05,090 - INFO - Found movie: Acompanhante Perfeita (2025-01-22)
+2025-07-30 14:42:05,120 - WARNING - No movie found for title: prova que é possível evoluir sem perder a essência
+2025-07-30 14:42:05,133 - WARNING - No TV show found for title: prova que é possível evoluir sem perder a essência
+2025-07-30 14:42:05,134 - INFO - Found 2 images and 2 trailers for post
+2025-07-30 14:42:05,386 - WARNING - Quota exceeded. Waiting 60 seconds before retry 1/5
+2025-07-30 14:42:07,589 - WARNING - Quota exceeded. Waiting 60 seconds before retry 2/5
+2025-07-30 14:42:07,687 - INFO - Found 10 new posts by João
+2025-07-30 14:42:07,691 - INFO - Limiting to 2 posts per cycle to manage API quota
+2025-07-30 14:42:07,691 - INFO - Processing post 1/2
+2025-07-30 14:42:07,692 - INFO - Optimizing post ID: 10352 - 'King of the Hill: A Nova Temporada de &#8216;O Rei do Pedaço&#8217; Surpreende com 100% no Rotten Tomatoes!'
+2025-07-30 14:42:09,108 - INFO - Searching for media content for post: King of the Hill: A Nova Temporada de &#8216;O Rei do Pedaço&#8217; Surpreende com 100% no Rotten Tomatoes!
+2025-07-30 14:42:09,132 - WARNING - No movie found for title: sua própria avaliação positiva
+2025-07-30 14:42:09,147 - WARNING - No TV show found for title: sua própria avaliação positiva
+2025-07-30 14:42:09,169 - INFO - Found movie: Acompanhante Perfeita (2025-01-22)
+2025-07-30 14:42:09,213 - WARNING - No movie found for title: prova que é possível evoluir sem perder a essência
+2025-07-30 14:42:09,227 - WARNING - No TV show found for title: prova que é possível evoluir sem perder a essência
+2025-07-30 14:42:09,227 - INFO - Found 2 images and 2 trailers for post
+2025-07-30 14:42:09,457 - WARNING - Quota exceeded. Waiting 60 seconds before retry 1/5
+2025-07-30 14:43:01,373 - INFO - Waiting 20 seconds before retry attempt 1
+2025-07-30 14:43:05,387 - INFO - Waiting 20 seconds before retry attempt 1
+2025-07-30 14:43:07,593 - INFO - Waiting 40 seconds before retry attempt 2
+2025-07-30 14:43:09,458 - INFO - Waiting 20 seconds before retry attempt 1
+2025-07-30 14:43:21,440 - WARNING - Quota exceeded. Waiting 60 seconds before retry 2/5
+2025-07-30 14:43:25,458 - WARNING - Quota exceeded. Waiting 60 seconds before retry 2/5
+2025-07-30 14:43:29,514 - WARNING - Quota exceeded. Waiting 60 seconds before retry 2/5
+2025-07-30 14:43:47,641 - WARNING - Quota exceeded. Waiting 60 seconds before retry 3/5
+2025-07-30 14:44:21,440 - INFO - Waiting 40 seconds before retry attempt 2
+2025-07-30 14:44:25,459 - INFO - Waiting 40 seconds before retry attempt 2
+2025-07-30 14:44:29,515 - INFO - Waiting 40 seconds before retry attempt 2
+2025-07-30 14:44:47,642 - INFO - Waiting 80 seconds before retry attempt 3
+2025-07-30 14:45:01,520 - WARNING - Quota exceeded. Waiting 60 seconds before retry 3/5
+2025-07-30 14:45:05,519 - WARNING - Quota exceeded. Waiting 60 seconds before retry 3/5
+2025-07-30 14:45:09,577 - WARNING - Quota exceeded. Waiting 60 seconds before retry 3/5
+2025-07-30 14:46:01,520 - INFO - Waiting 80 seconds before retry attempt 3
+2025-07-30 14:46:05,521 - INFO - Waiting 80 seconds before retry attempt 3
+2025-07-30 14:46:07,725 - WARNING - Quota exceeded. Waiting 60 seconds before retry 4/5
+2025-07-30 14:46:09,580 - INFO - Waiting 80 seconds before retry attempt 3
