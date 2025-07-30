@@ -48,7 +48,7 @@ class SEOOptimizer:
         gemini_api_keys = self.config.get_gemini_api_keys()
         logger.info(f"Initializing Gemini client with {len(gemini_api_keys)} API keys")
         self.gemini_client = GeminiClient(
-            api_key=self.config.get_gemini_api_key(),
+            api_key=gemini_api_keys[0],
             backup_keys=gemini_api_keys
         )
         self.tmdb_client = TMDBClient(

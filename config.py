@@ -24,31 +24,40 @@ class Config:
         _wordpress_password = os.getenv('WORDPRESS_PASSWORD')
         _wordpress_domain = os.getenv('WORDPRESS_DOMAIN')
         
-        # Gemini configuration with backup support
-        _gemini_api_key = os.getenv('GEMINI_API_KEY', 'AIzaSyD7X2_8KPNZrnQnQ_643TjIJ2tpbkuRSms')
-        _gemini_api_key_backup = os.getenv('GEMINI_API_KEY_BACKUP')
+        # Gemini configuration: suporta múltiplas chaves GEMINI_API_KEY, GEMINI_API_KEY_1, GEMINI_API_KEY_2...
+        _gemini_api_keys = []
+        for k, v in os.environ.items():
+            if k == 'GEMINI_API_KEY' or k.startswith('GEMINI_API_KEY_'):
+                if v and v not in _gemini_api_keys:
+                    _gemini_api_keys.append(v)
+        if not _gemini_api_keys:
+            # fallback para padrão antigo
+            _gemini_api_keys = [os.getenv('GEMINI_API_KEY', 'AIzaSyD7X2_8KPNZrnQnQ_643TjIJ2tpbkuRSms')]
         
         # TMDB configuration
         _tmdb_api_key = os.getenv('TMDB_API_KEY', 'cb60717161e33e2972bd217aabaa27f4')
         _tmdb_read_token = os.getenv('TMDB_READ_TOKEN', 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYjYwNzE3MTYxZTMzZTI5NzJiZDIxN2FhYmFhMjdmNCIsIm5iZiI6MTY4OTI2MjQ1NC4zODYsInN1YiI6IjY0YjAxOTc2NmEzNDQ4MDE0ZDM1NDYyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vw6ILzP4aEOLFL-MbIMiwPVvZGOmxMwRLtjo2TJLzns')
         
         # Validate required configuration
-        self._validate_config(_wordpress_url, _wordpress_username, _wordpress_password, _wordpress_domain, _gemini_api_key, _tmdb_api_key, _tmdb_read_token)
-        
+        self._validate_config(_wordpress_url, _wordpress_username, _wordpress_password, _wordpress_domain, _gemini_api_keys[0], _tmdb_api_key, _tmdb_read_token)
+
         # After validation, these properties are guaranteed to be non-None
         self.wordpress_url: str = _wordpress_url  # type: ignore
         self.wordpress_username: str = _wordpress_username  # type: ignore
         self.wordpress_password: str = _wordpress_password  # type: ignore
         self.wordpress_domain: str = _wordpress_domain  # type: ignore
-        self.gemini_api_key: str = _gemini_api_key  # type: ignore
-        self.gemini_api_key_backup: str = _gemini_api_key_backup if _gemini_api_key_backup else _gemini_api_key  # type: ignore
-        
-        # Store both keys for switching
-        self.gemini_keys = [self.gemini_api_key, self.gemini_api_key_backup] if _gemini_api_key_backup else [self.gemini_api_key]
+        self.gemini_keys = _gemini_api_keys
+        self.gemini_api_key: str = self.gemini_keys[0]
         self.tmdb_api_key: str = _tmdb_api_key  # type: ignore
         self.tmdb_read_token: str = _tmdb_read_token  # type: ignore
-        
+
         logger.info("Configuration loaded successfully")
+
+    def get_gemini_api_keys(self):
+        return self.gemini_keys
+
+    def get_gemini_api_key(self):
+        return self.gemini_api_key
     
     def _validate_config(self, wordpress_url: Optional[str], wordpress_username: Optional[str], 
                          wordpress_password: Optional[str], wordpress_domain: Optional[str], 

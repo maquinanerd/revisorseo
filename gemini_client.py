@@ -33,7 +33,7 @@ class GeminiClient:
         self.model = "gemini-1.5-flash"
         self.quota_file = "gemini_quota.json"
         self.max_daily_requests = 45  # Leave some buffer from 50 limit
-        logger.info(f"Gemini client initialized with {len(self.api_keys)} API key(s)")
+        logger.info(f"Gemini client initialized with {len(self.api_keys)} API key(s): {[k[:8]+'...' for k in self.api_keys]}")
 
     def _load_quota_data(self) -> dict:
         """Load quota usage data from file."""
@@ -77,10 +77,10 @@ class GeminiClient:
             self.current_key_index += 1
             self.current_api_key = self.api_keys[self.current_key_index]
             genai.configure(api_key=self.current_api_key)
-            logger.info(f"✅ Switched to backup API key #{self.current_key_index + 1} - {self.current_api_key[:20]}...")
+            logger.info(f"Switched to backup API key #{self.current_key_index + 1} - {self.current_api_key[:8]}...")
             return True
         else:
-            logger.warning(f"❌ No backup key available. Keys: {len(self.api_keys)}, Current index: {self.current_key_index}")
+            logger.warning(f"No backup key available. Keys: {len(self.api_keys)}, Current index: {self.current_key_index}")
             return False
 
     def _create_seo_prompt(self, title: str, excerpt: str, content: str, tags: List[str], domain: str, 
@@ -225,7 +225,7 @@ Importante:
             max_retries = 5
             base_delay = 10
 
-            for attempt in range(max_retries):
+            for attempt in range(max_retries * len(self.api_keys)):
                 try:
                     # Add delay before each attempt
                     if attempt > 0:
@@ -262,20 +262,17 @@ Importante:
                 except Exception as e:
                     error_str = str(e)
                     if "429" in error_str and "quota" in error_str.lower():
-                        logger.warning(f"Quota exceeded on key #{self.current_key_index + 1}")
-                        
-                        # Try to switch to backup key
+                        logger.warning(f"Quota exceeded on key #{self.current_key_index + 1} - {self.current_api_key[:8]}...")
+                        # Tenta trocar de chave até acabar as opções
                         if self._switch_to_backup_key():
                             logger.info("Retrying with backup API key")
                             continue
-                        
-                        # If no backup key available, wait
+                        # Se não houver mais chaves, espera e tenta de novo
                         import re
                         retry_match = re.search(r'retry_delay.*?seconds:\s*(\d+)', error_str)
                         wait_time = int(retry_match.group(1)) if retry_match else 60
-
-                        logger.warning(f"No backup key available. Waiting {wait_time} seconds before retry {attempt + 1}/{max_retries}")
-                        if attempt < max_retries - 1:
+                        logger.warning(f"No backup key available. Waiting {wait_time} seconds before retry {attempt + 1}/{max_retries * len(self.api_keys)}")
+                        if attempt < (max_retries * len(self.api_keys)) - 1:
                             time.sleep(wait_time)
                             continue
                         else:
@@ -283,7 +280,7 @@ Importante:
                             return None
                     else:
                         logger.error(f"Failed to optimize content with Gemini (attempt {attempt + 1}): {e}")
-                        if attempt < max_retries - 1:
+                        if attempt < (max_retries * len(self.api_keys)) - 1:
                             time.sleep(2)  # Short delay for other errors
                             continue
                         else:
@@ -309,5 +306,5 @@ Importante:
             logger.error("Gemini API connection test failed: received empty response.")
             return False
         except Exception as e:
-            logger.error(f"❌ Gemini API connection test failed: {e}")
+            logger.error(f"Gemini API connection test failed: {e}")
             return False
