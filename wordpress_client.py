@@ -59,9 +59,11 @@ class WordPressClient:
     def get_authors(self) -> List[Dict[str, Any]]:
         """Get all authors from WordPress."""
         authors = self._make_request('GET', 'users', params={'per_page': 100})
-        return authors if authors else []
+        if isinstance(authors, list):
+            return authors
+        return []
     
-    def get_posts_by_author(self, author_id: int, since: str = None, per_page: int = 10) -> List[Dict[str, Any]]:
+    def get_posts_by_author(self, author_id: int, since: Optional[str] = None, per_page: int = 10) -> List[Dict[str, Any]]:
         """
         Get posts by a specific author.
         
@@ -84,7 +86,9 @@ class WordPressClient:
             params['after'] = since
         
         posts = self._make_request('GET', 'posts', params=params)
-        return posts if posts else []
+        if isinstance(posts, list):
+            return posts
+        return []
     
     def get_post_tags(self, post_id: int) -> List[str]:
         """Get tags for a specific post."""
@@ -143,11 +147,11 @@ class WordPressClient:
         """Test the WordPress API connection."""
         try:
             result = self._make_request('GET', '')
-            if result and 'name' in result:
-                logger.info(f"Successfully connected to WordPress site: {result['name']}")
+            if result and 'namespace' in result and result['namespace'] == 'wp/v2':
+                logger.info(f"Successfully connected to WordPress API at {self.site_url}")
                 return True
             else:
-                logger.error("Failed to connect to WordPress API")
+                logger.error("Failed to connect to WordPress API - invalid response")
                 return False
         except Exception as e:
             logger.error(f"WordPress connection test failed: {e}")

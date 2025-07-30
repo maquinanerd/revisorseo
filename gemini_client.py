@@ -7,8 +7,7 @@ import logging
 import re
 from typing import Dict, List, Optional
 
-from google import genai
-from google.genai import types
+import google.generativeai as genai
 
 logger = logging.getLogger(__name__)
 
@@ -23,8 +22,8 @@ class GeminiClient:
         Args:
             api_key: Google Gemini API key
         """
-        self.client = genai.Client(api_key=api_key)
-        self.model = "gemini-2.5-pro"
+        genai.configure(api_key=api_key)
+        self.model = "gemini-1.5-pro"
         logger.info("Gemini client initialized")
     
     def _create_seo_prompt(self, title: str, excerpt: str, content: str, tags: List[str], domain: str) -> str:
@@ -83,18 +82,23 @@ Importante: **não mude o conteúdo nem o sentido original**, apenas melhore a e
                 logger.error("Could not parse all sections from Gemini response")
                 return None
             
-            result = {
-                'title': title_match.group(1).strip(),
-                'excerpt': excerpt_match.group(1).strip(),
-                'content': content_match.group(1).strip()
-            }
-            
-            # Basic validation
-            if not all(result.values()):
-                logger.error("One or more sections are empty in Gemini response")
+            # Check if matches have groups before accessing them
+            if title_match and excerpt_match and content_match:
+                result = {
+                    'title': title_match.group(1).strip(),
+                    'excerpt': excerpt_match.group(1).strip(),
+                    'content': content_match.group(1).strip()
+                }
+                
+                # Basic validation
+                if not all(result.values()):
+                    logger.error("One or more sections are empty in Gemini response")
+                    return None
+                
+                return result
+            else:
+                logger.error("Failed to extract content sections from Gemini response")
                 return None
-            
-            return result
             
         except Exception as e:
             logger.error(f"Failed to parse Gemini response: {e}")
@@ -119,15 +123,13 @@ Importante: **não mude o conteúdo nem o sentido original**, apenas melhore a e
             prompt = self._create_seo_prompt(title, excerpt, content, tags, domain)
             
             # Make request to Gemini
-            response = self.client.models.generate_content(
-                model=self.model,
-                contents=[
-                    types.Content(role="user", parts=[types.Part(text=prompt)])
-                ],
-                config=types.GenerateContentConfig(
-                    temperature=0.3,  # Lower temperature for more consistent output
-                    max_output_tokens=4000,
-                )
+            model = genai.GenerativeModel(self.model)
+            response = model.generate_content(
+                prompt,
+                generation_config={
+                    'temperature': 0.3,
+                    'max_output_tokens': 4000,
+                }
             )
             
             if not response.text:
@@ -155,10 +157,8 @@ Importante: **não mude o conteúdo nem o sentido original**, apenas melhore a e
     def test_connection(self) -> bool:
         """Test the Gemini API connection."""
         try:
-            response = self.client.models.generate_content(
-                model=self.model,
-                contents="Test message. Please respond with 'Hello, connection successful!'"
-            )
+            model = genai.GenerativeModel(self.model)
+            response = model.generate_content("Test message. Please respond with 'Hello, connection successful!'")
             
             if response.text and "Hello" in response.text:
                 logger.info("Gemini API connection test successful")

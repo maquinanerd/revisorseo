@@ -4,6 +4,7 @@ Configuration management using environment variables.
 
 import os
 import logging
+from typing import Optional
 from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
@@ -17,28 +18,37 @@ class Config:
         # Load .env file if it exists
         load_dotenv()
         
-        # WordPress configuration
-        self.wordpress_url = os.getenv('WORDPRESS_URL')
-        self.wordpress_username = os.getenv('WORDPRESS_USERNAME')
-        self.wordpress_password = os.getenv('WORDPRESS_PASSWORD')
-        self.wordpress_domain = os.getenv('WORDPRESS_DOMAIN')
+        # WordPress configuration - temporarily store as Optional[str]
+        _wordpress_url = os.getenv('WORDPRESS_URL')
+        _wordpress_username = os.getenv('WORDPRESS_USERNAME')
+        _wordpress_password = os.getenv('WORDPRESS_PASSWORD')
+        _wordpress_domain = os.getenv('WORDPRESS_DOMAIN')
         
         # Gemini configuration
-        self.gemini_api_key = os.getenv('GEMINI_API_KEY', 'AIzaSyD7X2_8KPNZrnQnQ_643TjIJ2tpbkuRSms')
+        _gemini_api_key = os.getenv('GEMINI_API_KEY', 'AIzaSyD7X2_8KPNZrnQnQ_643TjIJ2tpbkuRSms')
         
         # Validate required configuration
-        self._validate_config()
+        self._validate_config(_wordpress_url, _wordpress_username, _wordpress_password, _wordpress_domain, _gemini_api_key)
+        
+        # After validation, these properties are guaranteed to be non-None
+        self.wordpress_url: str = _wordpress_url  # type: ignore
+        self.wordpress_username: str = _wordpress_username  # type: ignore
+        self.wordpress_password: str = _wordpress_password  # type: ignore
+        self.wordpress_domain: str = _wordpress_domain  # type: ignore
+        self.gemini_api_key: str = _gemini_api_key  # type: ignore
         
         logger.info("Configuration loaded successfully")
     
-    def _validate_config(self):
+    def _validate_config(self, wordpress_url: Optional[str], wordpress_username: Optional[str], 
+                         wordpress_password: Optional[str], wordpress_domain: Optional[str], 
+                         gemini_api_key: Optional[str]):
         """Validate that all required configuration is present."""
         required_vars = [
-            ('WORDPRESS_URL', self.wordpress_url),
-            ('WORDPRESS_USERNAME', self.wordpress_username),
-            ('WORDPRESS_PASSWORD', self.wordpress_password),
-            ('WORDPRESS_DOMAIN', self.wordpress_domain),
-            ('GEMINI_API_KEY', self.gemini_api_key)
+            ('WORDPRESS_URL', wordpress_url),
+            ('WORDPRESS_USERNAME', wordpress_username),
+            ('WORDPRESS_PASSWORD', wordpress_password),
+            ('WORDPRESS_DOMAIN', wordpress_domain),
+            ('GEMINI_API_KEY', gemini_api_key)
         ]
         
         missing_vars = []
@@ -50,10 +60,10 @@ class Config:
             raise ValueError(f"Missing required environment variables: {', '.join(missing_vars)}")
         
         # Validate URLs
-        if not self.wordpress_url or not self.wordpress_url.startswith(('http://', 'https://')):
+        if not wordpress_url or not wordpress_url.startswith(('http://', 'https://')):
             raise ValueError("WORDPRESS_URL must start with http:// or https://")
         
-        if not self.wordpress_domain or not self.wordpress_domain.startswith(('http://', 'https://')):
+        if not wordpress_domain or not wordpress_domain.startswith(('http://', 'https://')):
             raise ValueError("WORDPRESS_DOMAIN must start with http:// or https://")
         
         logger.info("All required configuration validated")
