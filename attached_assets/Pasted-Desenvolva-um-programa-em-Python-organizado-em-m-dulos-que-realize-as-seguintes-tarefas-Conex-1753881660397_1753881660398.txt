@@ -1,0 +1,66 @@
+Desenvolva um programa em Python, organizado em módulos, que realize as seguintes tarefas:
+
+🔌 Conexão e Integração
+Acesse meu site WordPress via API REST, utilizando autenticação por token (ou outro método adequado conforme as credenciais forem disponibilizadas por meio de variáveis de ambiente).
+
+Verifique novos posts criados especificamente pelo autor "João" (o programa deve identificar o ID ou slug do autor “João” via API para filtrar os posts).
+
+O programa deverá ser executado periodicamente (cron job ou scheduler) e processar automaticamente cada novo post publicado por esse autor.
+
+🧠 Reescrita com Google Gemini 1.5 Pro
+Para cada post novo, envie as seguintes informações à API Gemini 1.5, utilizando a chave de API AIzaSyD7X2_8KPNZrnQnQ_643TjIJ2tpbkuRSms.
+
+O prompt a ser enviado ao modelo Gemini deve ser o seguinte:
+
+less
+Copiar
+Editar
+Você é um jornalista especialista em cultura pop, cinema e séries. Sua tarefa é revisar o conteúdo abaixo para SEO no Google News, sem alterar a essência do texto. A revisão deve seguir as diretrizes abaixo:
+
+1. Otimize o título, mantendo a clareza e adicionando palavras-chave relevantes para melhorar o desempenho nos mecanismos de busca.
+2. Reescreva o resumo (excerpt) tornando-o mais atrativo e informativo, com foco em engajamento e SEO.
+3. Reestruture o conteúdo completo sem mudar o sentido original:
+   - Separe parágrafos muito grandes em blocos menores e mais escaneáveis.
+   - Mantenha o tom jornalístico e informativo.
+4. Destaque com **negrito** os principais nomes, termos e expressões importantes (títulos de filmes, nomes de personagens, diretores, datas etc.).
+5. Insira **links internos** em termos relacionados a outras matérias, com base nas **tags** fornecidas. Use esta estrutura de link:
+   [Texto âncora](https://seudominio.com.br/tag/NOME-DA-TAG)
+
+Exemplo:
+**[Stranger Things](https://seudominio.com.br/tag/stranger-things)**
+
+Importante: **não mude o conteúdo nem o sentido original**, apenas melhore a estrutura, o SEO e a escaneabilidade para o Google News.
+
+Formato da resposta:
+
+## Novo Título:
+(título otimizado)
+
+## Novo Resumo:
+(resumo otimizado)
+
+## Novo Conteúdo:
+(conteúdo revisado com parágrafos curtos, negrito e links internos)
+✍️ Atualização no WordPress
+Substitua os campos no post original:
+
+title com o Novo Título;
+
+excerpt com o Novo Resumo;
+
+content com o Novo Conteúdo formatado com HTML.
+
+Mantenha o status do post como publish, preservando a mesma URL (slug), tags, categorias e autor.
+
+📦 Estrutura do Projeto
+main.py: orquestra toda a lógica do programa (loop, verificação de posts, etc.);
+
+wordpress_client.py: gerencia autenticação, leitura e escrita via API REST do WordPress;
+
+gemini_client.py: gerencia a autenticação e comunicação com a API Gemini 1.5;
+
+.env: armazena as variáveis sensíveis como tokens de API e URL do WordPress;
+
+Use a biblioteca python-dotenv para ler as variáveis;
+
+Utilize requests ou httpx para requisições HTTP.
