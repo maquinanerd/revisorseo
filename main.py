@@ -157,7 +157,7 @@ class SEOOptimizer:
                 return
             
             # Limit posts processed per cycle to manage quota
-            max_posts_per_cycle = 5
+            max_posts_per_cycle = 2  # Reduced from 5 to 2
             posts_to_process = new_posts[:max_posts_per_cycle]
             
             if len(new_posts) > max_posts_per_cycle:
@@ -172,7 +172,7 @@ class SEOOptimizer:
                 if self.optimize_post(post):
                     success_count += 1
                     # Add delay between posts to respect API rate limits
-                    time.sleep(5)  # Increased delay
+                    time.sleep(30)  # Increased delay to 30 seconds
                 else:
                     # Check if it's a quota error
                     logger.warning("Post optimization failed, checking for quota issues")
@@ -191,8 +191,8 @@ class SEOOptimizer:
         """Start the scheduled optimization process."""
         logger.info("Starting SEO optimizer scheduler")
         
-        # Schedule to run every 30 minutes
-        schedule.every(30).minutes.do(self.run_optimization_cycle)
+        # Schedule to run every 60 minutes to reduce API pressure
+        schedule.every(60).minutes.do(self.run_optimization_cycle)
         
         # Run immediately on startup
         self.run_optimization_cycle()
