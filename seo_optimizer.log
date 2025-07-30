@@ -1650,3 +1650,30 @@ com/embed/VIDEO_ID_DO_ANUNCIO
 2025-07-30 15:57:54,074 - ERROR - Failed to update post 10407 in WordPress
 2025-07-30 15:57:54,074 - WARNING - Post optimization failed, stopping cycle
 2025-07-30 15:57:54,075 - INFO - Optimization cycle completed. 0/2 posts optimized successfully
+2025-07-30 16:57:54,101 - INFO - Starting optimization cycle
+2025-07-30 16:58:00,792 - INFO - Found 10 new posts by João
+2025-07-30 16:58:00,792 - INFO - Processing 2 posts (remaining quota: 43)
+2025-07-30 16:58:00,793 - INFO - Processing post 1/2
+2025-07-30 16:58:00,793 - INFO - Optimizing post ID: 10431 - 'Desvendando os 10 Erros Mais Comuns nos Filmes do Batman de Todas as Épocas'
+2025-07-30 16:58:04,471 - INFO - Searching for media content for post: Desvendando os 10 Erros Mais Comuns nos Filmes do Batman de Todas as Épocas
+2025-07-30 16:58:04,471 - INFO - Category analysis - Movies: True, TV: False
+2025-07-30 16:58:04,479 - INFO - Extracted title from meaningful words: 'Desvendando Erros Mais Comuns'
+2025-07-30 16:58:04,480 - INFO - Extracted main title: Desvendando Erros Mais Comuns
+2025-07-30 16:58:04,487 - INFO - Extracted potential titles from content: ['youtube-embed', 'Vídeo Destacado - ComicBook com']
+2025-07-30 16:58:04,487 - INFO - Searching for titles: ['Desvendando Erros Mais Comuns', 'youtube-embed', 'Vídeo Destacado - ComicBook com']
+2025-07-30 16:58:05,410 - WARNING - No movie found for title: Desvendando Erros Mais Comuns
+2025-07-30 16:58:05,607 - WARNING - No TV show found for title: Desvendando Erros Mais Comuns
+2025-07-30 16:58:05,796 - WARNING - No movie found for title: youtube-embed
+2025-07-30 16:58:05,971 - WARNING - No TV show found for title: youtube-embed
+2025-07-30 16:58:06,146 - WARNING - No movie found for title: Vídeo Destacado - ComicBook com
+2025-07-30 16:58:06,316 - WARNING - No TV show found for title: Vídeo Destacado - ComicBook com
+2025-07-30 16:58:06,316 - INFO - Found 0 images and 0 trailers for post
+2025-07-30 16:58:58,361 - INFO - Received response from Gemini
+2025-07-30 16:58:58,362 - INFO - Successfully parsed Gemini response
+2025-07-30 16:58:59,193 - ERROR - WordPress API request failed: POST https://www.maquinanerd.com.br/wp-json/wp/v2/posts/10431 - 401 Client Error: Unauthorized for url: https://www.maquinanerd.com.br/wp-json/wp/v2/posts/10431
+2025-07-30 16:58:59,193 - ERROR - Response status: 401
+2025-07-30 16:58:59,194 - ERROR - Response body: {"code":"rest_cannot_edit","message":"Sem permiss\u00e3o para editar este post.","data":{"status":401}}
+2025-07-30 16:58:59,194 - ERROR - Failed to update post 10431
+2025-07-30 16:58:59,194 - ERROR - Failed to update post 10431 in WordPress
+2025-07-30 16:58:59,194 - WARNING - Post optimization failed, stopping cycle
+2025-07-30 16:58:59,194 - INFO - Optimization cycle completed. 0/2 posts optimized successfully

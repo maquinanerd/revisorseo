@@ -373,6 +373,35 @@ def api_optimize_post(post_id):
         dashboard.log_optimization(post_id, 'Unknown', 'failed', str(e))
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/mark-success/<int:post_id>', methods=['POST'])
+def api_mark_success(post_id):
+    """Manually mark a post's optimization as successful."""
+    try:
+        # Fetch post from WordPress to get the title, as it might not be in the DB
+        # if the failure happened very early.
+        post = dashboard.wp_client.get_post(post_id)
+        if not post:
+            return jsonify({'error': 'Post not found in WordPress'}), 404
+        
+        title = post['title']['rendered']
+        
+        # Log the success status in the dashboard's database.
+        # This adds a new 'success' record, which will override previous statuses
+        # in the dashboard logic.
+        dashboard.log_optimization(
+            post_id=post_id,
+            title=title,
+            status='success',
+            recommendations='Manually marked as successful.'
+        )
+        
+        logger.info(f"Post ID {post_id} ('{title}') manually marked as successful.")
+        return jsonify({'success': True, 'message': f'Post {post_id} marked as successful.'})
+
+    except Exception as e:
+        logger.error(f"Failed to manually mark post {post_id} as successful: {e}")
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/system-status')
 def api_system_status():
     """API endpoint for system status check."""

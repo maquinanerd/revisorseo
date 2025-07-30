@@ -24,7 +24,7 @@
         }
         .status-success { background-color: #d4edda; color: #155724; }
         .status-failed { background-color: #f8d7da; color: #721c24; }
-        .status-pending { background-color: #fff3cd; color: #856404; }
+        .status-pending, .status-processing { background-color: #fff3cd; color: #856404; }
 
         .refresh-btn {
             position: fixed;
@@ -189,28 +189,38 @@
                                         <th>Post</th>
                                         <th>Status</th>
                                         <th>Data</th>
-                                        <th>Score SEO</th>
+                                        <th>Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody id="recent-optimizations">
                                     {% for opt in dashboard_data.recent_optimizations %}
                                     <tr>
                                         <td>
-                                            <small>{{ opt.title[:50] }}...</small>
+                                            <a href="https://www.maquinanerd.com.br/?p={{ opt.post_id }}" target="_blank" title="{{ opt.title }}">
+                                                <small>{{ opt.title[:50] }}...</small>
+                                            </a>
                                         </td>
                                         <td>
                                             <span class="status-badge status-{{ opt.status }}">
-                                                {{ 'Sucesso' if opt.status == 'success' else 'Falhou' }}
+                                                {% if opt.status == 'success' %}Sucesso
+                                                {% elif opt.status == 'failed' %}Falhou
+                                                {% elif opt.status == 'processing' %}Processando
+                                                {% else %}{{ opt.status }}
+                                                {% endif %}
                                             </span>
                                         </td>
                                         <td>
                                             <small>{{ opt.date[:16] }}</small>
                                         </td>
                                         <td>
-                                            {% if opt.seo_score %}
-                                                <span class="badge bg-success">{{ opt.seo_score }}</span>
+                                            {% if opt.status == 'failed' %}
+                                            <button class="btn btn-sm btn-outline-success" 
+                                                    onclick="markAsSuccess({{ opt.post_id }})"
+                                                    title="Marcar como Sucesso">
+                                                <i class="fas fa-check"></i>
+                                            </button>
                                             {% else %}
-                                                <span class="text-muted">-</span>
+                                            -
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -429,6 +439,36 @@
             } catch (error) {
                 console.error('Failed to optimize post:', error);
                 alert('Erro ao otimizar post');
+            }
+        }
+
+        // Manually mark a post as successful
+        async function markAsSuccess(postId) {
+            if (!confirm(`Tem certeza que deseja marcar o post ${postId} como otimizado com sucesso? Esta ação não pode ser desfeita.`)) {
+                return;
+            }
+            try {
+                const button = event.target.closest('button');
+                const originalHtml = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                button.disabled = true;
+
+                const response = await fetch(`/api/mark-success/${postId}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    alert('Post marcado como sucesso!');
+                    location.reload(); // Reload to see changes everywhere
+                } else {
+                    const error = await response.json();
+                    alert('Erro ao marcar como sucesso: ' + error.error);
+                    button.innerHTML = originalHtml;
+                    button.disabled = false;
+                }
+            } catch (error) {
+                console.error('Failed to mark post as success:', error);
+                alert('Erro de comunicação ao marcar como sucesso.');
             }
         }
 
