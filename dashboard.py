@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 class SEODashboard:
     """SEO Recommendation Dashboard with visual interface."""
-    
+
     def __init__(self):
         """Initialize the dashboard with database and clients."""
         self.config = Config()
@@ -37,7 +37,7 @@ class SEODashboard:
         )
         self.db_path = 'seo_dashboard.db'
         self.init_database()
-        
+
     def init_database(self):
         """Initialize SQLite database for tracking optimization history."""
         with sqlite3.connect(self.db_path) as conn:
@@ -54,7 +54,7 @@ class SEODashboard:
                     recommendations TEXT
                 )
             ''')
-            
+
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS seo_metrics (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -66,59 +66,59 @@ class SEODashboard:
                 )
             ''')
             conn.commit()
-    
-    def log_optimization(self, post_id: int, title: str, status: str, 
-                        error_message: Optional[str] = None, seo_score: Optional[int] = None, 
+
+    def log_optimization(self, post_id: int, title: str, status: str,
+                        error_message: Optional[str] = None, seo_score: Optional[int] = None,
                         recommendations: Optional[str] = None):
         """Log optimization attempt to database."""
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             cursor.execute('''
-                INSERT INTO optimization_history 
+                INSERT INTO optimization_history
                 (post_id, title, status, error_message, seo_score, recommendations)
                 VALUES (?, ?, ?, ?, ?, ?)
             ''', (post_id, title, status, error_message, seo_score, recommendations))
             conn.commit()
-    
+
     def update_daily_metrics(self):
         """Update daily SEO metrics."""
         today = datetime.now().strftime('%Y-%m-%d')
-        
+
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
-            
+
             # Get today's statistics
             cursor.execute('''
-                SELECT 
+                SELECT
                     COUNT(*) as total,
                     SUM(CASE WHEN status = 'success' THEN 1 ELSE 0 END) as optimized,
                     SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END) as failed,
                     AVG(CASE WHEN seo_score IS NOT NULL THEN seo_score ELSE 0 END) as avg_score
-                FROM optimization_history 
+                FROM optimization_history
                 WHERE DATE(optimization_date) = ?
             ''', (today,))
-            
+
             result = cursor.fetchone()
             total, optimized, failed, avg_score = result
-            
+
             # Insert or update today's metrics
             cursor.execute('''
-                INSERT OR REPLACE INTO seo_metrics 
+                INSERT OR REPLACE INTO seo_metrics
                 (date, total_posts, optimized_posts, failed_posts, avg_seo_score)
                 VALUES (?, ?, ?, ?, ?)
             ''', (today, total or 0, optimized or 0, failed or 0, avg_score or 0))
-            
+
             conn.commit()
-    
+
     def get_dashboard_data(self) -> Dict[str, Any]:
         """Get comprehensive dashboard data."""
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
-            
+
             # Recent optimizations (last 24 hours)
             cursor.execute('''
                 SELECT post_id, title, status, optimization_date, error_message, seo_score
-                FROM optimization_history 
+                FROM optimization_history
                 WHERE optimization_date >= datetime('now', '-1 day')
                 ORDER BY optimization_date DESC
                 LIMIT 20
@@ -134,11 +134,11 @@ class SEODashboard:
                 }
                 for row in cursor.fetchall()
             ]
-            
+
             # Weekly metrics
             cursor.execute('''
                 SELECT date, total_posts, optimized_posts, failed_posts, avg_seo_score
-                FROM seo_metrics 
+                FROM seo_metrics
                 WHERE date >= date('now', '-7 days')
                 ORDER BY date DESC
             ''')
@@ -152,17 +152,17 @@ class SEODashboard:
                 }
                 for row in cursor.fetchall()
             ]
-            
+
             # Summary statistics
             cursor.execute('''
-                SELECT 
+                SELECT
                     COUNT(*) as total_all_time,
                     SUM(CASE WHEN status = 'success' THEN 1 ELSE 0 END) as total_optimized,
                     SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END) as total_failed
                 FROM optimization_history
             ''')
             summary = cursor.fetchone()
-            
+
             return {
                 'recent_optimizations': recent_optimizations,
                 'weekly_metrics': weekly_metrics,
@@ -173,19 +173,19 @@ class SEODashboard:
                     'success_rate': (summary[1] / summary[0] * 100) if summary[0] > 0 else 0
                 }
             }
-    
+
     def get_pending_posts(self) -> List[Dict[str, Any]]:
-        """Get posts that need optimization."""
+        """Get posts that need optimization - limited to 5 posts in batches."""
         try:
-            # Get recent posts by João
-            since_date = (datetime.now() - timedelta(days=7)).isoformat()
+            # Get recent posts by João (last 30 days to have enough posts)
+            since_date = (datetime.now() - timedelta(days=30)).isoformat()
             posts = self.wp_client.get_posts_by_author(
                 author_id=6,  # João's author ID
                 since=since_date,
-                per_page=50
+                per_page=100  # Get more posts to work with
             )
-            
-            # Check which posts haven't been optimized
+
+            # Check which posts haven't been optimized and which are in progress
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
                 cursor.execute('''
@@ -193,23 +193,65 @@ class SEODashboard:
                     WHERE status = 'success'
                 ''')
                 optimized_post_ids = {row[0] for row in cursor.fetchall()}
-            
-            pending_posts = []
+
+                # Get posts currently being processed
+                cursor.execute('''
+                    SELECT DISTINCT post_id FROM optimization_history 
+                    WHERE status = 'processing' AND 
+                    datetime(optimization_date) > datetime('now', '-1 hour')
+                ''')
+                processing_post_ids = {row[0] for row in cursor.fetchall()}
+
+            # Filter unprocessed posts
+            unprocessed_posts = []
             for post in posts:
-                if post['id'] not in optimized_post_ids:
-                    pending_posts.append({
+                if (post['id'] not in optimized_post_ids and 
+                    post['id'] not in processing_post_ids):
+                    unprocessed_posts.append({
                         'id': post['id'],
                         'title': post['title']['rendered'],
                         'date': post['date'],
                         'status': post['status'],
                         'link': post['link']
                     })
-            
-            return pending_posts
-            
+
+            # Return only first 5 posts (batch processing)
+            return unprocessed_posts[:5]
+
         except Exception as e:
             logger.error(f"Failed to get pending posts: {e}")
             return []
+
+    def log_optimization(self, post_id: int, title: str, status: str,
+                        error_message: Optional[str] = None, seo_score: Optional[int] = None,
+                        recommendations: Optional[str] = None):
+        """Log optimization attempt to database."""
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                INSERT INTO optimization_history
+                (post_id, title, status, error_message, seo_score, recommendations)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ''', (post_id, title, status, error_message, seo_score, recommendations))
+            conn.commit()
+
+    def mark_post_processing(self, post_id: int, title: str):
+        """Mark a post as currently being processed."""
+        self.log_optimization(post_id, title, 'processing')
+
+    def clear_old_processing_status(self):
+        """Clear processing status for posts older than 1 hour."""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                    DELETE FROM optimization_history 
+                    WHERE status = 'processing' AND 
+                    optimization_date < datetime('now', '-1 hour')
+                ''')
+                conn.commit()
+        except Exception as e:
+            logger.error(f"Failed to clear old processing status: {e}")
 
 # Flask Web Application
 app = Flask(__name__)
@@ -227,9 +269,30 @@ def index():
                          pending_posts=pending_posts)
 
 @app.route('/api/dashboard-data')
-def api_dashboard_data():
-    """API endpoint for dashboard data."""
-    return jsonify(dashboard.get_dashboard_data())
+def get_dashboard_data():
+    """Get dashboard data including summary and posts."""
+    try:
+        # Clear old processing status before getting data
+        dashboard.clear_old_processing_status()
+        data = dashboard.get_dashboard_data()
+        return jsonify(data)
+    except Exception as e:
+        logger.error(f"Failed to get dashboard data: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/batch-status')
+def get_batch_status():
+    """Get current batch processing status."""
+    try:
+        pending_posts = dashboard.get_pending_posts()
+        return jsonify({
+            'pending_count': len(pending_posts),
+            'batch_size': 5,
+            'has_more_posts': len(pending_posts) == 5
+        })
+    except Exception as e:
+        logger.error(f"Failed to get batch status: {e}")
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/pending-posts')
 def api_pending_posts():
@@ -238,22 +301,25 @@ def api_pending_posts():
 
 @app.route('/api/optimize-post/<int:post_id>', methods=['POST'])
 def api_optimize_post(post_id):
-    """API endpoint to trigger optimization of a specific post."""
+    """Optimize a specific post."""
     try:
-        # Get post details
+        # Get post data
         post = dashboard.wp_client.get_post(post_id)
         if not post:
             return jsonify({'error': 'Post not found'}), 404
-        
+
         # Extract post data
         title = post['title']['rendered']
         excerpt = post['excerpt']['rendered']
         content = post['content']['rendered']
         tags = dashboard.wp_client.get_post_tags(post_id)
-        
+
+        # Mark post as being processed
+        dashboard.mark_post_processing(post_id, title)
+
         # Get media data from TMDB
         media_data = dashboard.tmdb_client.find_media_for_post(title, content)
-        
+
         # Optimize content with Gemini including media
         optimized_content = dashboard.gemini_client.optimize_content(
             title=title,
@@ -263,7 +329,7 @@ def api_optimize_post(post_id):
             domain=dashboard.config.wordpress_domain,
             media_data=media_data
         )
-        
+
         if optimized_content:
             # Update WordPress post
             success = dashboard.wp_client.update_post(
@@ -272,7 +338,7 @@ def api_optimize_post(post_id):
                 excerpt=optimized_content['excerpt'],
                 content=optimized_content['content']
             )
-            
+
             if success:
                 dashboard.log_optimization(post_id, title, 'success', seo_score=85)
                 return jsonify({'success': True, 'message': 'Post optimized successfully'})
@@ -282,7 +348,7 @@ def api_optimize_post(post_id):
         else:
             dashboard.log_optimization(post_id, title, 'failed', 'Failed to get optimized content from Gemini')
             return jsonify({'error': 'Failed to optimize content with Gemini'}), 500
-            
+
     except Exception as e:
         logger.error(f"Failed to optimize post {post_id}: {e}")
         dashboard.log_optimization(post_id, 'Unknown', 'failed', str(e))
@@ -295,7 +361,7 @@ def api_system_status():
         wp_status = dashboard.wp_client.test_connection()
         gemini_status = dashboard.gemini_client.test_connection()
         tmdb_status = dashboard.tmdb_client.test_connection()
-        
+
         return jsonify({
             'wordpress': wp_status,
             'gemini': gemini_status,
@@ -309,6 +375,6 @@ def api_system_status():
 if __name__ == '__main__':
     # Update daily metrics on startup
     dashboard.update_daily_metrics()
-    
+
     # Run Flask app
     app.run(host='0.0.0.0', port=5000, debug=True)
