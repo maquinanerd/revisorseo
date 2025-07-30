@@ -1606,3 +1606,8 @@ com/embed/VIDEO_ID_DO_ANUNCIO
 2025-07-30 14:39:39,281 - WARNING - No backup key available. Keys: 3, Current index: 2
 2025-07-30 14:39:39,281 - WARNING - No backup key available. Waiting 60 seconds before retry 6/15
 2025-07-30 14:40:39,282 - INFO - Waiting 640 seconds before retry attempt 6
+2025-07-30 14:51:19,628 - WARNING - Quota exceeded on key #3 - AIzaSyDI...
+2025-07-30 14:51:19,628 - INFO - DEBUG: Current key index: 2, Total keys: 3
+2025-07-30 14:51:19,629 - WARNING - No backup key available. Keys: 3, Current index: 2
+2025-07-30 14:51:19,629 - WARNING - No backup key available. Waiting 60 seconds before retry 7/15
+2025-07-30 14:52:19,630 - INFO - Waiting 1280 seconds before retry attempt 7
