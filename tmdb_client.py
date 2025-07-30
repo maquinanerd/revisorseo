@@ -178,6 +178,83 @@ class TMDBClient:
         """
         return self._extract_potential_titles(content)
 
+    def _extract_main_title_from_post(self, post_title: str) -> str:
+        """Extract the main title from WordPress post title."""
+        # Clean HTML entities
+        import html
+        clean_title = html.unescape(post_title)
+        
+        # Common patterns in post titles
+        patterns = [
+            # Title in quotes
+            r'"([^"]{3,50})"',
+            r"'([^']{3,50})'",
+            # Title followed by colon and description
+            r'^([^:]{3,50}):',
+            # Title in parentheses or brackets
+            r'\(([^)]{3,50})\)',
+            r'\[([^\]]{3,50})\]',
+            # Title at the beginning (up to common separators)
+            r'^([A-Za-z0-9\s\-\.]{3,50})(?:\s*[:\-–—]|\s*\(|\s*\[)',
+        ]
+        
+        for pattern in patterns:
+            match = re.search(pattern, clean_title)
+            if match:
+                title = match.group(1).strip()
+                # Validate title
+                if self._is_valid_title(title):
+                    logger.info(f"Extracted main title from post: '{title}'")
+                    return title
+        
+        # If no pattern matches, try to extract meaningful part
+        words = clean_title.split()
+        if len(words) >= 2:
+            # Take first few meaningful words
+            meaningful_words = []
+            for word in words:
+                if len(meaningful_words) >= 5:  # Limit to 5 words
+                    break
+                if self._is_meaningful_word(word):
+                    meaningful_words.append(word)
+            
+            if meaningful_words:
+                extracted = ' '.join(meaningful_words)
+                if self._is_valid_title(extracted):
+                    logger.info(f"Extracted title from words: '{extracted}'")
+                    return extracted
+        
+        return ""
+
+    def _is_valid_title(self, title: str) -> bool:
+        """Check if a title is valid for TMDB search."""
+        if not title or len(title) < 2 or len(title) > 50:
+            return False
+        
+        # Skip common non-title phrases
+        skip_phrases = [
+            'nova temporada', 'surpreende', 'rotten tomatoes', 'temporada de',
+            'filme de', 'série de', 'nova série', 'novo filme', 'trailer',
+            'primeira temporada', 'segunda temporada', 'terceira temporada'
+        ]
+        
+        title_lower = title.lower()
+        for phrase in skip_phrases:
+            if phrase in title_lower:
+                return False
+        
+        return True
+
+    def _is_meaningful_word(self, word: str) -> bool:
+        """Check if a word is meaningful for title extraction."""
+        word_lower = word.lower()
+        stop_words = {
+            'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
+            'of', 'with', 'by', 'o', 'a', 'e', 'de', 'da', 'do', 'em', 'com',
+            'para', 'por', 'nova', 'novo', 'uma', 'um', 'sua', 'seu'
+        }
+        return word_lower not in stop_words and len(word) > 1
+
     def _extract_potential_titles(self, content: str) -> List[str]:
         """Extract potential movie/TV show titles from content."""
         # Patterns to match potential titles - more specific patterns
@@ -236,13 +313,14 @@ class TMDBClient:
 
         return unique_titles[:3]  # Limit to first 3 most relevant titles
 
-    def find_media_for_post(self, title: str, content: str) -> Dict[str, Any]:
+    def find_media_for_post(self, title: str, content: str, categories: List[Dict] = None) -> Dict[str, Any]:
         """
         Find relevant media (images, trailers) for a post.
 
         Args:
             title: Post title
             content: Post content
+            categories: Post categories with id, name, slug
 
         Returns:
             Dictionary with found media data
@@ -253,12 +331,48 @@ class TMDBClient:
             'found_titles': []
         }
 
-        # Extract potential titles from content
-        potential_titles = self.extract_titles_from_content(f"{title} {content}")
+        # Determine search priority based on categories
+        is_movie_category = any(cat.get('id') == 24 for cat in (categories or []))
+        is_tv_category = any(cat.get('id') == 21 for cat in (categories or []))
+        
+        logger.info(f"Category analysis - Movies: {is_movie_category}, TV: {is_tv_category}")
 
-        for potential_title in potential_titles:
-            # Try to find as movie first
-            movie = self.search_movie(potential_title)
+        # Extract and clean the main title from post title
+        main_title = self._extract_main_title_from_post(title)
+        logger.info(f"Extracted main title: {main_title}")
+
+        # Extract potential titles from content
+        content_titles = self.extract_titles_from_content(content)
+        
+        # Prioritize titles: main title first, then content titles
+        all_titles = [main_title] + content_titles if main_title else content_titles
+        potential_titles = list(dict.fromkeys(all_titles))  # Remove duplicates while preserving order
+        
+        logger.info(f"Searching for titles: {potential_titles}")
+
+        for potential_title in potential_titles[:3]:  # Limit to 3 titles
+            # Search based on category priority
+            movie = None
+            tv_show = None
+            
+            if is_movie_category:
+                # Search movies first for movie category
+                movie = self.search_movie(potential_title)
+                if not movie and not is_tv_category:
+                    # Try TV as fallback only if not specifically TV category
+                    tv_show = self.search_tv_show(potential_title)
+            elif is_tv_category:
+                # Search TV shows first for TV category
+                tv_show = self.search_tv_show(potential_title)
+                if not tv_show:
+                    # Try movies as fallback
+                    movie = self.search_movie(potential_title)
+            else:
+                # No specific category, try both (movies first)
+                movie = self.search_movie(potential_title)
+                if not movie:
+                    tv_show = self.search_tv_show(potential_title)
+            
             if movie:
                 media_data['found_titles'].append({
                     'title': movie['title'],
@@ -296,8 +410,6 @@ class TMDBClient:
 
                 continue
 
-            # Try to find as TV show
-            tv_show = self.search_tv_show(potential_title)
             if tv_show:
                 media_data['found_titles'].append({
                     'title': tv_show['name'],

@@ -43,7 +43,10 @@ class SEOOptimizer:
             username=self.config.wordpress_username,
             password=self.config.wordpress_password
         )
-        self.gemini_client = GeminiClient(api_key=self.config.gemini_api_key)
+        self.gemini_client = GeminiClient(
+            api_key=self.config.gemini_api_key, 
+            backup_keys=getattr(self.config, 'gemini_keys', [self.config.gemini_api_key])
+        )
         self.tmdb_client = TMDBClient(
             api_key=self.config.tmdb_api_key,
             read_token=self.config.tmdb_read_token
@@ -108,9 +111,12 @@ class SEOOptimizer:
             content = post['content']['rendered']
             tags = self.wp_client.get_post_tags(post_id)
             
-            # Get media data from TMDB
+            # Get post categories to determine content type
+            categories = self.wp_client.get_post_categories(post_id)
+            
+            # Get media data from TMDB with category context
             logger.info(f"Searching for media content for post: {title}")
-            media_data = self.tmdb_client.find_media_for_post(title, content)
+            media_data = self.tmdb_client.find_media_for_post(title, content, categories)
             
             # Get optimized content from Gemini with media
             optimized_content = self.gemini_client.optimize_content(

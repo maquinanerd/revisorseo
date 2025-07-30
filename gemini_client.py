@@ -17,18 +17,23 @@ logger = logging.getLogger(__name__)
 class GeminiClient:
     """Client for interacting with Google Gemini 1.5 Pro API."""
 
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: str, backup_keys: list = None):
         """
-        Initialize Gemini client.
+        Initialize Gemini client with backup keys support.
 
         Args:
-            api_key: Google Gemini API key
+            api_key: Primary Google Gemini API key
+            backup_keys: List of all available API keys (including primary)
         """
-        genai.configure(api_key=api_key)
+        self.api_keys = backup_keys if backup_keys else [api_key]
+        self.current_key_index = 0
+        self.current_api_key = self.api_keys[0]
+        
+        genai.configure(api_key=self.current_api_key)
         self.model = "gemini-1.5-flash"
         self.quota_file = "gemini_quota.json"
         self.max_daily_requests = 45  # Leave some buffer from 50 limit
-        logger.info("Gemini client initialized")
+        logger.info(f"Gemini client initialized with {len(self.api_keys)} API key(s)")
 
     def _load_quota_data(self) -> dict:
         """Load quota usage data from file."""
@@ -64,6 +69,16 @@ class GeminiClient:
         quota_data = self._load_quota_data()
         quota_data['requests'] += 1
         self._save_quota_data(quota_data)
+
+    def _switch_to_backup_key(self):
+        """Switch to the next available API key."""
+        if len(self.api_keys) > 1 and self.current_key_index < len(self.api_keys) - 1:
+            self.current_key_index += 1
+            self.current_api_key = self.api_keys[self.current_key_index]
+            genai.configure(api_key=self.current_api_key)
+            logger.info(f"Switched to backup API key #{self.current_key_index + 1}")
+            return True
+        return False
 
     def _create_seo_prompt(self, title: str, excerpt: str, content: str, tags: List[str], domain: str, 
                           media_data: Optional[Dict] = None) -> str:
@@ -244,12 +259,19 @@ Importante:
                 except Exception as e:
                     error_str = str(e)
                     if "429" in error_str and "quota" in error_str.lower():
-                        # Extract retry delay if available
+                        logger.warning(f"Quota exceeded on key #{self.current_key_index + 1}")
+                        
+                        # Try to switch to backup key
+                        if self._switch_to_backup_key():
+                            logger.info("Retrying with backup API key")
+                            continue
+                        
+                        # If no backup key available, wait
                         import re
                         retry_match = re.search(r'retry_delay.*?seconds:\s*(\d+)', error_str)
                         wait_time = int(retry_match.group(1)) if retry_match else 60
 
-                        logger.warning(f"Quota exceeded. Waiting {wait_time} seconds before retry {attempt + 1}/{max_retries}")
+                        logger.warning(f"No backup key available. Waiting {wait_time} seconds before retry {attempt + 1}/{max_retries}")
                         if attempt < max_retries - 1:
                             time.sleep(wait_time)
                             continue

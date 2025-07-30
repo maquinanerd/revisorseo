@@ -1,36 +1,23 @@
+# Documentação Completa - WordPress SEO Optimizer
 
-# WordPress SEO Optimizer - Documentação Completa
+Sistema automatizado de otimização SEO para WordPress usando Google Gemini AI, TMDB e monitoramento em tempo real.
 
-## Visão Geral do Sistema
+**Última atualização**: 30/07/2025 14:50
 
-O WordPress SEO Optimizer é um sistema automatizado em Python que monitora posts do WordPress de um autor específico (João) e os otimiza para SEO usando Inteligência Artificial do Google Gemini 1.5 Flash, com integração ao TMDB para obter imagens e trailers de filmes/séries.
+## Status do Sistema ✅
 
-## Funcionalidades Principais
+### Estado Atual
+- **Sistema**: Operacional com melhorias implementadas
+- **Chave Backup**: ✅ Configurada e funcional
+- **Dashboard**: ✅ Ativo em tempo real
+- **API TMDB**: ✅ Integrada com busca por categoria
+- **Extração de Títulos**: ✅ Melhorada significativamente
 
-### 1. Monitoramento Automático
-- Monitora novos posts do autor João (ID: 6) nas últimas 24 horas
-- Execução periódica a cada 60 minutos
-- Controle de estado para evitar reprocessamento
-
-### 2. Otimização de Conteúdo com IA
-- **Título**: Otimização com palavras-chave relevantes
-- **Resumo**: Reescrita para melhor engajamento e SEO
-- **Conteúdo**: Reestruturação em parágrafos menores e escaneáveis
-- **Formatação HTML**: Negrito em termos importantes, links internos
-- **Integração de Mídia**: Inserção automática de imagens e trailers
-
-### 3. Dashboard Web Interativo
-- Interface web em Flask (porta 5000)
-- Monitoramento em tempo real das otimizações
-- Histórico de posts processados
-- Métricas de desempenho e estatísticas
-- Status dos sistemas conectados
-
-### 4. Integração TMDB
-- Busca automática de filmes e séries no conteúdo
-- Download de posters e imagens de backdrop
-- Integração de trailers do YouTube
-- Suporte a múltiplos idiomas (português brasileiro)
+### Melhorias Recentes (30/07/2025)
+1. **Sistema de Backup de API Keys**: Alternância automática entre chaves quando quota esgota
+2. **Busca por Categoria**: Sistema agora identifica se é filme (ID 24) ou série (ID 21)
+3. **Extração de Títulos Melhorada**: Algoritmo mais preciso para identificar títulos reais
+4. **Dashboard Corrigido**: Erro de JavaScript "redeclaration" resolvido
 
 ## Configurações e Credenciais
 
@@ -43,18 +30,22 @@ O WordPress SEO Optimizer é um sistema automatizado em Python que monitora post
 
 ### Google Gemini API
 - **Chave Principal**: `AIzaSyD7X2_8KPNZrnQnQ_643TjIJ2tpbkuRSms`
-- **Chave Backup**: `AIzaSyDDkQ-htQ1WsNL-i6d_a9bwACl6cez8Cjs`
+- **Chave Backup**: `AIzaSyDDkQ-htQ1WsNL-i6d_a9bwACl6cez8Cjs` ✅
 - **Modelo**: `gemini-1.5-flash` (otimizado para quota)
 - **Configurações**:
   - Temperature: 0.3
   - Max Output Tokens: 4000
   - Retry Logic: 5 tentativas com backoff exponencial
+  - **Sistema de Backup**: Alternância automática entre chaves
 
 ### TMDB (The Movie Database)
 - **API Key**: `cb60717161e33e2972bd217aabaa27f4`
 - **Read Token**: `eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYjYwNzE3MTYxZTMzZTI5NzJiZDIxN2FhYmFhMjdmNCIsIm5iZiI6MTY4OTI2MjQ1NC4zODYsInN1YiI6IjY0YjAxOTc2NmEzNDQ4MDE0ZDM1NDYyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vw6ILzP4aEOLFL-MbIMiwPVvZGOmxMwRLtjo2TJLzns`
 - **Base URL**: `https://api.themoviedb.org/3`
 - **Imagens**: `https://image.tmdb.org/t/p`
+- **Busca por Categoria**: 
+  - ID 24 = Filmes → Search Movies
+  - ID 21 = Séries → Search TV Shows
 
 ## Arquitetura do Sistema
 
@@ -66,242 +57,186 @@ O WordPress SEO Optimizer é um sistema automatizado em Python que monitora post
 - **Recursos**:
   - Agendamento com `schedule` library
   - Controle de quota (2 posts por ciclo)
-  - Delay de 30 segundos entre posts
-  - Logging completo
+  - Process lock para evitar múltiplas instâncias
+  - Integração com todas as APIs
 
-#### 2. wordpress_client.py
+#### 2. gemini_client.py
+- **Classe**: `GeminiClient`
+- **Função**: Interface com Google Gemini 1.5 Flash
+- **Melhorias Recentes**:
+  - **Sistema de Backup**: Suporte a múltiplas chaves API
+  - **Alternância Automática**: Troca para backup quando quota esgota
+  - **Gestão de Quota**: Controle rigoroso do limite diário
+  - **Retry Logic**: 5 tentativas com backoff exponencial
+
+#### 3. wordpress_client.py
 - **Classe**: `WordPressClient`
 - **Função**: Interface com WordPress REST API
 - **Recursos**:
-  - Autenticação Basic Auth
-  - Timeout de 60 segundos
-  - Busca por autor e data
-  - Atualização de posts
-
-#### 3. gemini_client.py
-- **Classe**: `GeminiClient`
-- **Função**: Interface com Google Gemini API
-- **Recursos**:
-  - Prompts otimizados para SEO
-  - Formatação HTML (não markdown)
-  - Integração de dados de mídia
-  - Tratamento de quota exceeded
+  - Busca de posts por autor e data
+  - Atualização de posts (título, excerpt, conteúdo)
+  - **Novo**: `get_post_categories()` para identificar tipo de conteúdo
 
 #### 4. tmdb_client.py
 - **Classe**: `TMDBClient`
 - **Função**: Interface com TMDB API
-- **Recursos**:
-  - Busca de filmes e séries
-  - Extração de títulos do conteúdo
-  - Download de imagens (poster/backdrop)
-  - Integração de trailers YouTube
+- **Melhorias Recentes**:
+  - **Busca por Categoria**: Prioriza movies/TV based na categoria do post
+  - **Extração de Títulos Melhorada**: Algoritmo mais preciso
+  - **Validação de Títulos**: Filtros para evitar termos irrelevantes
+  - Suporte a imagens (poster/backdrop) e trailers do YouTube
 
 #### 5. dashboard.py
-- **Classe**: `SEODashboard`
-- **Função**: Interface web de monitoramento
+- **Classe**: Flask app para monitoramento
+- **Função**: Interface web em tempo real
 - **Recursos**:
-  - Flask web server
-  - Banco SQLite para histórico
-  - APIs REST para dados
-  - Interface responsiva
+  - Status do sistema e APIs
+  - Estatísticas de otimização
+  - Logs em tempo real
+  - **Corrigido**: Erro JavaScript de redeclaração
 
 #### 6. config.py
 - **Classe**: `Config`
 - **Função**: Gerenciamento de configurações
-- **Recursos**:
-  - Carregamento de .env
-  - Validação de variáveis obrigatórias
-  - Suporte a chave backup
+- **Melhorias**:
+  - **Suporte a Backup Keys**: Lista de chaves API disponíveis
+  - Validação de URLs e credenciais
 
-## Fluxo de Operação
+## Fluxo de Funcionamento
 
 ### 1. Inicialização
 ```
-Config → WordPress Client → Gemini Client → TMDB Client
+SEOOptimizer.initialize()
+├── Testa conexão WordPress ✅
+├── Testa conexão Gemini (principal + backup) ✅
+└── Testa conexão TMDB ✅
 ```
 
-### 2. Ciclo de Otimização
+### 2. Ciclo de Otimização (a cada 60 minutos)
 ```
-Buscar Posts Novos → Extrair Conteúdo → Buscar Mídia TMDB → 
-Otimizar com Gemini → Atualizar WordPress → Log Resultado
-```
-
-### 3. Dashboard
-```
-Interface Web → Dados SQLite → APIs REST → Atualização Tempo Real
-```
-
-## Controles de Quota e Rate Limiting
-
-### Gemini API
-- **Limite**: 2 posts por ciclo
-- **Delay**: 30 segundos entre posts
-- **Retry**: 5 tentativas com backoff exponencial
-- **Timeout**: Até 60 segundos de espera
-
-### WordPress API
-- **Timeout**: 60 segundos por requisição
-- **Rate Limiting**: Controlado pelo servidor WordPress
-
-### TMDB API
-- **Timeout**: 10 segundos por requisição
-- **Rate Limiting**: Padrão da API TMDB
-
-## Banco de Dados (SQLite)
-
-### Tabela: optimization_history
-```sql
-CREATE TABLE optimization_history (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    post_id INTEGER NOT NULL,
-    title TEXT NOT NULL,
-    status TEXT NOT NULL,
-    optimization_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    error_message TEXT,
-    seo_score INTEGER,
-    recommendations TEXT
-);
+run_optimization_cycle()
+├── Verifica quota disponível
+├── Busca posts novos do João (últimas 24h)
+├── Limita a 2 posts por ciclo
+└── Para cada post:
+    ├── Identifica categorias (filme/série) 🆕
+    ├── Extrai título principal do post 🆕
+    ├── Busca mídia no TMDB por categoria 🆕
+    ├── Otimiza com Gemini (com backup automático) 🆕
+    └── Atualiza no WordPress
 ```
 
-### Tabela: seo_metrics
-```sql
-CREATE TABLE seo_metrics (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    date TEXT NOT NULL,
-    total_posts INTEGER DEFAULT 0,
-    optimized_posts INTEGER DEFAULT 0,
-    failed_posts INTEGER DEFAULT 0,
-    avg_seo_score REAL DEFAULT 0
-);
+### 3. Sistema de Backup de API Keys 🆕
+```
+GeminiClient.optimize_content()
+├── Tenta com chave principal
+├── Se quota esgotada (429):
+│   ├── Alterna para chave backup
+│   ├── Retry imediato com nova chave
+│   └── Log: "Switched to backup API key #2"
+└── Se todas as chaves esgotadas:
+    └── Aguarda retry com backoff exponencial
 ```
 
-## Logging e Monitoramento
-
-### Arquivo de Log
-- **Localização**: `seo_optimizer.log`
-- **Formato**: `%(asctime)s - %(levelname)s - %(message)s`
-- **Níveis**: INFO, WARNING, ERROR
-- **Rotação**: Manual (não implementada)
-
-### Métricas Monitoradas
-- Posts processados por dia
-- Taxa de sucesso/falha
-- Tempo de processamento
-- Erros de quota
-- Status das conexões
+### 4. Busca TMDB Melhorada 🆕
+```
+find_media_for_post()
+├── Identifica categoria do post
+├── Extrai título principal (não frases aleatórias)
+├── Busca prioritária:
+│   ├── Categoria 24 (Filmes) → search_movie() primeiro
+│   ├── Categoria 21 (Séries) → search_tv_show() primeiro
+│   └── Sem categoria → busca ambos
+└── Retorna: imagens, trailers, dados encontrados
+```
 
 ## Prompt de Otimização SEO
 
-O sistema usa um prompt especializado que instrui o Gemini a:
+O sistema usa um prompt especializado que:
 
-1. **Otimizar o título** mantendo clareza e adicionando palavras-chave
-2. **Reescrever o resumo** para melhor engajamento
-3. **Reestruturar o conteúdo** em parágrafos menores
-4. **Aplicar formatação HTML**:
-   - `<b>texto</b>` para negrito
-   - `<a href="url">texto</a>` para links
-5. **Inserir mídia**:
-   - `<img>` para imagens com estilo responsivo
-   - `<iframe>` para trailers YouTube
-6. **Manter o tom jornalístico** e informativo
+1. **Otimiza para Google News**
+2. **Mantém tom jornalístico**
+3. **Adiciona negrito** em termos importantes
+4. **Insere links internos** baseados nas tags
+5. **Inclui mídia TMDB** (imagens e trailers) 🆕
+6. **Estrutura em parágrafos curtos**
 
-## Variáveis de Ambiente Necessárias
+## Arquivos de Log e Dados
 
-```env
-# WordPress
-WORDPRESS_URL=https://www.maquinanerd.com.br/
-WORDPRESS_USERNAME=[seu_usuario]
-WORDPRESS_PASSWORD=[sua_senha_app]
-WORDPRESS_DOMAIN=https://www.maquinanerd.com.br
+- **seo_optimizer.log**: Log principal do sistema
+- **gemini_quota.json**: Controle de quota da API
+- **seo_dashboard.db**: Banco SQLite para estatísticas
+- **Process lock**: Previne execução simultânea
 
-# Google Gemini
-GEMINI_API_KEY=AIzaSyD7X2_8KPNZrnQnQ_643TjIJ2tpbkuRSms
-GEMINI_API_KEY_BACKUP=AIzaSyDDkQ-htQ1WsNL-i6d_a9bwACl6cez8Cjs
+## Monitoramento e Dashboard
 
-# TMDB
-TMDB_API_KEY=cb60717161e33e2972bd217aabaa27f4
-TMDB_READ_TOKEN=eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYjYwNzE3MTYxZTMzZTI5NzJiZDIxN2FhYmFhMjdmNCIsIm5iZiI6MTY4OTI2MjQ1NC4zODYsInN1YiI6IjY0YjAxOTc2NmEzNDQ4MDE0ZDM1NDYyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vw6ILzP4aEOLFL-MbIMiwPVvZGOmxMwRLtjo2TJLzns
-```
+### URL: `http://127.0.0.1:5000` (ativo)
+
+**Funcionalidades**:
+- Status em tempo real das APIs
+- Quota usage das chaves Gemini
+- Estatísticas de posts otimizados
+- Logs do sistema
+- **Gráficos de performance** (corrigido)
 
 ## Comandos de Execução
 
-### Execução Única (Teste)
+### Execução Única (teste)
 ```bash
 python main.py --once
 ```
 
-### Execução Contínua (Produção)
+### Execução Contínua (produção)
 ```bash
 python main.py
 ```
 
-### Dashboard Web
+### Dashboard
 ```bash
 python dashboard.py
 ```
 
-## URLs de Acesso
+## Melhorias Implementadas (30/07/2025)
 
-### Dashboard Local
-- **URL**: `http://0.0.0.0:5000`
-- **Funcionalidades**:
-  - Monitoramento em tempo real
-  - Histórico de otimizações
-  - Métricas de desempenho
-  - Trigger manual de posts
+### 1. Sistema de Backup de Chaves API ✅
+- Alternância automática quando quota principal esgota
+- Suporte a múltiplas chaves de backup
+- Log detalhado das trocas de chave
 
-### APIs Disponíveis
-- `GET /api/dashboard-data` - Dados do dashboard
-- `GET /api/pending-posts` - Posts pendentes
-- `POST /api/optimize-post/<id>` - Otimizar post específico
-- `GET /api/system-status` - Status dos sistemas
+### 2. Busca por Categoria ✅
+- Identifica categoria do post (24=Filmes, 21=Séries)
+- Prioriza busca correta no TMDB
+- Melhora significativa na precisão
 
-## Tratamento de Erros
+### 3. Extração de Títulos Melhorada ✅
+- Algoritmo específico para títulos de posts
+- Filtra frases irrelevantes
+- Patterns específicos para conteúdo de cultura pop
 
-### Quota Exceeded (429)
-- Retry automático com backoff
-- Log detalhado do erro
-- Parada antecipada do ciclo
+### 4. Correções de Dashboard ✅
+- Erro JavaScript "redeclaration" corrigido
+- Interface mais estável
+- Atualização em tempo real funcionando
 
-### Connection Errors
-- Timeout configurável
-- Retry com delay
-- Fallback para próximo post
+## Próximos Desenvolvimentos
 
-### Parsing Errors
-- Validação de resposta Gemini
-- Log de erro detalhado
-- Continuação do processamento
+1. **Analytics Avançados**: Métricas de SEO performance
+2. **Otimização de Imagens**: Resize e otimização automática
+3. **Integração com Google Analytics**: Tracking de resultados
+4. **Sistema de Notificações**: Alertas por email/Slack
 
-## Segurança
+## Logs de Exemplo (Status Atual)
 
-### Autenticação WordPress
-- Uso de Application Password (não senha principal)
-- Basic Auth com base64 encoding
-- Headers de User-Agent identificado
-
-### Proteção de Chaves
-- Variáveis de ambiente (não hardcoded)
-- Suporte a chave backup
-- Logs sem exposição de credenciais
-
-## Performance
-
-### Otimizações Implementadas
-- Limite de 2 posts por ciclo
-- Delay de 30 segundos entre posts
-- Timeout de 60 segundos para WordPress
-- Timeout de 10 segundos para TMDB
-- Cache de posts processados
-
-### Métricas de Performance
-- Tempo médio por post: ~2-3 minutos
-- Taxa de sucesso atual: Variável (quota dependent)
-- Consumo de API: Controlado por limits
+```
+2025-07-30 14:49:03 - INFO - Found 10 new posts by João
+2025-07-30 14:49:03 - INFO - Category analysis - Movies: True, TV: False
+2025-07-30 14:49:03 - INFO - Extracted main title from post: 'King of the Hill'
+2025-07-30 14:49:04 - INFO - Found movie: King of the Hill (1993)
+2025-07-30 14:49:04 - WARNING - Quota exceeded on key #1
+2025-07-30 14:49:04 - INFO - Switched to backup API key #2
+2025-07-30 14:49:05 - INFO - Successfully optimized with backup key
+```
 
 ---
 
-**Data de Criação**: 30 de Julho de 2025  
-**Versão**: 2.0  
-**Status**: Ativo com controle de quota  
-**Próximas Melhorias**: Otimização de quota Gemini, cache de mídia TMDB
+**Sistema totalmente operacional com redundância e alta precisão na identificação de conteúdo!** 🚀

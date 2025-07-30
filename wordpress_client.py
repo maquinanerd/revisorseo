@@ -1,4 +1,5 @@
-# Increased timeout value for WordPress API requests.
+# Added method to get post categories
+
 """
 WordPress REST API client for managing posts and authentication.
 """
@@ -109,6 +110,26 @@ class WordPressClient:
 
         except Exception as e:
             logger.error(f"Failed to get tags for post {post_id}: {e}")
+            return []
+
+    def get_post_categories(self, post_id: int) -> List[Dict[str, Any]]:
+        """Get categories for a specific post."""
+        try:
+            post = self._make_request('GET', f'posts/{post_id}', params={'_embed': 'wp:term'})
+            if not post:
+                return []
+
+            categories = []
+            if '_embedded' in post and 'wp:term' in post['_embedded']:
+                for term_group in post['_embedded']['wp:term']:
+                    for term in term_group:
+                        if term.get('taxonomy') == 'category':
+                            categories.append({'id': term.get('id'), 'name': term.get('name'), 'slug': term.get('slug')})
+
+            return categories
+
+        except Exception as e:
+            logger.error(f"Failed to get categories for post {post_id}: {e}")
             return []
 
     def update_post(self, post_id: int, title: str, excerpt: str, content: str) -> bool:

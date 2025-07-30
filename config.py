@@ -42,6 +42,9 @@ class Config:
         self.wordpress_domain: str = _wordpress_domain  # type: ignore
         self.gemini_api_key: str = _gemini_api_key  # type: ignore
         self.gemini_api_key_backup: str = _gemini_api_key_backup if _gemini_api_key_backup else _gemini_api_key  # type: ignore
+        
+        # Store both keys for switching
+        self.gemini_keys = [self.gemini_api_key, self.gemini_api_key_backup] if _gemini_api_key_backup else [self.gemini_api_key]
         self.tmdb_api_key: str = _tmdb_api_key  # type: ignore
         self.tmdb_read_token: str = _tmdb_read_token  # type: ignore
         
