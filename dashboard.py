@@ -365,8 +365,9 @@ def api_optimize_post(post_id):
                 dashboard.log_optimization(post_id, title, 'failed', 'Failed to update WordPress post')
                 return jsonify({'error': 'Failed to update post in WordPress'}), 500
         else:
-            dashboard.log_optimization(post_id, title, 'failed', 'Failed to get optimized content from Gemini')
-            return jsonify({'error': 'Failed to optimize content with Gemini'}), 500
+            error_msg = "Falha ao otimizar com a Gemini. Causas comuns: chave de API inválida ou quota diária excedida. Verifique os logs do terminal para o erro exato."
+            dashboard.log_optimization(post_id, title, 'failed', error_msg)
+            return jsonify({'error': error_msg}), 500
 
     except Exception as e:
         logger.error(f"Failed to optimize post {post_id}: {e}")

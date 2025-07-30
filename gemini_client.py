@@ -280,13 +280,24 @@ Importante:
 
                 except Exception as e:
                     error_str = str(e).lower()
+                    wait_time = retry_delay # Default wait time
+
                     if "429" in error_str and "quota" in error_str:
-                        logger.warning(f"API quota exceeded on key #{self.current_key_index + 1}. Switching to next key.")
+                        # Try to parse the suggested retry delay from the API error
+                        retry_match = re.search(r'retry_delay.*?seconds:\s*(\d+)', error_str)
+                        if retry_match:
+                            wait_time = int(retry_match.group(1)) + 1 # Add a small buffer
+                            logger.warning(f"API quota exceeded. API suggests waiting {wait_time} seconds.")
+                        else:
+                            wait_time = 60 # Fallback if delay is not specified
+                            logger.warning(f"API quota exceeded. Waiting for {wait_time} seconds as a fallback.")
+                        
+                        time.sleep(wait_time)
                         break  # Break inner retry loop, move to the next key
 
                     logger.error(f"Error on attempt {attempt + 1} with key #{self.current_key_index + 1}: {e}")
                     if attempt < max_retries_per_key - 1:
-                        time.sleep(retry_delay)
+                        time.sleep(wait_time)
                     else:
                         logger.error(f"All retries failed for key #{self.current_key_index + 1}.")
             # This point is reached if the key's retries are exhausted or quota was hit.

@@ -1677,3 +1677,59 @@ com/embed/VIDEO_ID_DO_ANUNCIO
 2025-07-30 16:58:59,194 - ERROR - Failed to update post 10431 in WordPress
 2025-07-30 16:58:59,194 - WARNING - Post optimization failed, stopping cycle
 2025-07-30 16:58:59,194 - INFO - Optimization cycle completed. 0/2 posts optimized successfully
+2025-07-30 17:58:59,341 - INFO - Starting optimization cycle
+2025-07-30 17:59:06,527 - INFO - Found 10 new posts by João
+2025-07-30 17:59:06,528 - INFO - Processing 2 posts (remaining quota: 42)
+2025-07-30 17:59:06,528 - INFO - Processing post 1/2
+2025-07-30 17:59:06,529 - INFO - Optimizing post ID: 10443 - 'Todd Margaret: A Joia da Comédia Absurda com Estrelas de Arrested Development Que Você Precisa Ver (Grátis!)'
+2025-07-30 17:59:08,820 - INFO - Searching for media content for post: Todd Margaret: A Joia da Comédia Absurda com Estrelas de Arrested Development Que Você Precisa Ver (Grátis!)
+2025-07-30 17:59:08,821 - INFO - Category analysis - Movies: False, TV: True
+2025-07-30 17:59:08,822 - INFO - Extracted title using pattern: 'Todd Margaret'
+2025-07-30 17:59:08,822 - INFO - Extracted main title: Todd Margaret
+2025-07-30 17:59:08,833 - INFO - Extracted potential titles from content: ['caminhe em uma linha t', 'em Londres', 'tamb', 'cont', 'perfeita para maratonar para qualque']
+2025-07-30 17:59:08,833 - INFO - Searching for titles: ['Todd Margaret', 'caminhe em uma linha t', 'em Londres']
+2025-07-30 17:59:09,548 - INFO - Found TV show: The Increasingly Poor Decisions of Todd Margaret (2010-10-01)
+2025-07-30 17:59:09,890 - WARNING - No TV show found for title: caminhe em uma linha t
+2025-07-30 17:59:10,076 - WARNING - No movie found for title: caminhe em uma linha t
+2025-07-30 17:59:10,300 - INFO - Found TV show: Ataque em Londres: Os Atentados de 7 de Julho (2025-07-01)
+2025-07-30 17:59:10,482 - INFO - Found 4 images and 0 trailers for post
+2025-07-30 17:59:57,498 - WARNING - Quota exceeded on key #3 - AIzaSyDI...
+2025-07-30 17:59:57,499 - INFO - DEBUG: Current key index: 2, Total keys: 3
+2025-07-30 17:59:57,500 - WARNING - No backup key available. Keys: 3, Current index: 2
+2025-07-30 17:59:57,500 - WARNING - No backup key available. Waiting 60 seconds before retry 1/15
+2025-07-30 18:00:57,501 - INFO - Waiting 20 seconds before retry attempt 1
+2025-07-30 18:01:18,392 - WARNING - Quota exceeded on key #3 - AIzaSyDI...
+2025-07-30 18:01:18,392 - INFO - DEBUG: Current key index: 2, Total keys: 3
+2025-07-30 18:01:18,392 - WARNING - No backup key available. Keys: 3, Current index: 2
+2025-07-30 18:01:18,393 - WARNING - No backup key available. Waiting 60 seconds before retry 2/15
+2025-07-30 18:02:18,393 - INFO - Waiting 40 seconds before retry attempt 2
+2025-07-30 18:02:59,295 - WARNING - Quota exceeded on key #3 - AIzaSyDI...
+2025-07-30 18:02:59,295 - INFO - DEBUG: Current key index: 2, Total keys: 3
+2025-07-30 18:02:59,295 - WARNING - No backup key available. Keys: 3, Current index: 2
+2025-07-30 18:02:59,296 - WARNING - No backup key available. Waiting 60 seconds before retry 3/15
+2025-07-30 18:03:59,296 - INFO - Waiting 80 seconds before retry attempt 3
+2025-07-30 18:05:19,540 - WARNING - Quota exceeded on key #3 - AIzaSyDI...
+2025-07-30 18:05:19,541 - INFO - DEBUG: Current key index: 2, Total keys: 3
+2025-07-30 18:05:19,541 - WARNING - No backup key available. Keys: 3, Current index: 2
+2025-07-30 18:05:19,541 - WARNING - No backup key available. Waiting 60 seconds before retry 4/15
+2025-07-30 18:06:19,542 - INFO - Waiting 160 seconds before retry attempt 4
+2025-07-30 18:08:59,790 - WARNING - Quota exceeded on key #3 - AIzaSyDI...
+2025-07-30 18:08:59,790 - INFO - DEBUG: Current key index: 2, Total keys: 3
+2025-07-30 18:08:59,791 - WARNING - No backup key available. Keys: 3, Current index: 2
+2025-07-30 18:08:59,791 - WARNING - No backup key available. Waiting 60 seconds before retry 5/15
+2025-07-30 18:09:59,792 - INFO - Waiting 320 seconds before retry attempt 5
+2025-07-30 18:15:20,833 - WARNING - Quota exceeded on key #3 - AIzaSyDI...
+2025-07-30 18:15:20,834 - INFO - DEBUG: Current key index: 2, Total keys: 3
+2025-07-30 18:15:20,834 - WARNING - No backup key available. Keys: 3, Current index: 2
+2025-07-30 18:15:20,835 - WARNING - No backup key available. Waiting 60 seconds before retry 6/15
+2025-07-30 18:16:20,836 - INFO - Waiting 640 seconds before retry attempt 6
+2025-07-30 18:27:01,202 - WARNING - Quota exceeded on key #3 - AIzaSyDI...
+2025-07-30 18:27:01,202 - INFO - DEBUG: Current key index: 2, Total keys: 3
+2025-07-30 18:27:01,202 - WARNING - No backup key available. Keys: 3, Current index: 2
+2025-07-30 18:27:01,203 - WARNING - No backup key available. Waiting 60 seconds before retry 7/15
+2025-07-30 18:28:01,204 - INFO - Waiting 1280 seconds before retry attempt 7
+2025-07-30 18:49:23,650 - WARNING - Quota exceeded on key #3 - AIzaSyDI...
+2025-07-30 18:49:23,651 - INFO - DEBUG: Current key index: 2, Total keys: 3
+2025-07-30 18:49:23,651 - WARNING - No backup key available. Keys: 3, Current index: 2
+2025-07-30 18:49:23,651 - WARNING - No backup key available. Waiting 60 seconds before retry 8/15
+2025-07-30 18:50:23,652 - INFO - Waiting 2560 seconds before retry attempt 8
