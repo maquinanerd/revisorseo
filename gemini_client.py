@@ -72,13 +72,16 @@ class GeminiClient:
 
     def _switch_to_backup_key(self):
         """Switch to the next available API key."""
+        logger.info(f"DEBUG: Current key index: {self.current_key_index}, Total keys: {len(self.api_keys)}")
         if len(self.api_keys) > 1 and self.current_key_index < len(self.api_keys) - 1:
             self.current_key_index += 1
             self.current_api_key = self.api_keys[self.current_key_index]
             genai.configure(api_key=self.current_api_key)
-            logger.info(f"Switched to backup API key #{self.current_key_index + 1}")
+            logger.info(f"✅ Switched to backup API key #{self.current_key_index + 1} - {self.current_api_key[:20]}...")
             return True
-        return False
+        else:
+            logger.warning(f"❌ No backup key available. Keys: {len(self.api_keys)}, Current index: {self.current_key_index}")
+            return False
 
     def _create_seo_prompt(self, title: str, excerpt: str, content: str, tags: List[str], domain: str, 
                           media_data: Optional[Dict] = None) -> str:

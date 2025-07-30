@@ -179,70 +179,138 @@ class TMDBClient:
         return self._extract_potential_titles(content)
 
     def _extract_main_title_from_post(self, post_title: str) -> str:
-        """Extract the main title from WordPress post title."""
-        # Clean HTML entities
+        """Extract the main title from WordPress post title with improved intelligence."""
         import html
         clean_title = html.unescape(post_title)
         
-        # Common patterns in post titles
-        patterns = [
+        # Known franchise patterns (highest priority)
+        franchise_patterns = [
+            r'\b(The Walking Dead|Walking Dead)\b',
+            r'\b(Stranger Things)\b',
+            r'\b(Game of Thrones)\b',
+            r'\b(House of the Dragon)\b',
+            r'\b(The Last of Us)\b',
+            r'\b(Marvel|MCU)\b',
+            r'\b(DC Comics|DC Universe)\b',
+            r'\b(Star Wars)\b',
+            r'\b(Harry Potter)\b',
+            r'\b(Breaking Bad|Better Call Saul)\b',
+            r'\b(The Boys)\b',
+            r'\b(Wednesday|Wandinha)\b',
+            r'\b(Euphoria)\b',
+            r'\b(Avatar)\b',
+            r'\b(John Wick)\b',
+            r'\b(Fast (?:and|&) Furious|Velozes e Furiosos)\b',
+            r'\b(Mission Impossible|Missão Impossível)\b'
+        ]
+        
+        # Check for known franchises first
+        for pattern in franchise_patterns:
+            match = re.search(pattern, clean_title, re.IGNORECASE)
+            if match:
+                title = match.group(1)
+                # Normalize known titles
+                title_map = {
+                    'Walking Dead': 'The Walking Dead',
+                    'Marvel': 'Marvel',
+                    'MCU': 'Marvel',
+                    'DC Comics': 'DC',
+                    'DC Universe': 'DC',
+                    'Velozes e Furiosos': 'Fast and Furious',
+                    'Missão Impossível': 'Mission Impossible'
+                }
+                title = title_map.get(title, title)
+                logger.info(f"Found franchise title: '{title}'")
+                return title
+        
+        # Enhanced patterns for specific content
+        enhanced_patterns = [
             # Title in quotes
             r'"([^"]{3,50})"',
             r"'([^']{3,50})'",
+            # Title after "série" or "filme"
+            r'(?:série|filme|season|temporada)\s+"?([A-Z][^",.!?]{2,40})"?',
             # Title followed by colon and description
             r'^([^:]{3,50}):',
             # Title in parentheses or brackets
             r'\(([^)]{3,50})\)',
             r'\[([^\]]{3,50})\]',
             # Title at the beginning (up to common separators)
-            r'^([A-Za-z0-9\s\-\.]{3,50})(?:\s*[:\-–—]|\s*\(|\s*\[)',
+            r'^([A-Z][A-Za-z0-9\s\-\.]{2,40})(?:\s*[:\-–—]|\s*\(|\s*\[)',
         ]
         
-        for pattern in patterns:
+        for pattern in enhanced_patterns:
             match = re.search(pattern, clean_title)
             if match:
                 title = match.group(1).strip()
-                # Validate title
                 if self._is_valid_title(title):
-                    logger.info(f"Extracted main title from post: '{title}'")
+                    logger.info(f"Extracted title using pattern: '{title}'")
                     return title
         
-        # If no pattern matches, try to extract meaningful part
+        # Fallback: intelligent word extraction
         words = clean_title.split()
         if len(words) >= 2:
-            # Take first few meaningful words
             meaningful_words = []
             for word in words:
-                if len(meaningful_words) >= 5:  # Limit to 5 words
+                if len(meaningful_words) >= 4:  # Reduced limit
                     break
-                if self._is_meaningful_word(word):
+                if self._is_meaningful_word(word) and len(word) > 2:
                     meaningful_words.append(word)
             
-            if meaningful_words:
+            if len(meaningful_words) >= 2:
                 extracted = ' '.join(meaningful_words)
                 if self._is_valid_title(extracted):
-                    logger.info(f"Extracted title from words: '{extracted}'")
+                    logger.info(f"Extracted title from meaningful words: '{extracted}'")
                     return extracted
         
         return ""
 
     def _is_valid_title(self, title: str) -> bool:
-        """Check if a title is valid for TMDB search."""
-        if not title or len(title) < 2 or len(title) > 50:
+        """Check if a title is valid for TMDB search with enhanced filtering."""
+        if not title or len(title) < 3 or len(title) > 50:
             return False
         
-        # Skip common non-title phrases
+        # Enhanced skip phrases - more comprehensive filtering
         skip_phrases = [
             'nova temporada', 'surpreende', 'rotten tomatoes', 'temporada de',
             'filme de', 'série de', 'nova série', 'novo filme', 'trailer',
-            'primeira temporada', 'segunda temporada', 'terceira temporada'
+            'primeira temporada', 'segunda temporada', 'terceira temporada',
+            'maiores reviravoltas', 'da amc', 'de grandes', 'grandes vilões',
+            'vilões implacáveis', 'implacáveis', 'reviravoltas', 'maiores',
+            'nova fase', 'novo episódio', 'episódio de', 'temporada final',
+            'final de', 'estreia de', 'lançamento de', 'crítica de',
+            'análise de', 'review de', 'comentário sobre', 'opinião sobre',
+            'sobre a', 'sobre o', 'em alta', 'em cartaz', 'nos cinemas',
+            'na netflix', 'na amazon', 'na hbo', 'no disney', 'streaming',
+            'plataforma de', 'disponível em', 'assistir em', 'onde assistir'
         ]
         
-        title_lower = title.lower()
+        title_lower = title.lower().strip()
+        
+        # Check for skip phrases
         for phrase in skip_phrases:
             if phrase in title_lower:
+                logger.debug(f"Skipping title '{title}' - contains skip phrase: '{phrase}'")
                 return False
         
+        # Must contain at least one letter
+        if not re.search(r'[A-Za-z]', title):
+            return False
+            
+        # Skip if mostly numbers or symbols
+        alpha_chars = len(re.findall(r'[A-Za-z]', title))
+        if alpha_chars < len(title) * 0.5:  # At least 50% letters
+            return False
+        
+        # Skip generic words
+        generic_words = {'the', 'a', 'an', 'and', 'or', 'but', 'of', 'in', 'on', 'at', 'to', 'for', 'with', 'by'}
+        words = title_lower.split()
+        meaningful_words = [w for w in words if w not in generic_words and len(w) > 2]
+        
+        if len(meaningful_words) < 1:
+            return False
+            
+        logger.debug(f"Title '{title}' passed validation")
         return True
 
     def _is_meaningful_word(self, word: str) -> bool:
@@ -256,62 +324,78 @@ class TMDBClient:
         return word_lower not in stop_words and len(word) > 1
 
     def _extract_potential_titles(self, content: str) -> List[str]:
-        """Extract potential movie/TV show titles from content."""
-        # Patterns to match potential titles - more specific patterns
-        patterns = [
-            # Titles in quotes (more specific)
-            r'"([A-Z][^"]{2,30})"',
-            r"'([A-Z][^']{2,30})'",
-            # Titles after specific keywords (more specific)
-            r'filme\s+"?([A-Z][^,.!?"]+)"?',
-            r'série\s+"?([A-Z][^,.!?"]+)"?',
-            r'temporada\s+\d+\s+de\s+"?([A-Z][^,.!?"]+)"?',
-            # Titles in bold tags (clean HTML)
-            r'<b>\s*([A-Z][^<]{2,30})\s*</b>',
-            # Movie/series names with year
-            r'([A-Z][^(]{2,30})\s*\(\d{4}\)',
-            # Known franchises and series
-            r'\b(Arrow|Flash|Superman|Batman|Marvel|DC|Netflix|Amazon|HBO|Disney)\s+([A-Z][^,.!?]{2,30})',
+        """Extract potential movie/TV show titles from content with improved accuracy."""
+        
+        # First, look for known franchises and exact matches
+        franchise_patterns = [
+            r'\b(The Walking Dead|Walking Dead)\b',
+            r'\b(Stranger Things)\b',
+            r'\b(Game of Thrones)\b',
+            r'\b(House of the Dragon)\b',
+            r'\b(The Last of Us)\b',
+            r'\b(Breaking Bad|Better Call Saul)\b',
+            r'\b(The Boys)\b',
+            r'\b(Wednesday|Wandinha)\b',
+            r'\b(Euphoria)\b',
+            r'\b(Avatar)\b',
+            r'\b(John Wick)\b',
+            r'\b(Fast (?:and|&) Furious|Velozes e Furiosos)\b',
+            r'\b(Mission Impossible|Missão Impossível)\b'
         ]
-
+        
         titles = []
-        stop_words = {
-            'The', 'A', 'An', 'O', 'A', 'Os', 'As', 'Um', 'Uma', 'De', 'Da', 'Do', 'E', 'Em', 'Com',
-            'Para', 'Por', 'Que', 'Se', 'Como', 'Mais', 'Sua', 'Seu', 'Esta', 'Este', 'Essa', 'Esse',
-            'Hollywood', 'Cinema', 'Filme', 'Série', 'Netflix', 'Amazon', 'HBO', 'Disney', 'Marvel', 'DC'
-        }
-
-        for pattern in patterns:
+        
+        # Priority 1: Known franchises
+        for pattern in franchise_patterns:
             matches = re.findall(pattern, content, re.IGNORECASE)
             for match in matches:
-                if isinstance(match, tuple):
-                    # Handle patterns with groups
-                    title = ' '.join([part for part in match if part]).strip()
-                else:
-                    title = match.strip()
-
-                # Clean and validate title
-                title = re.sub(r'[^\w\s:()-]', ' ', title).strip()
-                title = ' '.join(title.split())  # Normalize whitespace
-
-                # Filter out invalid titles
-                if (3 <= len(title) <= 50 and 
-                    not title.isdigit() and
-                    title not in stop_words and
-                    not title.startswith('http') and
-                    not re.match(r'^[\d\s]+$', title)):
-                    titles.append(title)
-
-        # Remove duplicates while preserving order
-        seen = set()
-        unique_titles = []
-        for title in titles:
-            title_lower = title.lower()
-            if title_lower not in seen:
-                seen.add(title_lower)
-                unique_titles.append(title)
-
-        return unique_titles[:3]  # Limit to first 3 most relevant titles
+                if match and len(match) > 2:
+                    # Normalize titles
+                    if 'walking dead' in match.lower():
+                        title = 'The Walking Dead'
+                    elif 'velozes e furiosos' in match.lower():
+                        title = 'Fast and Furious'
+                    elif 'missão impossível' in match.lower():
+                        title = 'Mission Impossible'
+                    else:
+                        title = match
+                    
+                    if title not in titles:
+                        titles.append(title)
+        
+        # Priority 2: Specific content patterns (only if no franchises found)
+        if not titles:
+            enhanced_patterns = [
+                # Titles in quotes
+                r'"([A-Z][^"]{3,40})"',
+                r"'([A-Z][^']{3,40})'",
+                # Titles after keywords
+                r'(?:filme|série|season|temporada)\s+["\']?([A-Z][A-Za-z\s]{2,35})["\']?',
+                # Titles in bold tags
+                r'<b>\s*([A-Z][A-Za-z\s]{3,35})\s*</b>',
+                # Titles with years
+                r'([A-Z][A-Za-z\s]{3,35})\s*\(\d{4}\)',
+                # Known studios/networks followed by titles
+                r'(?:Marvel|DC|Netflix|HBO|Amazon|Disney)\s+([A-Z][A-Za-z\s]{3,35})',
+            ]
+            
+            for pattern in enhanced_patterns:
+                matches = re.findall(pattern, content, re.IGNORECASE)
+                for match in matches:
+                    if isinstance(match, tuple):
+                        title = ' '.join([part for part in match if part]).strip()
+                    else:
+                        title = match.strip()
+                    
+                    # Clean title
+                    title = re.sub(r'[^\w\s\-:()]', ' ', title)
+                    title = ' '.join(title.split())
+                    
+                    if self._is_valid_title(title) and title not in titles:
+                        titles.append(title)
+        
+        logger.info(f"Extracted potential titles from content: {titles}")
+        return titles[:2]  # Limit to 2 most relevant titles
 
     def find_media_for_post(self, title: str, content: str, categories: List[Dict] = None) -> Dict[str, Any]:
         """
