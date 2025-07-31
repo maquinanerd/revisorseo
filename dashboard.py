@@ -44,7 +44,6 @@ class SEODashboard:
         # with a local fallback.
         self.db_path = os.getenv('DB_PATH', 'seo_dashboard.db')
         self.init_database()
-        self.update_daily_metrics() # Ensure metrics are updated on startup
 
     def init_database(self):
         """Initialize SQLite database for tracking optimization history."""
@@ -93,6 +92,7 @@ class SEODashboard:
             ''', (post_id, title, status, error_message, seo_score, recommendations))
             conn.commit()
             self._invalidate_cache()  # Invalidate cache on data change
+            self.update_daily_metrics() # Update metrics after a change
 
     def update_daily_metrics(self):
         """Update daily SEO metrics."""
@@ -370,7 +370,10 @@ def api_optimize_post(post_id):
             )
 
             if success:
-                dashboard.log_optimization(post_id, title, 'success', seo_score=85)
+                dashboard.log_optimization(
+                    post_id, title, 'success',
+                    seo_score=optimized_content.get('seo_score', 0)
+                )
                 return jsonify({'success': True, 'message': 'Post optimized successfully'})
             else:
                 dashboard.log_optimization(post_id, title, 'failed', 'Failed to update WordPress post')
