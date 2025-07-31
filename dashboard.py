@@ -6,11 +6,14 @@ Provides a web interface to monitor and manage SEO optimization status.
 
 import logging
 import json
+import time
 from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional, Set
 from flask import Flask, render_template, jsonify, request, g
 import sqlite3
 import os
+from threading import Thread, Lock
+import schedule
 
 from config import Config
 from wordpress_client import WordPressClient
@@ -44,6 +47,11 @@ class SEODashboard:
         # with a local fallback.
         self.db_path = os.getenv('DB_PATH', 'seo_dashboard.db')
         self.init_database()
+        
+        # Set up a scheduler for periodic tasks
+        self.scheduler = schedule.every(10).minutes.do(self.clear_old_processing_status)
+        self.scheduler_thread = Thread(target=self._run_scheduler, daemon=True)
+        self.scheduler_thread.start()
 
     def init_database(self):
         """Initialize SQLite database for tracking optimization history."""
@@ -276,23 +284,33 @@ class SEODashboard:
         except Exception as e:
             logger.error(f"Failed to clear old processing status: {e}")
 
+    def _run_scheduler(self):
+        """Run the scheduler in a separate thread."""
+        logger.info("Background scheduler for cleanup started.")
+        while True:
+            schedule.run_pending()
+            time.sleep(60)
+
 # Flask Web Application
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-dashboard = SEODashboard() # This now runs init_database and update_daily_metrics
+_dashboard_instance: Optional[SEODashboard] = None
+_dashboard_lock = Lock()
 
-@app.before_request
-def before_request_hook():
-    """Clear stale 'processing' statuses before handling a request."""
-    # Use the 'g' object to ensure this runs only once per request
-    if not hasattr(g, 'processing_cleared'):
-        dashboard.clear_old_processing_status()
-        g.processing_cleared = True
+def get_dashboard() -> SEODashboard:
+    """Lazily initializes and returns the SEODashboard singleton."""
+    global _dashboard_instance
+    if _dashboard_instance is None:
+        with _dashboard_lock:
+            if _dashboard_instance is None:
+                _dashboard_instance = SEODashboard()
+    return _dashboard_instance
 
 @app.route('/')
 def index():
     """Main dashboard page."""
+    dashboard = get_dashboard()
     data = dashboard.get_dashboard_data()
     pending_posts = dashboard.get_pending_posts()
     return render_template('dashboard.html', 
@@ -303,7 +321,7 @@ def index():
 def get_dashboard_data():
     """Get dashboard data including summary and posts."""
     try:
-        # The before_request_hook has already cleared old statuses
+        dashboard = get_dashboard()
         data = dashboard.get_dashboard_data()
         return jsonify(data)
     except Exception as e:
@@ -314,6 +332,7 @@ def get_dashboard_data():
 def get_batch_status():
     """Get current batch processing status."""
     try:
+        dashboard = get_dashboard()
         pending_posts = dashboard.get_pending_posts()
         return jsonify({
             'pending_count': len(pending_posts),
@@ -327,12 +346,14 @@ def get_batch_status():
 @app.route('/api/pending-posts')
 def api_pending_posts():
     """API endpoint for pending posts."""
+    dashboard = get_dashboard()
     return jsonify(dashboard.get_pending_posts())
 
 @app.route('/api/optimize-post/<int:post_id>', methods=['POST'])
 def api_optimize_post(post_id):
     """Optimize a specific post."""
     try:
+        dashboard = get_dashboard()
         # Get post data
         post = dashboard.wp_client.get_post(post_id)
         if not post:
@@ -392,6 +413,7 @@ def api_optimize_post(post_id):
 def api_mark_success(post_id):
     """Manually mark a post's optimization as successful."""
     try:
+        dashboard = get_dashboard()
         # Fetch post from WordPress to get the title, as it might not be in the DB
         # if the failure happened very early.
         post = dashboard.wp_client.get_post(post_id)
@@ -421,6 +443,7 @@ def api_mark_success(post_id):
 def api_system_status():
     """API endpoint for system status check."""
     try:
+        dashboard = get_dashboard()
         wp_status = dashboard.wp_client.test_connection()
         gemini_status_details = dashboard.gemini_client.test_connection()
         tmdb_status = dashboard.tmdb_client.test_connection()
