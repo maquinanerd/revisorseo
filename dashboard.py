@@ -7,8 +7,8 @@ Provides a web interface to monitor and manage SEO optimization status.
 import logging
 import json
 from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional
-from flask import Flask, render_template, jsonify, request
+from typing import Dict, List, Any, Optional, Set
+from flask import Flask, render_template, jsonify, request, g
 import sqlite3
 import os
 
@@ -28,15 +28,19 @@ class SEODashboard:
         self.wp_client = WordPressClient(
             site_url=self.config.wordpress_url,
             username=self.config.wordpress_username,
-            password=self.config.wordpress_password
+            password=self.config.wordpress_password,
+            timeout=self.config.wordpress_timeout
         )
         self.gemini_client = GeminiClient(api_keys=self.config.get_gemini_api_keys())
         self.tmdb_client = TMDBClient(
             api_key=self.config.tmdb_api_key,
             read_token=self.config.tmdb_read_token
         )
-        self.db_path = 'seo_dashboard.db'
+        # Use environment variable for DB path for Render compatibility,
+        # with a local fallback.
+        self.db_path = os.getenv('DB_PATH', 'seo_dashboard.db')
         self.init_database()
+        self.update_daily_metrics() # Ensure metrics are updated on startup
         
         # Simple in-memory cache
         self.cache: Dict[str, Any] = {}
@@ -276,7 +280,15 @@ class SEODashboard:
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-dashboard = SEODashboard()
+dashboard = SEODashboard() # This now runs init_database and update_daily_metrics
+
+@app.before_request
+def before_request_hook():
+    """Clear stale 'processing' statuses before handling a request."""
+    # Use the 'g' object to ensure this runs only once per request
+    if not hasattr(g, 'processing_cleared'):
+        dashboard.clear_old_processing_status()
+        g.processing_cleared = True
 
 @app.route('/')
 def index():
@@ -291,8 +303,7 @@ def index():
 def get_dashboard_data():
     """Get dashboard data including summary and posts."""
     try:
-        # Clear old processing status before getting data
-        dashboard.clear_old_processing_status()
+        # The before_request_hook has already cleared old statuses
         data = dashboard.get_dashboard_data()
         return jsonify(data)
     except Exception as e:
@@ -408,12 +419,12 @@ def api_system_status():
     """API endpoint for system status check."""
     try:
         wp_status = dashboard.wp_client.test_connection()
-        gemini_status = dashboard.gemini_client.test_connection()
+        gemini_status_details = dashboard.gemini_client.test_connection()
         tmdb_status = dashboard.tmdb_client.test_connection()
 
         return jsonify({
             'wordpress': wp_status,
-            'gemini': gemini_status,
+            'gemini': gemini_status_details,
             'tmdb': tmdb_status,
             'database': os.path.exists(dashboard.db_path),
             'timestamp': datetime.now().isoformat()
@@ -422,8 +433,5 @@ def api_system_status():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    # Update daily metrics on startup
-    dashboard.update_daily_metrics()
-
     # Run Flask app
     app.run(host='0.0.0.0', port=5000, debug=True)

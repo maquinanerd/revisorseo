@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 class WordPressClient:
     """Client for interacting with WordPress REST API."""
 
-    def __init__(self, site_url: str, username: str, password: str):
+    def __init__(self, site_url: str, username: str, password: str, timeout: int = 60):
         """
         Initialize WordPress client with authentication.
 
@@ -24,6 +24,7 @@ class WordPressClient:
             site_url: WordPress site URL
             username: WordPress username
             password: WordPress application password
+            timeout: Request timeout in seconds.
         """
         self.site_url = site_url.rstrip('/')
         self.api_base = urljoin(self.site_url, '/wp-json/wp/v2/')
@@ -36,6 +37,7 @@ class WordPressClient:
             'Content-Type': 'application/json',
             'User-Agent': 'WordPress-SEO-Optimizer/1.0'
         })
+        self.timeout = timeout
 
         logger.info(f"WordPress client initialized for {site_url}")
 
@@ -44,7 +46,7 @@ class WordPressClient:
         url = urljoin(self.api_base, endpoint)
 
         try:
-            response = self.session.request(method, url, timeout=60, **kwargs)
+            response = self.session.request(method, url, timeout=self.timeout, **kwargs)
             response.raise_for_status()
 
             if response.content:
@@ -52,7 +54,13 @@ class WordPressClient:
             return {}
 
         except requests.exceptions.RequestException as e:
-            logger.error(f"WordPress API request failed: {method} {url} - {e}")
+            if isinstance(e, requests.exceptions.Timeout):
+                logger.error(
+                    f"WordPress API request timed out after {self.timeout} seconds: {method} {url}. "
+                    f"This might be due to a firewall on the WordPress host blocking Render's IP addresses."
+                )
+            else:
+                logger.error(f"WordPress API request failed: {method} {url} - {e}")
             if hasattr(e, 'response') and e.response is not None:
                 logger.error(f"Response status: {e.response.status_code}")
                 logger.error(f"Response body: {e.response.text}")

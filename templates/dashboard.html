@@ -405,6 +405,27 @@
                 `;
 
                 document.getElementById('system-status').innerHTML = statusHtml;
+
+                // Handle detailed Gemini status
+                const geminiContainer = document.getElementById('gemini-status-container');
+                let geminiStatusClass = 'text-danger';
+                let geminiStatusText = 'Falha';
+                if (status.gemini.overall_status === 'ok') {
+                    geminiStatusClass = 'text-success';
+                    geminiStatusText = 'Conectado';
+                } else if (status.gemini.overall_status === 'partial') {
+                    geminiStatusClass = 'text-warning';
+                    geminiStatusText = 'Parcial';
+                }
+                const geminiTooltip = status.gemini.keys.map(k => `${k.key}: ${k.status}`).join('\\n');
+                geminiContainer.innerHTML = `
+                    <div class="d-flex align-items-center" title="${geminiTooltip}">
+                        <i class="fas fa-circle me-2 ${geminiStatusClass}"></i>
+                        <span>Gemini AI: ${geminiStatusText}</span>
+                    </div>
+                `;
+
+
             } catch (error) {
                 console.error('Failed to check system status:', error);
             }

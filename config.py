@@ -23,6 +23,7 @@ class Config:
         self.wordpress_username: Optional[str] = os.getenv('WORDPRESS_USERNAME')
         self.wordpress_password: Optional[str] = os.getenv('WORDPRESS_PASSWORD')
         self.wordpress_domain: Optional[str] = os.getenv('WORDPRESS_DOMAIN')
+        self.wordpress_timeout: int = int(os.getenv('WORDPRESS_TIMEOUT', '90')) # Increased default to 90s
         
         # Gemini configuration: supports multiple keys GEMINI_API_KEY, GEMINI_API_KEY_1, etc.
         self.gemini_keys = sorted([
@@ -62,9 +63,8 @@ class Config:
             ('WORDPRESS_URL', self.wordpress_url),
             ('WORDPRESS_USERNAME', self.wordpress_username),
             ('WORDPRESS_PASSWORD', self.wordpress_password),
-            ('WORDPRESS_DOMAIN', self.wordpress_domain),
-            ('TMDB_API_KEY', self.tmdb_api_key),
-            ('TMDB_READ_TOKEN', self.tmdb_read_token)
+            ('WORDPRESS_DOMAIN', self.wordpress_domain)
+            # TMDB keys are not strictly required due to fallback values.
         ]
         
         missing_vars = []

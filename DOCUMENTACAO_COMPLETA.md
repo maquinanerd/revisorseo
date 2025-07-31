@@ -23,8 +23,8 @@ Sistema automatizado de otimização SEO para WordPress usando Google Gemini AI,
 
 ### WordPress
 - **URL**: `https://www.maquinanerd.com.br/`
-- **Usuário**: `[Configurado em WORDPRESS_USERNAME]`
-- **Senha App**: `[Configurado em WORDPRESS_PASSWORD]`
+- **Usuário**: `Abel`
+- **Senha App**: `Hl7M 5ZOE hMNQ M7A9 gFVy IEsB`
 - **Domínio**: `[Configurado em WORDPRESS_DOMAIN]`
 - **Author ID do João**: `6`
 

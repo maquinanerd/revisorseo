@@ -306,34 +306,43 @@ Importante:
         logger.error("All API keys have been tried and failed. Could not optimize content.")
         return None
 
-    def test_connection(self) -> bool:
-        """Test the Gemini API connection, tentando todas as chaves disponíveis."""
+    def test_connection(self) -> Dict[str, Any]:
+        """
+        Test the Gemini API connection for all available keys.
+        Returns a dictionary with the overall status and individual key statuses.
+        """
         logger.info("Testing Gemini API connection...")
         original_key_index = self.current_key_index
+        key_statuses = []
+        successful_connections = 0
+
         for idx, key in enumerate(self.api_keys):
+            status_entry = {'key': f"Key #{idx+1} ({key[:8]}...)", 'status': 'failed'}
             try:
-                self.current_key_index = idx
-                self.current_api_key = key
                 genai.configure(api_key=key)
                 model = genai.GenerativeModel(self.model)
-                response = model.generate_content(
-                    "Olá",
-                    generation_config={'max_output_tokens': 5}
-                )
+                response = model.generate_content("Olá", generation_config={'max_output_tokens': 5})
                 if response.text:
-                    logger.info(f"Gemini API connection test successful with key #{idx+1} - {key[:8]}...")
-                    return True
-                logger.error(f"Gemini API connection test failed: received empty response for key #{idx+1} - {key[:8]}...")
+                    status_entry['status'] = 'ok'
+                    successful_connections += 1
+                else:
+                    status_entry['error'] = "Empty response"
             except Exception as e:
                 error_str = str(e)
                 if "429" in error_str and "quota" in error_str.lower():
-                    logger.warning(f"Quota exceeded for key #{idx+1} - {key[:8]}..., trying next key...")
-                    continue
+                    status_entry['status'] = 'quota_exceeded'
+                    status_entry['error'] = "Quota Exceeded"
                 else:
-                    logger.error(f"Gemini API connection test failed for key #{idx+1} - {key[:8]}...: {e}")
-        # Restaura índice original
-        self.current_key_index = original_key_index
-        self.current_api_key = self.api_keys[original_key_index]
-        genai.configure(api_key=self.current_api_key)
-        logger.error("Gemini API connection test failed: all keys exhausted or invalid.")
-        return False
+                    status_entry['error'] = "Invalid Key or API Error"
+            key_statuses.append(status_entry)
+
+        # Restore original key configuration
+        self._set_active_key(original_key_index)
+
+        overall_status = 'failed'
+        if successful_connections == len(self.api_keys):
+            overall_status = 'ok'
+        elif successful_connections > 0:
+            overall_status = 'partial'
+
+        return {'overall_status': overall_status, 'keys': key_statuses}

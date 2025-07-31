@@ -44,7 +44,8 @@ class SEOOptimizer:
         self.wp_client = WordPressClient(
             site_url=self.config.wordpress_url,
             username=self.config.wordpress_username,
-            password=self.config.wordpress_password
+            password=self.config.wordpress_password,
+            timeout=self.config.wordpress_timeout
         )
         
         # Initialize Gemini client with backup support
@@ -58,7 +59,9 @@ class SEOOptimizer:
         self.dashboard = SEODashboard() # Initialize dashboard for logging
         self.processed_posts: Set[int] = set()
         self.joao_author_id: int = 6  # João's known author ID
-        self.db_path = 'seo_dashboard.db'
+        # Use environment variable for DB path for Render compatibility
+        self.db_path = os.getenv('DB_PATH', 'seo_dashboard.db')
+
 
     def initialize(self) -> bool:
         """Initialize the optimizer by verifying connections."""
