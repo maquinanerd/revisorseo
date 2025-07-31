@@ -24,6 +24,10 @@ class SEODashboard:
 
     def __init__(self):
         """Initialize the dashboard with database and clients."""
+        # Simple in-memory cache
+        self.cache: Dict[str, Any] = {}
+        self.cache_ttl = timedelta(seconds=60)  # Cache for 60 seconds
+
         self.config = Config()
         self.wp_client = WordPressClient(
             site_url=self.config.wordpress_url,
@@ -41,10 +45,6 @@ class SEODashboard:
         self.db_path = os.getenv('DB_PATH', 'seo_dashboard.db')
         self.init_database()
         self.update_daily_metrics() # Ensure metrics are updated on startup
-        
-        # Simple in-memory cache
-        self.cache: Dict[str, Any] = {}
-        self.cache_ttl = timedelta(seconds=60)  # Cache for 60 seconds
 
     def init_database(self):
         """Initialize SQLite database for tracking optimization history."""
