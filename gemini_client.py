@@ -5,7 +5,7 @@ Google Gemini 1.5 Pro client for content optimization.
 import json
 import logging
 import re
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 from datetime import datetime, date
 import os
 
